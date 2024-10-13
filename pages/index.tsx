@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>にんにく</title>
+        <title>ちいかわかわいすぎぃぃぃぃ</title>
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon.png" />
         <meta name="theme-color" content="#a8a6a3" />
