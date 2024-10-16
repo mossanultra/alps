@@ -21,6 +21,11 @@ import Avatar from '@mui/material/Avatar';
 //   );
 // }
 
+interface FixedBottomNavigationProps {
+    expand: boolean;
+  }
+  
+
 export default function FixedBottomNavigation() {
   const [value, setValue] = React.useState(0);
   const ref = React.useRef<HTMLDivElement>(null);
@@ -52,9 +57,15 @@ export default function FixedBottomNavigation() {
             setValue(newValue);
           }}
         >
-          <BottomNavigationAction label="ちいかわ" icon={<RestoreIcon />} />
-          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Archive" icon={<ArchiveIcon />} />
+          <BottomNavigationAction label="ちいかわ" 
+                icon={<img src="/icon512_maskable.png" alt="ちいかわ" style={{ width: 24, height: 24 }} />}
+/>
+          <BottomNavigationAction label="はちわれ" 
+            icon={<img src="/hatiware.jpeg" alt="はちわれ" style={{ width: 24, height: 24 }} />}
+/>
+          <BottomNavigationAction label="栗まんじゅう" 
+                      icon={<img src="/kurimanjuu.jpg" alt="栗まんじゅう" style={{ width: 24, height: 24 }} />}
+                      />
         </BottomNavigation>
       </Paper>
     </Box>
