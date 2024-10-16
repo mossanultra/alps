@@ -3,11 +3,15 @@ import HoloEffectCard from "../holocard/holoEffectCard";
 
 export default function Otokoume() {
   return (
-    <HoloEffectCard
-      image={"otokoume.jpg"}
-      position={[0, 0, 0]}
-      className={classes.canvas}
-      enableOrbitContorls={true}
-    ></HoloEffectCard>
+    <div className={classes.canvas_container}>
+      <div className={classes.container}>
+        <HoloEffectCard
+          image={"otokoume.jpg"}
+          position={[0, 0, 0]}
+          className={classes.canvas}
+          enableOrbitContorls={true}
+        ></HoloEffectCard>
+      </div>
+    </div>
   );
 }
