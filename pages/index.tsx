@@ -1,9 +1,12 @@
+'use client;'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import ResponsiveAppBar from './components/appbar/appbar'
 import RecipeReviewCard from './components/card/card'
 import TemporaryDrawer from './components/drawer/drawer'
+import AlignItemsList from './components/list/list'
+import CardList from './components/cardList/cardList'
 
 export default function Home() {
   return (
@@ -16,12 +19,8 @@ export default function Home() {
       </Head>
       <TemporaryDrawer></TemporaryDrawer>
       <ResponsiveAppBar></ResponsiveAppBar>
-      <RecipeReviewCard></RecipeReviewCard>
-      <RecipeReviewCard></RecipeReviewCard>
-      <RecipeReviewCard></RecipeReviewCard>
-      <RecipeReviewCard></RecipeReviewCard>
-      <RecipeReviewCard></RecipeReviewCard>
-      <RecipeReviewCard></RecipeReviewCard>
+      <CardList></CardList>
+      {/* <AlignItemsList></AlignItemsList> */}
     </div>
   )
 }
