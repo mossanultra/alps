@@ -69,9 +69,10 @@ export default function RecipeReviewCard() {
       />
       <CardMedia
         component="img"
-        height="194"
+        height="64"
         image="/icon512_maskable.png"
         alt="Paella dish"
+        sx={{objectFit: 'contain'}}
       />
       <CardContent>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
