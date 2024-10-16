@@ -8,6 +8,7 @@ import TemporaryDrawer from './components/drawer/drawer'
 import AlignItemsList from './components/list/list'
 import CardList from './components/cardList/cardList'
 import Footer from './components/footer/footer'
+import FixedBottomNavigation from './components/buttomNavigation/buttonNavigation'
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
       <TemporaryDrawer></TemporaryDrawer>
       <ResponsiveAppBar></ResponsiveAppBar>
       <CardList></CardList>
+      <FixedBottomNavigation></FixedBottomNavigation>
       <Footer></Footer>
       {/* <AlignItemsList></AlignItemsList> */}
     </div>
