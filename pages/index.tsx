@@ -7,6 +7,7 @@ import RecipeReviewCard from './components/card/card'
 import TemporaryDrawer from './components/drawer/drawer'
 import AlignItemsList from './components/list/list'
 import CardList from './components/cardList/cardList'
+import Footer from './components/footer/footer'
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <TemporaryDrawer></TemporaryDrawer>
       <ResponsiveAppBar></ResponsiveAppBar>
       <CardList></CardList>
+      <Footer></Footer>
       {/* <AlignItemsList></AlignItemsList> */}
     </div>
   )
