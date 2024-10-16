@@ -15,6 +15,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Chip } from '@mui/material';
+import styles from "../card.module.css";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;

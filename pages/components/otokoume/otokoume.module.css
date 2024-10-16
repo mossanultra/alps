@@ -1,0 +1,17 @@
+.canvas_container {
+    display: block;
+    position: relative;
+    height: 0;
+    overflow: hidden;
+  }
+  .canvas {
+    /* box-sizing: border-box; */
+    /* float: left; */
+    /* display: flex; */
+    /* flex-wrap: wrap; */
+    padding: 0 4px;
+    display: block;
+    height: 300px;
+    /* top: 0;
+    left: 0;*/
+  }
