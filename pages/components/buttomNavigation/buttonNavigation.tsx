@@ -1,55 +1,56 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import RestoreIcon from '@mui/icons-material/Restore';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ArchiveIcon from '@mui/icons-material/Archive';
-import Paper from '@mui/material/Paper';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
-
-// function refreshMessages(): MessageExample[] {
-//   const getRandomInt = (max: number) => Math.floor(Math.random() * Math.floor(max));
-
-//   return Array.from(new Array(50)).map(
-//     () => messageExamples[getRandomInt(messageExamples.length)],
-//   );
-// }
+import * as React from "react";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import Paper from "@mui/material/Paper";
+import { useEffect } from "react";
 
 interface FixedBottomNavigationProps {
-    expand: boolean;
-  }
-  
+  onChangeMenu: (menutype: MenuType) => void;
+}
 
-export default function FixedBottomNavigation() {
+export enum MenuType {
+  TIIKAWA,
+  HATIWARE,
+  KURIMANJUU,
+}
+
+export default function FixedBottomNavigation(
+  props: FixedBottomNavigationProps
+) {
   const [value, setValue] = React.useState(0);
   const ref = React.useRef<HTMLDivElement>(null);
-//   const [messages, setMessages] = React.useState(() => refreshMessages());
+  const onChangeMenu = props.onChangeMenu;
 
-//   React.useEffect(() => {
-//     (ref.current as HTMLDivElement).ownerDocument.body.scrollTop = 0;
-//     setMessages(refreshMessages());
-//   }, [value, setMessages]);
+  useEffect(() => {
+    const menuTypes = [
+      {
+        menuType: MenuType.TIIKAWA,
+        value: 0,
+      },
+      {
+        menuType: MenuType.HATIWARE,
+        value: 1,
+      },
+      {
+        menuType: MenuType.KURIMANJUU,
+        value: 2,
+      },
+    ];
+    const menuType: MenuType = menuTypes.find(
+      (e) => e.value === value
+    )!.menuType;
+    onChangeMenu(menuType);
+  }, [value, onChangeMenu]);
 
   return (
     <Box sx={{ pb: 7 }} ref={ref}>
       <CssBaseline />
-      {/* <List>
-        {messages.map(({ primary, secondary, person }, index) => (
-          <ListItemButton key={index + person}>
-            <ListItemAvatar>
-              <Avatar alt="Profile Picture" src={person} />
-            </ListItemAvatar>
-            <ListItemText primary={primary} secondary={secondary} />
-          </ListItemButton>
-        ))}
-      </List> */}
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+      <Paper
+        sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+        elevation={3}
+      >
         <BottomNavigation
           showLabels
           value={value}
@@ -57,15 +58,36 @@ export default function FixedBottomNavigation() {
             setValue(newValue);
           }}
         >
-          <BottomNavigationAction label="ちいかわ" 
-                icon={<img src="/icon512_maskable.png" alt="ちいかわ" style={{ width: 24, height: 24 }} />}
-/>
-          <BottomNavigationAction label="はちわれ" 
-            icon={<img src="/hatiware.jpeg" alt="はちわれ" style={{ width: 24, height: 24 }} />}
-/>
-          <BottomNavigationAction label="栗まんじゅう" 
-                      icon={<img src="/kurimanjuu.jpg" alt="栗まんじゅう" style={{ width: 24, height: 24 }} />}
-                      />
+          <BottomNavigationAction
+            label="ちいかわ"
+            icon={
+              <img
+                src="/icon512_maskable.png"
+                alt="ちいかわ"
+                style={{ width: 24, height: 24 }}
+              />
+            }
+          />
+          <BottomNavigationAction
+            label="はちわれ"
+            icon={
+              <img
+                src="/hatiware.jpeg"
+                alt="はちわれ"
+                style={{ width: 24, height: 24 }}
+              />
+            }
+          />
+          <BottomNavigationAction
+            label="栗まんじゅう"
+            icon={
+              <img
+                src="/kurimanjuu.jpg"
+                alt="栗まんじゅう"
+                style={{ width: 24, height: 24 }}
+              />
+            }
+          />
         </BottomNavigation>
       </Paper>
     </Box>
