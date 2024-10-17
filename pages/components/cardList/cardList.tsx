@@ -11,6 +11,33 @@ export default function CardList() {
         <ListItem alignItems="flex-start">
           <RecipeReviewCard></RecipeReviewCard>
         </ListItem>
+        <ListItem alignItems="flex-start">
+          <RecipeReviewCard></RecipeReviewCard>
+        </ListItem>
+        <ListItem alignItems="flex-start">
+          <RecipeReviewCard></RecipeReviewCard>
+        </ListItem>
+        <ListItem alignItems="flex-start">
+          <RecipeReviewCard></RecipeReviewCard>
+        </ListItem>
+        <ListItem alignItems="flex-start">
+          <RecipeReviewCard></RecipeReviewCard>
+        </ListItem>
+        <ListItem alignItems="flex-start">
+          <RecipeReviewCard></RecipeReviewCard>
+        </ListItem>
+        <ListItem alignItems="flex-start">
+          <RecipeReviewCard></RecipeReviewCard>
+        </ListItem>
+        <ListItem alignItems="flex-start">
+          <RecipeReviewCard></RecipeReviewCard>
+        </ListItem>
+        <ListItem alignItems="flex-start">
+          <RecipeReviewCard></RecipeReviewCard>
+        </ListItem>
+        <ListItem alignItems="flex-start">
+          <RecipeReviewCard></RecipeReviewCard>
+        </ListItem>
       </List>
     </div>
   );
