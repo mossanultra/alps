@@ -11,13 +11,15 @@ export default function Otokoume() {
           className={classes.canvas}
           enableOrbitContorls={true}
         ></HoloEffectCard>
-        <HoloEffectCard
+      </div>
+      <div className={classes.container}>
+      <HoloEffectCard
           image={"china.jpg"}
           position={[0, 0, 0]}
           className={classes.canvas}
           enableOrbitContorls={true}
         ></HoloEffectCard>
-      </div>
+        </div>
     </div>
   );
 }
