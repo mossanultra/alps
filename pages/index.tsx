@@ -46,7 +46,7 @@ export default function Home() {
           <link rel="apple-touch-icon" href="/icon.png" />
           <meta name="theme-color" content="#a8a6a3" />
         </Head>
-        <TemporaryDrawer></TemporaryDrawer>
+        {/* <TemporaryDrawer></TemporaryDrawer> */}
         <ResponsiveAppBar></ResponsiveAppBar>
         <Contents menutype={menu} />
         <FixedBottomNavigation
