@@ -16,9 +16,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Chip } from '@mui/material';
 import styles from "../card.module.css";
+import BasicTable from '../table/table';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
+  title: string;
+  image: string;
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -45,7 +48,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   ],
 }));
 
-export default function RecipeReviewCard() {
+export default function RecipeReviewCard(props: ExpandMoreProps) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -65,23 +68,21 @@ export default function RecipeReviewCard() {
             <MoreVertIcon />
           </IconButton>
         }
-        title="適当においてみたよー"
+        title={props.title}
         subheader="September 14, 2016"
       />
       <CardMedia
         component="img"
         height="64"
-        image="/icon512_maskable.png"
+        image={props.image}
         alt="Paella dish"
         sx={{objectFit: 'contain'}}
       />
       <CardContent>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-        ﾆﾝ(ง ˘ω˘ )วﾆｸ🧄ﾆﾝ(ง ˘ω˘ )วﾆｸ🧄ﾆﾝ(ง ˘ω˘ )วﾆｸ🧄ﾆﾝ(ง ˘ω˘ )วﾆｸ🧄ﾆﾝ(ง ˘ω˘ )วﾆｸ🧄
-        </Typography>
-        <Chip label="primary" color="primary" />
+        <BasicTable/>
+        {/* <Chip label="primary" color="primary" />
         <Chip label="success" color="success" />
-        <Chip label="secondary" color="secondary" />
+        <Chip label="secondary" color="secondary" /> */}
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
@@ -94,8 +95,7 @@ export default function RecipeReviewCard() {
           expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
-          aria-label="show more"
-        >
+          aria-label="show more" image={''} title={''}        >
           <ExpandMoreIcon />
         </ExpandMore>
       </CardActions>
