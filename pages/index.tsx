@@ -10,10 +10,11 @@ import FixedBottomNavigation, {
 import { useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Otokoume from "./components/otokoume/otokoume";
+import AccordionUsage from "./components/mozukun/mozukun";
 
 const theme = createTheme({
   palette: {
-    mode: "light",
+    mode: "dark",
     primary: {
       main: "#d87274",
       light: "#ffa2a3",
@@ -30,7 +31,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
     return <Otokoume></Otokoume>;
   }
   if (menutype === MenuType.KURIMANJUU) {
-    return <></>;
+    return <AccordionUsage></AccordionUsage>;
   }
 }
 
@@ -41,7 +42,7 @@ export default function Home() {
     <ThemeProvider theme={theme}>
       <div className={styles.container}>
         <Head>
-          <title>ちいかわかわいすぎぃぃぃぃ</title>
+          <title>もずくううううう</title>
           <link rel="manifest" href="/manifest.json" />
           <link rel="apple-touch-icon" href="/icon.png" />
           <meta name="theme-color" content="#a8a6a3" />
