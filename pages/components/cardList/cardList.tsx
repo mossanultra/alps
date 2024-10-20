@@ -27,15 +27,13 @@ export default function CardList() {
     >
       <List sx={{ width: "100%", maxWidth: 720, bgcolor: "background.paper" }}>
         {!isLoading &&
-          articles.map((a) => {
+          articles.map((article) => {
             return (
               <>
                 <ListItem alignItems="flex-start">
                   <CardSmanu
                     expand={false}
-                    title={a.title}
-                    image={"/china.jpg"}
-                    content={a.content}
+                    article={article}
                   ></CardSmanu>
                 </ListItem>
               </>
