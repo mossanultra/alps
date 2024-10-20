@@ -32,6 +32,9 @@ function Contents({ menutype }: { menutype: MenuType }) {
     return <Otokoume></Otokoume>;
   }
   if (menutype === MenuType.KURIMANJUU) {
+    return <></>;
+  }
+  if (menutype === MenuType.MARMOT) {
     return <MarkdownEditor></MarkdownEditor>;
   }
 }
