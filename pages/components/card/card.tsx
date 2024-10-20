@@ -22,6 +22,7 @@ interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
   title: string;
   image: string;
+  content: string;
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -79,10 +80,7 @@ export default function RecipeReviewCard(props: ExpandMoreProps) {
         sx={{objectFit: 'contain'}}
       />
       <CardContent>
-        <BasicTable/>
-        {/* <Chip label="primary" color="primary" />
-        <Chip label="success" color="success" />
-        <Chip label="secondary" color="secondary" /> */}
+        <Typography>{props.content}</Typography>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
@@ -95,11 +93,11 @@ export default function RecipeReviewCard(props: ExpandMoreProps) {
           expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
-          aria-label="show more" image={''} title={''}        >
+          aria-label="show more" image={''} title={''} content={''}        >
           <ExpandMoreIcon />
         </ExpandMore>
       </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography sx={{ marginBottom: 2 }}>Method:</Typography>
           <Typography sx={{ marginBottom: 2 }}>
@@ -127,7 +125,7 @@ export default function RecipeReviewCard(props: ExpandMoreProps) {
             Set aside off of the heat to let rest for 10 minutes, and then serve.
           </Typography>
         </CardContent>
-      </Collapse>
+      </Collapse> */}
     </Card>
   );
 }
