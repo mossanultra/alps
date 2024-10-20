@@ -16,29 +16,31 @@ export default function CardList() {
   useEffect(() => {
     const fetchArticles = async () => {
       await getArticles();
-      setIsLoading(false)
+      setIsLoading(false);
     };
     fetchArticles();
-  }, []); 
+  }, []);
 
   return (
     <div
       style={{ display: "flex", justifyContent: "center", marginTop: "72px" }}
     >
       <List sx={{ width: "100%", maxWidth: 720, bgcolor: "background.paper" }}>
-        {!isLoading && articles.map((a) => {
-          return (
-            <>
-              <ListItem alignItems="flex-start">
-                <CardSmanu
-                  expand={false}
-                  title={a.title}
-                  image={"/china.jpg"} 
-                  content={a.content}                ></CardSmanu>
-              </ListItem>
-            </>
-          );
-        })}
+        {!isLoading &&
+          articles.map((a) => {
+            return (
+              <>
+                <ListItem alignItems="flex-start">
+                  <CardSmanu
+                    expand={false}
+                    title={a.title}
+                    image={"/china.jpg"}
+                    content={a.content}
+                  ></CardSmanu>
+                </ListItem>
+              </>
+            );
+          })}
       </List>
     </div>
   );
