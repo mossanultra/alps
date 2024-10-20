@@ -1,8 +1,8 @@
 import { List, ListItem } from "@mui/material";
 import RecipeReviewCard from "../card/card";
 import { useEffect, useState } from "react";
-import { Article } from "../../types/article";
 import CardSmanu from "../card/card_smanu";
+import { Article } from "../../api/articles/articles";
 
 export default function CardList() {
   const [articles, setArticles] = useState<Article[]>([]);
