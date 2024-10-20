@@ -11,6 +11,7 @@ import { useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Otokoume from "./components/otokoume/otokoume";
 import AccordionUsage from "./components/mozukun/mozukun";
+import MarkdownEditor from "./components/markdown-editor/editor";
 
 const theme = createTheme({
   palette: {
@@ -31,7 +32,10 @@ function Contents({ menutype }: { menutype: MenuType }) {
     return <Otokoume></Otokoume>;
   }
   if (menutype === MenuType.KURIMANJUU) {
-    return <AccordionUsage></AccordionUsage>;
+    return <></>;
+  }
+  if (menutype === MenuType.MARMOT) {
+    return <MarkdownEditor></MarkdownEditor>;
   }
 }
 

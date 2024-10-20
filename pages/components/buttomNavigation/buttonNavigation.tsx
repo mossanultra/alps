@@ -14,6 +14,7 @@ export enum MenuType {
   TIIKAWA,
   HATIWARE,
   KURIMANJUU,
+  MARMOT
 }
 
 export default function FixedBottomNavigation(
@@ -36,6 +37,10 @@ export default function FixedBottomNavigation(
       {
         menuType: MenuType.KURIMANJUU,
         value: 2,
+      },
+      {
+        menuType: MenuType.MARMOT,
+        value: 3,
       },
     ];
     const menuType: MenuType = menuTypes.find(
@@ -84,6 +89,16 @@ export default function FixedBottomNavigation(
               <img
                 src="/kurimanjuu.jpg"
                 alt="栗まんじゅう"
+                style={{ width: 24, height: 24 }}
+              />
+            }
+          />
+          <BottomNavigationAction
+            label="もーまっと"
+            icon={
+              <img
+                src="/ma-motto.jpeg"
+                alt="もーまっと"
                 style={{ width: 24, height: 24 }}
               />
             }
