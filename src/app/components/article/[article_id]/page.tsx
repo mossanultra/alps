@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Article } from "@/app/api/articles/articles";
 import { Box } from "@mui/material";
+import HamstarLoader from "../../loading/hamster/hamster";
 
 
 export default function ArticleDetailePage() {
@@ -35,7 +36,7 @@ export default function ArticleDetailePage() {
 //   };
 
   if (isLoding) {
-    return <div>now loading ...</div>;
+    return <HamstarLoader></HamstarLoader>;
   }
 
   return(<Box>{JSON.stringify(article)}</Box>)
