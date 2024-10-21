@@ -2,6 +2,7 @@ import { List, ListItem } from "@mui/material";
 import { useEffect, useState } from "react";
 import CardSmanu from "../card/card_smanu";
 import { Article } from "../../api/articles/articles";
+import HamstarLoader from "../loading/hamster/hamster";
 
 export default function CardList() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -20,6 +21,10 @@ export default function CardList() {
     };
     fetchArticles();
   }, []);
+
+  if(isLoading){
+    return(<HamstarLoader></HamstarLoader>)
+  }
 
   return (
     <div
