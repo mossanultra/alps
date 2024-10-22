@@ -3,9 +3,9 @@ import { useRouter } from "next/navigation";
 import { Article } from "../../api/articles/articles";
 
 interface ExpandMoreProps {
-    article: Article;
-  }
-  
+  article: Article;
+}
+
 export default function CustomCard(props: ExpandMoreProps) {
   const router = useRouter();
 
@@ -21,17 +21,15 @@ export default function CustomCard(props: ExpandMoreProps) {
     <div style={styles.cardContainer}>
       <div style={styles.textSection}>
         <h2 style={styles.title}>{props.article.title}</h2>
-        <p style={styles.date}>{new Date(props.article.createdAt).toLocaleString()}</p>
+        <p style={styles.date}>
+          {new Date(props.article.createdAt).toLocaleString()}
+        </p>
         <p style={styles.content} onClick={handleClick}>
           {props.article.content}
         </p>
       </div>
       <div style={styles.imageSection}>
-        <img
-          src={"/china.jpg"}
-          alt="News Image"
-          style={styles.image}
-        />
+        <img src={"/china.jpg"} alt="News Image" style={styles.image} />
       </div>
     </div>
   );
