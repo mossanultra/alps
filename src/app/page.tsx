@@ -1,30 +1,16 @@
-"use client";
+'use client';
+import { useRef, useState, useEffect } from "react";
 import CardList from "./components/cardList/cardList";
-import FixedBottomNavigation, {
-  MenuType,
-} from "./components/buttomNavigation/buttonNavigation";
-import { useState } from "react";
+import FixedBottomNavigation, { MenuType } from "./components/buttomNavigation/buttonNavigation";
 import Otokoume from "./components/otokoume/otokoume";
 import PlaneAppBar from "./components/appbar-plane/plane-appbar";
-// import { ThemeProvider, createTheme } from "@mui/material/styles";
-
-// export const theme = createTheme({
-//   palette: {
-//     mode: "dark",
-//     primary: {
-//       main: "#d87274",
-//       light: "#ffa2a3",
-//       dark: "#a34449",
-//     },
-//   },
-// });
 
 function Contents({ menutype }: { menutype: MenuType }) {
   if (menutype === MenuType.TIIKAWA) {
-    return <CardList></CardList>;
+    return <CardList />;
   }
   if (menutype === MenuType.HATIWARE) {
-    return <Otokoume></Otokoume>;
+    return <Otokoume />;
   }
   if (menutype === MenuType.KURIMANJUU) {
     return <></>;
@@ -36,16 +22,33 @@ function Contents({ menutype }: { menutype: MenuType }) {
 
 export default function Home() {
   const [menu, setMenu] = useState(MenuType.TIIKAWA);
+  const [appBarHeight, setAppBarHeight] = useState(0); // AppBarの高さを保存するstate
+  const appBarRef = useRef<HTMLDivElement>(null); // AppBarの参照を保存するref
+
+  // useEffectでAppBarの高さを取得
+  useEffect(() => {
+    if (appBarRef.current) {
+      setAppBarHeight(appBarRef.current.clientHeight); // AppBarの高さを取得してstateに保存
+    }
+  }, []);
 
   return (
     <div>
-        <PlaneAppBar></PlaneAppBar>
+      {/* AppBarの参照をrefに渡す */}
+      <div ref={appBarRef}>
+        <PlaneAppBar />
+      </div>
+
+      {/* AppBarの高さに応じてpaddingTopを動的に設定 */}
+      <div style={{ paddingTop: `${appBarHeight}px` }}>
         <Contents menutype={menu} />
-        <FixedBottomNavigation
-          onChangeMenu={function (menutype: MenuType): void {
-            setMenu(menutype);
-          }}
-        ></FixedBottomNavigation>
+      </div>
+
+      <FixedBottomNavigation
+        onChangeMenu={(menutype: MenuType): void => {
+          setMenu(menutype);
+        }}
+      />
     </div>
   );
 }
