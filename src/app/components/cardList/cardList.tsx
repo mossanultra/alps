@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import HamstarLoader from "../loading/hamster/hamster";
 import CustomCard from "../card/card-plane"; // Make sure this is your non-MUI CustomCard
-import styles from "./CardList.module.css"; // Import the CSS module
 
 export default function CardList() {
   const [articles, setArticles] = useState([]);
@@ -26,10 +25,10 @@ export default function CardList() {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.list}>
-        {articles.map((article, index) => (
-          <div key={index} className={styles.listItem}>
+    <div style={styles.container}>
+      <div style={styles.list}>
+        {articles.map((article) => (
+          <div key={"id"} style={styles.listItem}>
             <CustomCard article={article} />
           </div>
         ))}
@@ -37,3 +36,22 @@ export default function CardList() {
     </div>
   );
 }
+
+const styles = {
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "10px",
+    backgroundColor: "transparent",
+    minHeight: "100vh", // ページ全体を覆うように高さを設定
+  },
+  list: {
+    width: "100%",
+    maxWidth: "720px",
+    padding: "16px",
+    borderRadius: "8px", // カードの周りを少し角丸にする
+  },
+  listItem: {
+    padding: "16px",
+  },
+};

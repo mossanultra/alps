@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Article } from "@/app/api/articles/articles";
 import HamstarLoader from "../../loading/hamster/hamster";
 
+
 export default function ArticleDetailePage() {
   const [article, setArticle] = useState<Article>();
   const [isLoding, setIsLoading] = useState(true);
@@ -15,8 +16,9 @@ export default function ArticleDetailePage() {
     setArticle(article);
     setIsLoading(false);
   }, []);
-
   useEffect(() => {
+    // const pathname = usePathname();
+    // console.log(pathname); // pathname => /post/1234
     loadArticle(articleId);
   }, [loadArticle]);
 
@@ -28,13 +30,13 @@ export default function ArticleDetailePage() {
   const articleId = split[split.length - 1];
   console.log(articleId); // pathname => /post/1234
 
-  //   const goBack = () => {
-  //     router.back();
-  //   };
+//   const goBack = () => {
+//     router.back();
+//   };
 
   if (isLoding) {
     return <HamstarLoader></HamstarLoader>;
   }
 
-  return <div>{JSON.stringify(article)}</div>;
+  return(<div>{JSON.stringify(article)}</div>)
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import styles from "./FixedBottomNavigation.module.css"; // Import the CSS module
+import styles from './FixedBottomNavigation.module.css'; // Import the CSS module
 
 interface FixedBottomNavigationProps {
   onChangeMenu: (menutype: MenuType) => void;
@@ -12,9 +12,7 @@ export enum MenuType {
   MARMOT,
 }
 
-export default function FixedBottomNavigation(
-  props: FixedBottomNavigationProps
-) {
+export default function FixedBottomNavigation(props: FixedBottomNavigationProps) {
   const [value, setValue] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const onChangeMenu = props.onChangeMenu;
@@ -26,9 +24,7 @@ export default function FixedBottomNavigation(
       { menuType: MenuType.KURIMANJUU, value: 2 },
       { menuType: MenuType.MARMOT, value: 3 },
     ];
-    const menuType: MenuType = menuTypes.find(
-      (e) => e.value === value
-    )!.menuType;
+    const menuType: MenuType = menuTypes.find((e) => e.value === value)!.menuType;
     onChangeMenu(menuType);
   }, [value, onChangeMenu]);
 
@@ -36,11 +32,7 @@ export default function FixedBottomNavigation(
     <div className={styles.container} ref={ref}>
       <div className={styles.bottomNav}>
         <div
-          className={
-            value === 0
-              ? `${styles.navItem} ${styles.activeNavItem}`
-              : styles.navItem
-          }
+          className={value === 0 ? `${styles.navItem} ${styles.activeNavItem}` : styles.navItem}
           onClick={() => setValue(0)}
         >
           <img
@@ -51,22 +43,18 @@ export default function FixedBottomNavigation(
           <span>ちいかわ</span>
         </div>
         <div
-          className={
-            value === 1
-              ? `${styles.navItem} ${styles.activeNavItem}`
-              : styles.navItem
-          }
+          className={value === 1 ? `${styles.navItem} ${styles.activeNavItem}` : styles.navItem}
           onClick={() => setValue(1)}
         >
-          <img src="/hatiware.jpeg" alt="はちわれ" className={styles.icon} />
+          <img
+            src="/hatiware.jpeg"
+            alt="はちわれ"
+            className={styles.icon}
+          />
           <span>はちわれ</span>
         </div>
         <div
-          className={
-            value === 2
-              ? `${styles.navItem} ${styles.activeNavItem}`
-              : styles.navItem
-          }
+          className={value === 2 ? `${styles.navItem} ${styles.activeNavItem}` : styles.navItem}
           onClick={() => setValue(2)}
         >
           <img
@@ -77,14 +65,14 @@ export default function FixedBottomNavigation(
           <span>栗まんじゅう</span>
         </div>
         <div
-          className={
-            value === 3
-              ? `${styles.navItem} ${styles.activeNavItem}`
-              : styles.navItem
-          }
+          className={value === 3 ? `${styles.navItem} ${styles.activeNavItem}` : styles.navItem}
           onClick={() => setValue(3)}
         >
-          <img src="/ma-motto.jpeg" alt="もーまっと" className={styles.icon} />
+          <img
+            src="/ma-motto.jpeg"
+            alt="もーまっと"
+            className={styles.icon}
+          />
           <span>もーまっと</span>
         </div>
       </div>
