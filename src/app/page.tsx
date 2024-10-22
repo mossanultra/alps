@@ -4,6 +4,7 @@ import CardList from "./components/card-list/card-list";
 import Otokoume from "./components/otokoume/otokoume";
 import PlaneAppBar from "./components/appbar-plane/plane-appbar";
 import FixedBottomNavigation, { MenuType } from "./components/fixex-bottom-navigation/fixed-bottom-navigation";
+import Wheather from "./components/wheather/wheather";
 
 function Contents({ menutype }: { menutype: MenuType }) {
   if (menutype === MenuType.TIIKAWA) {
@@ -13,7 +14,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
     return <Otokoume />;
   }
   if (menutype === MenuType.KURIMANJUU) {
-    return <></>;
+    return <Wheather city={"017010"}></Wheather>;
   }
   if (menutype === MenuType.MARMOT) {
     return <></>;
@@ -40,7 +41,7 @@ export default function Home() {
       </div>
 
       {/* AppBarの高さに応じてpaddingTopを動的に設定 */}
-      <div style={{ paddingTop: `${appBarHeight}px` }}>
+      <div style={{ paddingTop: `${appBarHeight + 48}px` }}>
         <Contents menutype={menu} />
       </div>
 
