@@ -40,8 +40,6 @@ export default function Home() {
 
   return (
     <div>
-      {/* <ThemeProvider theme={theme}> */}
-        {/* <TemporaryDrawer></TemporaryDrawer> */}
         <PlaneAppBar></PlaneAppBar>
         <Contents menutype={menu} />
         <FixedBottomNavigation
@@ -49,9 +47,6 @@ export default function Home() {
             setMenu(menutype);
           }}
         ></FixedBottomNavigation>
-        {/* <Footer></Footer> */}
-        {/* <AlignItemsList></AlignItemsList> */}
-      {/* </ThemeProvider> */}
     </div>
   );
 }

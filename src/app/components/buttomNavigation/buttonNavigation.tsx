@@ -1,10 +1,4 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import Paper from "@mui/material/Paper";
-import { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 interface FixedBottomNavigationProps {
   onChangeMenu: (menutype: MenuType) => void;
@@ -14,14 +8,12 @@ export enum MenuType {
   TIIKAWA,
   HATIWARE,
   KURIMANJUU,
-  MARMOT
+  MARMOT,
 }
 
-export default function FixedBottomNavigation(
-  props: FixedBottomNavigationProps
-) {
-  const [value, setValue] = React.useState(0);
-  const ref = React.useRef<HTMLDivElement>(null);
+export default function FixedBottomNavigation(props: FixedBottomNavigationProps) {
+  const [value, setValue] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
   const onChangeMenu = props.onChangeMenu;
 
   useEffect(() => {
@@ -50,61 +42,92 @@ export default function FixedBottomNavigation(
   }, [value, onChangeMenu]);
 
   return (
-    <Box sx={{ pb: 7 }} ref={ref}>
-      <CssBaseline />
-      <Paper
-        sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
-        elevation={3}
-      >
-        <BottomNavigation
-          showLabels
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-          }}
+    <div style={containerStyle} ref={ref}>
+      <div style={bottomNavStyle}>
+        <div
+          style={value === 0 ? activeNavItemStyle : navItemStyle}
+          onClick={() => setValue(0)}
         >
-          <BottomNavigationAction
-            label="ちいかわ"
-            icon={
-              <img
-                src="/icon512_maskable.png"
-                alt="ちいかわ"
-                style={{ width: 24, height: 24 }}
-              />
-            }
+          <img
+            src="/icon512_maskable.png"
+            alt="ちいかわ"
+            style={iconStyle}
           />
-          <BottomNavigationAction
-            label="はちわれ"
-            icon={
-              <img
-                src="/hatiware.jpeg"
-                alt="はちわれ"
-                style={{ width: 24, height: 24 }}
-              />
-            }
+          <span>ちいかわ</span>
+        </div>
+        <div
+          style={value === 1 ? activeNavItemStyle : navItemStyle}
+          onClick={() => setValue(1)}
+        >
+          <img
+            src="/hatiware.jpeg"
+            alt="はちわれ"
+            style={iconStyle}
           />
-          <BottomNavigationAction
-            label="栗まんじゅう"
-            icon={
-              <img
-                src="/kurimanjuu.jpg"
-                alt="栗まんじゅう"
-                style={{ width: 24, height: 24 }}
-              />
-            }
+          <span>はちわれ</span>
+        </div>
+        <div
+          style={value === 2 ? activeNavItemStyle : navItemStyle}
+          onClick={() => setValue(2)}
+        >
+          <img
+            src="/kurimanjuu.jpg"
+            alt="栗まんじゅう"
+            style={iconStyle}
           />
-          <BottomNavigationAction
-            label="もーまっと"
-            icon={
-              <img
-                src="/ma-motto.jpeg"
-                alt="もーまっと"
-                style={{ width: 24, height: 24 }}
-              />
-            }
+          <span>栗まんじゅう</span>
+        </div>
+        <div
+          style={value === 3 ? activeNavItemStyle : navItemStyle}
+          onClick={() => setValue(3)}
+        >
+          <img
+            src="/ma-motto.jpeg"
+            alt="もーまっと"
+            style={iconStyle}
           />
-        </BottomNavigation>
-      </Paper>
-    </Box>
+          <span>もーまっと</span>
+        </div>
+      </div>
+    </div>
   );
 }
+
+const containerStyle: React.CSSProperties = {
+  paddingBottom: "56px", // Reserve space for the bottom navigation
+};
+
+const bottomNavStyle: React.CSSProperties = {
+  position: "fixed",
+  bottom: 0,
+  left: 0,
+  right: 0,
+  display: "flex",
+  justifyContent: "space-around",
+  backgroundColor: "#fff",
+  borderTop: "1px solid #ddd",
+  boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.1)",
+  padding: "10px 0",
+  zIndex: 1000,
+};
+
+const navItemStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  color: "#666",
+  fontSize: "0.875rem",
+};
+
+const activeNavItemStyle: React.CSSProperties = {
+  ...navItemStyle,
+  color: "#000",
+};
+
+const iconStyle: React.CSSProperties = {
+  width: "24px",
+  height: "24px",
+  marginBottom: "4px",
+};
