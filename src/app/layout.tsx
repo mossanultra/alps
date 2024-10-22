@@ -2,18 +2,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
 // import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-
-const theme = createTheme({
-  palette: {
-    mode: "dark",
-    primary: {
-      main: "#d87274",
-      light: "#ffa2a3",
-      dark: "#a34449",
-    },
-  },
-});
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -50,11 +38,9 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon.png" />
         <meta name="theme-color" content="#a8a6a3" />
       </head>
-      <ThemeProvider theme={theme}>
       <body className={`${uzura.variable}`}>
           {children}
       </body>
-      </ThemeProvider>
     </html>
   );
 }
