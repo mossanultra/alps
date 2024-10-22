@@ -5,7 +5,6 @@ import FixedBottomNavigation, {
 } from "./components/buttomNavigation/buttonNavigation";
 import { useState } from "react";
 import Otokoume from "./components/otokoume/otokoume";
-import MarkdownEditor from "./components/markdown-editor/editor";
 import PlaneAppBar from "./components/appbar-plane/plane-appbar";
 // import { ThemeProvider, createTheme } from "@mui/material/styles";
 
@@ -31,7 +30,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
     return <></>;
   }
   if (menutype === MenuType.MARMOT) {
-    return <MarkdownEditor></MarkdownEditor>;
+    return <></>;
   }
 }
 

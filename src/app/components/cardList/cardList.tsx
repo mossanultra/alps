@@ -42,14 +42,20 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     marginTop: "72px",
+    backgroundImage: "url('/chikawa1.jpg')", // ここに背景画像のパスを指定
+    backgroundSize: "cover", // 画像がコンテナ全体を覆うようにする
+    backgroundPosition: "center", // 画像を中央に配置する
+    backgroundRepeat: "no-repeat", // 画像を繰り返さない
+    minHeight: "100vh", // ページ全体を覆うように高さを設定
   },
   list: {
     width: "100%",
     maxWidth: "720px",
-    backgroundColor: "#fff", // Adjust background as needed
+    backgroundColor: "rgba(255, 255, 255, 1.0)", // 背景を透過させる
+    padding: "16px",
+    borderRadius: "8px", // カードの周りを少し角丸にする
   },
   listItem: {
     padding: "16px",
-    borderBottom: "1px solid #ddd",
   },
 };
