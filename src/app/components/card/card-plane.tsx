@@ -54,7 +54,7 @@ const styles = {
   title: {
     fontSize: "1.25rem",
     margin: "0 0 8px 0",
-    color: "#FFF",
+    color: "#000",
   },
   date: {
     fontSize: "0.875rem",
