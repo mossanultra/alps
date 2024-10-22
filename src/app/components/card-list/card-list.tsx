@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import HamstarLoader from "../loading/hamster/hamster";
-import CustomCard from "../card/card-plane"; // Make sure this is your non-MUI CustomCard
-import styles from "./CardList.module.css"; // Import the CSS module
+import CustomCard from "../card-plane/card-plane"; // Make sure this is your non-MUI CustomCard
+import styles from "./card-list.module.css"; // Import the CSS module
 
 export default function CardList() {
   const [articles, setArticles] = useState([]);

@@ -1,9 +1,9 @@
 'use client';
 import { useRef, useState, useEffect } from "react";
-import CardList from "./components/cardList/cardList";
+import CardList from "./components/card-list/card-list";
 import Otokoume from "./components/otokoume/otokoume";
 import PlaneAppBar from "./components/appbar-plane/plane-appbar";
-import FixedBottomNavigation, { MenuType } from "./components/buttomNavigation/FixedBottomNavigation";
+import FixedBottomNavigation, { MenuType } from "./components/fixex-bottom-navigation/fixed-bottom-navigation";
 
 function Contents({ menutype }: { menutype: MenuType }) {
   if (menutype === MenuType.TIIKAWA) {

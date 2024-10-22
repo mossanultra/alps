@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import styles from './FixedBottomNavigation.module.css'; // Import the CSS module
+import styles from './fixed-bottom-navigation.module.css'; // Import the CSS module
 
 interface FixedBottomNavigationProps {
   onChangeMenu: (menutype: MenuType) => void;
