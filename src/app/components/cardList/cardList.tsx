@@ -1,8 +1,8 @@
 import { List, ListItem } from "@mui/material";
 import { useEffect, useState } from "react";
-import CardSmanu from "../card/card_smanu";
 import { Article } from "../../api/articles/articles";
 import HamstarLoader from "../loading/hamster/hamster";
+import CustomCard from "../card/card-plane";
 
 export default function CardList() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -36,10 +36,9 @@ export default function CardList() {
             return (
               <>
                 <ListItem alignItems="flex-start">
-                  <CardSmanu
-                    expand={false}
+                  <CustomCard
                     article={article}
-                  ></CardSmanu>
+                  ></CustomCard>
                 </ListItem>
               </>
             );

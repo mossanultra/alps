@@ -1,5 +1,4 @@
 "use client";
-import ResponsiveAppBar from "./components/appbar/appbar";
 import CardList from "./components/cardList/cardList";
 import FixedBottomNavigation, {
   MenuType,
@@ -7,6 +6,7 @@ import FixedBottomNavigation, {
 import { useState } from "react";
 import Otokoume from "./components/otokoume/otokoume";
 import MarkdownEditor from "./components/markdown-editor/editor";
+import PlaneAppBar from "./components/appbar-plane/plane-appbar";
 // import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 // export const theme = createTheme({
@@ -42,7 +42,7 @@ export default function Home() {
     <div>
       {/* <ThemeProvider theme={theme}> */}
         {/* <TemporaryDrawer></TemporaryDrawer> */}
-        <ResponsiveAppBar></ResponsiveAppBar>
+        <PlaneAppBar></PlaneAppBar>
         <Contents menutype={menu} />
         <FixedBottomNavigation
           onChangeMenu={function (menutype: MenuType): void {

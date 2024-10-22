@@ -2,15 +2,32 @@
 import localFont from "next/font/local";
 import "./globals.css";
 // import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+    primary: {
+      main: "#d87274",
+      light: "#ffa2a3",
+      dark: "#a34449",
+    },
+  },
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
+
+// const geistSans = localFont({
+//   src: "./fonts/GeistVF.woff",
+//   variable: "--font-geist-sans",
+//   weight: "100 900",
+// });
+// const geistMono = localFont({
+//   src: "./fonts/GeistMonoVF.woff",
+//   variable: "--font-geist-mono",
+//   weight: "100 900",
+// });
+const uzura = localFont({
+  src: "./fonts/uzurafont100/uzura.ttf",
+  variable: "--font-uzura",
   weight: "100 900",
 });
 
@@ -33,9 +50,11 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon.png" />
         <meta name="theme-color" content="#a8a6a3" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <ThemeProvider theme={theme}>
+      <body className={`${uzura.variable}`}>
           {children}
       </body>
+      </ThemeProvider>
     </html>
   );
 }
