@@ -6,7 +6,6 @@ import PlaneAppBar from "./components/appbar-plane/plane-appbar";
 import FixedBottomNavigation, { MenuType } from "./components/fixex-bottom-navigation/fixed-bottom-navigation";
 import Wheather from "./components/wheather/wheather";
 import RssFeedList from "./components/feed/feed";
-import ThreeDCard from "./components/threed-card/threed-card";
 
 function Contents({ menutype }: { menutype: MenuType }) {
   if (menutype === MenuType.TIIKAWA) {
@@ -20,11 +19,6 @@ function Contents({ menutype }: { menutype: MenuType }) {
   }
   if (menutype === MenuType.MARMOT) {
     return (<>
-    <ThreeDCard colorTheme={'purple'}></ThreeDCard>
-    <ThreeDCard colorTheme={'green'}></ThreeDCard>
-    <ThreeDCard colorTheme={'yellow'}></ThreeDCard>
-    <ThreeDCard colorTheme={'blue'}></ThreeDCard>
-    <ThreeDCard colorTheme={'pink'}></ThreeDCard>
     <RssFeedList></RssFeedList>
     </> );
   }
