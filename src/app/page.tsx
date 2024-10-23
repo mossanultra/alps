@@ -5,6 +5,7 @@ import Otokoume from "./components/otokoume/otokoume";
 import PlaneAppBar from "./components/appbar-plane/plane-appbar";
 import FixedBottomNavigation, { MenuType } from "./components/fixex-bottom-navigation/fixed-bottom-navigation";
 import Wheather from "./components/wheather/wheather";
+import WheaterThree from "./components/wheather/three/three";
 
 function Contents({ menutype }: { menutype: MenuType }) {
   if (menutype === MenuType.TIIKAWA) {
@@ -17,7 +18,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
     return <Wheather city={"017010"}></Wheather>;
   }
   if (menutype === MenuType.MARMOT) {
-    return <></>;
+    return <WheaterThree></WheaterThree>;
   }
 }
 
