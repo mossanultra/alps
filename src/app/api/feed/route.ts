@@ -41,6 +41,7 @@ export async function GET() {
     });
 
     return NextResponse.json(allFeedItems);
+    
   } catch (error) {
     return NextResponse.json({ message: `${error}` }, { status: 500 });
   }
