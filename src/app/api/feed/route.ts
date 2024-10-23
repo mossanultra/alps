@@ -16,6 +16,7 @@ interface FeedItem {
   content: string;
   contentSnippet: string;
   encordedContent: string;
+  feedUrl: string;
 }
 
 export async function GET() {
@@ -30,7 +31,8 @@ export async function GET() {
         pubDate: item.pubDate || '',
         content: item.content || '',
         contentSnippet: item.contentSnippet || '',
-        encordedContent: item['content:encoded'] || ''
+        encordedContent: item['content:encoded'] || '',
+        feedUrl: feed
       }));
       allFeedItems = allFeedItems.concat(items);
     }
@@ -41,7 +43,7 @@ export async function GET() {
     });
 
     return NextResponse.json(allFeedItems);
-    
+
   } catch (error) {
     return NextResponse.json({ message: `${error}` }, { status: 500 });
   }

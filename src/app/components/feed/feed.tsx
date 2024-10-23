@@ -10,6 +10,7 @@ interface FeedItem {
   content: string;
   contentSnippet: string;
   encordedContent: string;
+  feedUrl:string;
 }
 
 const RssFeedList: React.FC = () => {
@@ -23,6 +24,7 @@ const RssFeedList: React.FC = () => {
         const response = await fetch("/api/feed");
         const data: FeedItem[] = await response.json();
         setFeedItems(data);
+        console.log(data)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         setError("Failed to fetch RSS feeds");
