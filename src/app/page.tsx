@@ -6,8 +6,11 @@ import PlaneAppBar from "./components/appbar-plane/plane-appbar";
 import FixedBottomNavigation, { MenuType } from "./components/fixex-bottom-navigation/fixed-bottom-navigation";
 import Wheather from "./components/wheather/wheather";
 import RssFeedList from "./components/feed/feed";
+import RadioButton from "./components/radio-button/radio-button";
 
 function Contents({ menutype }: { menutype: MenuType }) {
+  const [selectCityId , setSelectCityId] = useState("017010");
+  
   if (menutype === MenuType.TIIKAWA) {
     return <CardList />;
   }
@@ -15,7 +18,16 @@ function Contents({ menutype }: { menutype: MenuType }) {
     return <Otokoume />;
   }
   if (menutype === MenuType.KURIMANJUU) {
-    return <Wheather city={"017010"}></Wheather>;
+    return(
+      <>
+      <RadioButton citylist={[{ name: '函館', id: '017010' }, { name: '東京', id: '130010' }]} 
+      onSelect={function (id: string): void {
+        setSelectCityId(id);
+        } }></RadioButton>
+       <Wheather city={selectCityId}></Wheather>;
+      </>
+
+    )
   }
   if (menutype === MenuType.MARMOT) {
     return (<>

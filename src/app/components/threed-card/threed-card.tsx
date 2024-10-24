@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 // import './ThreeDCard.css'; // 必要であれば外部CSSファイルに分けてください
 
 type ThreeDCardProps = {
@@ -35,6 +35,15 @@ const ThreeDCard: React.FC<ThreeDCardProps> = ({
   const handleClick = (url: string) => {
     router.push(url);
   };
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const card = cardRef.current;
+    if (card) {
+      // 画面上部に描画されたタイミングでtransformを適用
+      card.style.transform = "rotate3d(0.5, 1, 0, 30deg)";
+    }
+  }, []);
 
   return (
     <div className={`parent ${themeClass}`}>
