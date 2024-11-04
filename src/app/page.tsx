@@ -1,12 +1,12 @@
 'use client';
 import { useRef, useState, useEffect } from "react";
 import CardList from "./components/card-list/card-list";
-import Otokoume from "./components/otokoume/otokoume";
 import PlaneAppBar from "./components/appbar-plane/plane-appbar";
 import FixedBottomNavigation, { MenuType } from "./components/fixex-bottom-navigation/fixed-bottom-navigation";
 import Wheather from "./components/wheather/wheather";
 import RssFeedList from "./components/feed/feed";
 import RadioButton from "./components/radio-button/radio-button";
+import TairaImage from "./components/tairaimage/taira-image";
 
 function Contents({ menutype }: { menutype: MenuType }) {
   const [selectCityId , setSelectCityId] = useState("017010");
@@ -15,7 +15,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
     return <CardList />;
   }
   if (menutype === MenuType.HATIWARE) {
-    return <Otokoume />;
+    return <TairaImage />;
   }
   if (menutype === MenuType.KURIMANJUU) {
     return(
