@@ -1,18 +1,19 @@
 import { useState } from "react";
-import "./tab.css";
+import styles from "./tab.module.css";
 
 export default function Tab() {
-  const [activeTab, setActiveTab] = useState<string>("トチの情報");
+  const [activeTab, setActiveTab] = useState("トチの情報");
 
   const handleTabChange = (tabName: string) => {
     setActiveTab(tabName);
   };
+
   return (
-    <div className="tabs">
-      {["トチの情報", "シゴトの情報", "クラシの情報"].map((tabName) => (
+    <div className={styles.tabs}>
+      {["トチの情報", "シゴトの情報", "クラシの情報"].map((tabName, index) => (
         <button
           key={tabName}
-          className={`tab ${activeTab === tabName ? "active" : ""}`}
+          className={`${styles.tab} ${activeTab === tabName ? styles[`active${index + 1}`] : ""}`}
           onClick={() => handleTabChange(tabName)}
         >
           {tabName}
