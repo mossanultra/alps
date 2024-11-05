@@ -9,7 +9,8 @@ import Wheather from "./components/wheather/wheather";
 import RssFeedList from "./components/feed/feed";
 import RadioButton from "./components/radio-button/radio-button";
 import TairaImage from "./components/tairaimage/taira-image";
-import Map from "./components/map/map";
+// import Map from "./components/map/map";
+import MapWithInfoMarker from "./components/map/map";
 
 function Contents({ menutype }: { menutype: MenuType }) {
   const [selectCityId, setSelectCityId] = useState("017010");
@@ -47,10 +48,36 @@ function Contents({ menutype }: { menutype: MenuType }) {
     );
   }
   if (menutype === MenuType.USAGI) {
+    const markers = [
+      {
+        lat: 35.6895,
+        lng: 139.6917,
+        iconUrl: "/chikawa1.jpg",
+        infoText: "東京の情報",
+      },
+      {
+        lat: 34.6937,
+        lng: 135.5023,
+        iconUrl: "/chikawa1.jpg",
+        infoText: "大阪の情報",
+      },
+      {
+        lat: 35.0116,
+        lng: 135.7681,
+        iconUrl: "/chikawa1.jpg",
+        infoText: "京都の情報",
+      },
+    ];
+
     return (
       <div>
         <h1>mozukuの地図</h1>
-        <Map apiKey={apiKey!} center={center} zoom={zoom} />
+        <MapWithInfoMarker
+          apiKey={apiKey!}
+          center={center}
+          zoom={zoom}
+          markers={markers}
+        />
       </div>
     );
   }
