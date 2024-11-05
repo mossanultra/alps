@@ -11,6 +11,7 @@ import RadioButton from "./components/radio-button/radio-button";
 import TairaImage from "./components/tairaimage/taira-image";
 // import Map from "./components/map/map";
 import MapWithInfoMarker from "./components/map/map";
+// import Image from "next/image";
 
 function Contents({ menutype }: { menutype: MenuType }) {
   const [selectCityId, setSelectCityId] = useState("017010");
@@ -55,7 +56,8 @@ function Contents({ menutype }: { menutype: MenuType }) {
         iconUrl: "/chikawa1.jpg",
         infoText: "東京の情報",
         infoTitle: "ここはTitle",
-        infoContent: "ここはContent"
+        infoContent: "ここはContent",
+        image: '/akiyama/akiyama1.png'
       },
       {
         lat: 34.6937,
@@ -63,7 +65,8 @@ function Contents({ menutype }: { menutype: MenuType }) {
         iconUrl: "/chikawa1.jpg",
         infoText: "大阪の情報",
         infoTitle: "ここはTitle",
-        infoContent: "ここはContent"
+        infoContent: "ここはContent",
+        image: '/akiyama/akiyama1.png'
       },
       {
         lat: 35.0116,
@@ -71,7 +74,8 @@ function Contents({ menutype }: { menutype: MenuType }) {
         iconUrl: "/chikawa1.jpg",
         infoText: "京都の情報",
         infoTitle: "ここはTitle",
-        infoContent: "ここはContent"
+        infoContent: "ここはContent",
+        image: '/akiyama/akiyama1.png'
       },
     ];
 
@@ -83,7 +87,8 @@ function Contents({ menutype }: { menutype: MenuType }) {
           center={center}
           zoom={zoom}
           markers={markers}
-        />
+        >
+        </MapWithInfoMarker>
       </div>
     );
   }

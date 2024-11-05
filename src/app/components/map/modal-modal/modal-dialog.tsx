@@ -25,7 +25,7 @@ const ModalDialog: React.FC<ModalDialogProps> = ({ onClose, children }) => {
     <div className={styles.modalOverlay} onClick={onClose}>
       <animated.div style={animation} className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         {children}
-        <button className={styles.closeButton} onClick={onClose}>閉じる</button>
+        {/* <button className={styles.closeButton} onClick={onClose}>閉じる</button> */}
       </animated.div>
     </div>
   );

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import ModalDialog from './modal-modal/modal-dialog';
+import Image from "next/image";
 
 type MarkerInfo = {
   lat: number;
@@ -8,6 +9,7 @@ type MarkerInfo = {
   iconUrl?: string;
   infoTitle: string;
   infoContent: string;
+  image:string
 };
 
 type MapWithCustomModalMarkerProps = {
@@ -15,9 +17,10 @@ type MapWithCustomModalMarkerProps = {
   center: { lat: number; lng: number };
   zoom: number;
   markers: MarkerInfo[];
+  children?: ReactNode;
 };
 
-const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({ apiKey, center, zoom, markers }) => {
+const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({ apiKey, center, zoom, markers, children }) => {
   const [selectedMarker, setSelectedMarker] = useState<MarkerInfo | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -58,8 +61,20 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({ api
         {/* モーダルダイアログ */}
         {isModalOpen && selectedMarker && (
           <ModalDialog onClose={handleCloseModal}>
-            <h2>{selectedMarker.infoTitle}</h2>
-            <p>{selectedMarker.infoContent}</p>
+            {children ? (
+              children
+            ) : (
+                <div
+                style={{ position: "relative", width: "300px", height: "300px" }}
+              >
+                <Image
+                  src={selectedMarker.image}
+                  alt=""
+                  layout="fill" // 親要素のサイズに合わせて画像を表示
+                  objectFit="contain" // 元のアスペクト比を保持
+                />
+              </div>
+              )}
           </ModalDialog>
         )}
       </GoogleMap>
