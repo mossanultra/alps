@@ -7,7 +7,7 @@
 }
 
 /* タブメニュー */
-.tabs {
+/* .tabs {
   display: flex;
   justify-content: space-around;
   background-color: #f7f7f7;
@@ -28,7 +28,7 @@
 
 .tab.active {
   background-color: #ffd700;
-}
+} */
 
 /* カードグリッド */
 .grid {
