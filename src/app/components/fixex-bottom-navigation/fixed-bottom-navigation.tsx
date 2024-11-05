@@ -10,6 +10,7 @@ export enum MenuType {
   HATIWARE,
   KURIMANJUU,
   MARMOT,
+  USAGI
 }
 
 export default function FixedBottomNavigation(props: FixedBottomNavigationProps) {
@@ -23,6 +24,7 @@ export default function FixedBottomNavigation(props: FixedBottomNavigationProps)
       { menuType: MenuType.HATIWARE, value: 1 },
       { menuType: MenuType.KURIMANJUU, value: 2 },
       { menuType: MenuType.MARMOT, value: 3 },
+      { menuType: MenuType.USAGI, value: 4 },
     ];
     const menuType: MenuType = menuTypes.find((e) => e.value === value)!.menuType;
     onChangeMenu(menuType);
@@ -74,6 +76,17 @@ export default function FixedBottomNavigation(props: FixedBottomNavigationProps)
             className={styles.icon}
           />
           <span>もーまっと</span>
+        </div>
+        <div
+          className={value === 4 ? `${styles.navItem} ${styles.activeNavItem}` : styles.navItem}
+          onClick={() => setValue(4)}
+        >
+          <img
+            src="/usagi.png"
+            alt="うさぎ"
+            className={styles.icon}
+          />
+          <span>うさぎ</span>
         </div>
       </div>
     </div>
