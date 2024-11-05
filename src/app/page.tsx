@@ -66,7 +66,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
         infoText: "大阪の情報",
         infoTitle: "ここはTitle",
         infoContent: "ここはContent",
-        image: '/akiyama/akiyama1.png'
+        image: '/akiyama/akiyama2.png'
       },
       {
         lat: 35.0116,
@@ -75,7 +75,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
         infoText: "京都の情報",
         infoTitle: "ここはTitle",
         infoContent: "ここはContent",
-        image: '/akiyama/akiyama1.png'
+        image: '/akiyama/akiyama3.png'
       },
     ];
 
