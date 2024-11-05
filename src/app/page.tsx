@@ -54,18 +54,24 @@ function Contents({ menutype }: { menutype: MenuType }) {
         lng: 139.6917,
         iconUrl: "/chikawa1.jpg",
         infoText: "東京の情報",
+        infoTitle: "ここはTitle",
+        infoContent: "ここはContent"
       },
       {
         lat: 34.6937,
         lng: 135.5023,
         iconUrl: "/chikawa1.jpg",
         infoText: "大阪の情報",
+        infoTitle: "ここはTitle",
+        infoContent: "ここはContent"
       },
       {
         lat: 35.0116,
         lng: 135.7681,
         iconUrl: "/chikawa1.jpg",
         infoText: "京都の情報",
+        infoTitle: "ここはTitle",
+        infoContent: "ここはContent"
       },
     ];
 

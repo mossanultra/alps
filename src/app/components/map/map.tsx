@@ -1,27 +1,39 @@
 import React, { useState } from 'react';
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
-import FeedCard from '../card-feed/card-feed';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import ModalDialog from './modal-modal/modal-dialog';
 
 type MarkerInfo = {
   lat: number;
   lng: number;
   iconUrl?: string;
-  infoText: string;
+  infoTitle: string;
+  infoContent: string;
 };
 
-type MapWithInfoMarkerProps = {
+type MapWithCustomModalMarkerProps = {
   apiKey: string;
   center: { lat: number; lng: number };
   zoom: number;
   markers: MarkerInfo[];
 };
 
-const MapWithInfoMarker: React.FC<MapWithInfoMarkerProps> = ({ apiKey, center, zoom, markers }) => {
+const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({ apiKey, center, zoom, markers }) => {
   const [selectedMarker, setSelectedMarker] = useState<MarkerInfo | null>(null);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const containerStyle: React.CSSProperties = {
     width: '100%',
     height: '800px',
+  };
+
+  const handleMarkerClick = (marker: MarkerInfo) => {
+    setSelectedMarker(marker);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedMarker(null);
+    setModalOpen(false);
   };
 
   return (
@@ -36,26 +48,23 @@ const MapWithInfoMarker: React.FC<MapWithInfoMarkerProps> = ({ apiKey, center, z
             key={index}
             position={{ lat: marker.lat, lng: marker.lng }}
             // icon={{
-            //   url: marker.iconUrl!,
-            //   scaledSize: new google.maps.Size(30, 30), // アイコンのサイズを30x30ピクセルに調整
+            //   url: marker.iconUrl,
+            //   scaledSize: new google.maps.Size(30, 30),
             // }}
-            onClick={() => setSelectedMarker(marker)}
+            onClick={() => handleMarkerClick(marker)}
           />
         ))}
 
-        {selectedMarker && (
-          <InfoWindow
-            position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
-            onCloseClick={() => setSelectedMarker(null)}
-          >
-            <div>
-              <FeedCard title={'タイトル'} snipet={'Snipet'} encordedString={'encordedString'} pubData={'pubData'} link={'link'}></FeedCard>
-            </div>
-          </InfoWindow>
+        {/* モーダルダイアログ */}
+        {isModalOpen && selectedMarker && (
+          <ModalDialog onClose={handleCloseModal}>
+            <h2>{selectedMarker.infoTitle}</h2>
+            <p>{selectedMarker.infoContent}</p>
+          </ModalDialog>
         )}
       </GoogleMap>
     </LoadScript>
   );
 };
 
-export default MapWithInfoMarker;
+export default MapWithCustomModalMarker;
