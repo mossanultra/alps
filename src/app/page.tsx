@@ -12,6 +12,7 @@ import TairaImage from "./components/tairaimage/taira-image";
 // import Map from "./components/map/map";
 import MapWithInfoMarker from "./components/map/map";
 import { LoadScript } from "@react-google-maps/api";
+import Profile from "./components/profile/profile";
 // import Image from "next/image";
 
 function Contents({ menutype }: { menutype: MenuType }) {
@@ -20,10 +21,10 @@ function Contents({ menutype }: { menutype: MenuType }) {
   const zoom = 5; // ズームレベル
 
   if (menutype === MenuType.TIIKAWA) {
-    return <CardList />;
+    return <TairaImage />;
   }
   if (menutype === MenuType.HATIWARE) {
-    return <TairaImage />;
+    return <></>;
   }
   if (menutype === MenuType.KURIMANJUU) {
     return (
@@ -44,58 +45,19 @@ function Contents({ menutype }: { menutype: MenuType }) {
   if (menutype === MenuType.MARMOT) {
     return (
       <>
-        <RssFeedList></RssFeedList>
       </>
     );
   }
   if (menutype === MenuType.USAGI) {
-    const markers = [
-      {
-        lat: 35.6895,
-        lng: 139.6917,
-        iconUrl: "/chikawa1.jpg",
-        infoText: "東京の情報",
-        infoTitle: "ここはTitle",
-        infoContent: "ここはContent",
-        image: "/akiyama/akiyama1.png",
-      },
-      {
-        lat: 34.6937,
-        lng: 135.5023,
-        iconUrl: "/chikawa1.jpg",
-        infoText: "大阪の情報",
-        infoTitle: "ここはTitle",
-        infoContent: "ここはContent",
-        image: "/akiyama/akiyama2.png",
-      },
-      {
-        lat: 35.0116,
-        lng: 135.7681,
-        iconUrl: "/chikawa1.jpg",
-        infoText: "京都の情報",
-        infoTitle: "ここはTitle",
-        infoContent: "ここはContent",
-        image: "/akiyama/akiyama3.png",
-      },
-      {
-        lat: 41.768672,
-        lng: 140.728932,
-        iconUrl: "/chikawa1.jpg",
-        infoText: "はこだて",
-        infoTitle: "ここはTitle",
-        infoContent: "ここはContent",
-        image: "/akiyama/koara.jpg",
-      },
-    ];
-
     return (
       <div>
-        <h1>mozukuの地図</h1>
-        <MapWithInfoMarker
-          center={center}
-          zoom={zoom}
-          markers={markers}
-        ></MapWithInfoMarker>
+      <Profile
+        profileImage="https://pbs.twimg.com/profile_images/1597336893019934720/o_byHBVW_400x400.jpg"
+        username="もずく"
+        bio="筋肉エンジニア"
+        followers={1200}
+        following={300}
+      />
       </div>
     );
   }

@@ -38,55 +38,55 @@ export default function FixedBottomNavigation(props: FixedBottomNavigationProps)
           onClick={() => setValue(0)}
         >
           <img
-            src="/icon512_maskable.png"
-            alt="ちいかわ"
+            src="/footer/home.png"
+            alt="Home"
             className={styles.icon}
           />
-          <span>ちいかわ</span>
+          <span>ホーム</span>
         </div>
         <div
           className={value === 1 ? `${styles.navItem} ${styles.activeNavItem}` : styles.navItem}
           onClick={() => setValue(1)}
         >
           <img
-            src="/hatiware.jpeg"
-            alt="はちわれ"
+            src="/footer/search.png"
+            alt="Search"
             className={styles.icon}
           />
-          <span>はちわれ</span>
+          <span>検索</span>
         </div>
         <div
           className={value === 2 ? `${styles.navItem} ${styles.activeNavItem}` : styles.navItem}
           onClick={() => setValue(2)}
         >
           <img
-            src="/kurimanjuu.jpg"
-            alt="栗まんじゅう"
+            src="/footer/plus.png"
+            alt="Plus"
             className={styles.icon}
           />
-          <span>栗まんじゅう</span>
+          <span>投稿</span>
         </div>
         <div
           className={value === 3 ? `${styles.navItem} ${styles.activeNavItem}` : styles.navItem}
           onClick={() => setValue(3)}
         >
           <img
-            src="/ma-motto.jpeg"
-            alt="もーまっと"
+            src="/footer/heart.png"
+            alt="Heart"
             className={styles.icon}
           />
-          <span>もーまっと</span>
+          <span>お気に入り</span>
         </div>
         <div
           className={value === 4 ? `${styles.navItem} ${styles.activeNavItem}` : styles.navItem}
           onClick={() => setValue(4)}
         >
           <img
-            src="/usagi.png"
-            alt="うさぎ"
+            src="/footer/profile.png"
+            alt="Profile"
             className={styles.icon}
           />
-          <span>うさぎ</span>
+          <span>マイページ</span>
         </div>
       </div>
     </div>
