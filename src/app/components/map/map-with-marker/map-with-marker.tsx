@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 
 type MapWithMarkerProps = {
   apiKey: string;
@@ -8,14 +8,13 @@ type MapWithMarkerProps = {
   markers: { lat: number; lng: number }[]; // マーカーの位置情報を配列で受け取る
 };
 
-const MapWithMarker: React.FC<MapWithMarkerProps> = ({ apiKey, center, zoom, markers }) => {
+const MapWithMarker: React.FC<MapWithMarkerProps> = ({ center, zoom, markers }) => {
   const containerStyle: React.CSSProperties = {
     width: '100%',
     height: '400px',
   };
 
   return (
-    <LoadScript googleMapsApiKey={apiKey}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
@@ -25,7 +24,6 @@ const MapWithMarker: React.FC<MapWithMarkerProps> = ({ apiKey, center, zoom, mar
           <Marker key={index} position={position} />
         ))}
       </GoogleMap>
-    </LoadScript>
   );
 };
 

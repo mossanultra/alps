@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import ModalDialog from "./modal-modal/modal-dialog";
 import Image from "next/image";
 import { Zisla01 } from "./style/zisla01";
@@ -26,7 +26,6 @@ type MarkerInfo = {
 };
 
 type MapWithCustomModalMarkerProps = {
-  apiKey: string;
   center: { lat: number; lng: number };
   zoom: number;
   markers: MarkerInfo[];
@@ -34,7 +33,6 @@ type MapWithCustomModalMarkerProps = {
 };
 
 const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
-  apiKey,
   center,
   zoom,
   markers,
@@ -80,7 +78,6 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
         ))}
       </select>
 
-      <LoadScript googleMapsApiKey={apiKey}>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
@@ -119,7 +116,6 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
             </ModalDialog>
           )}
         </GoogleMap>
-      </LoadScript>
     </>
   );
 };

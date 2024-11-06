@@ -11,11 +11,11 @@ import RadioButton from "./components/radio-button/radio-button";
 import TairaImage from "./components/tairaimage/taira-image";
 // import Map from "./components/map/map";
 import MapWithInfoMarker from "./components/map/map";
+import { LoadScript } from "@react-google-maps/api";
 // import Image from "next/image";
 
 function Contents({ menutype }: { menutype: MenuType }) {
   const [selectCityId, setSelectCityId] = useState("017010");
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY; // Google Maps APIキーをここに挿入
   const center = { lat: 35.6895, lng: 139.6917 }; // 東京の緯度と経度
   const zoom = 5; // ズームレベル
 
@@ -57,7 +57,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
         infoText: "東京の情報",
         infoTitle: "ここはTitle",
         infoContent: "ここはContent",
-        image: '/akiyama/akiyama1.png'
+        image: "/akiyama/akiyama1.png",
       },
       {
         lat: 34.6937,
@@ -66,7 +66,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
         infoText: "大阪の情報",
         infoTitle: "ここはTitle",
         infoContent: "ここはContent",
-        image: '/akiyama/akiyama2.png'
+        image: "/akiyama/akiyama2.png",
       },
       {
         lat: 35.0116,
@@ -75,7 +75,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
         infoText: "京都の情報",
         infoTitle: "ここはTitle",
         infoContent: "ここはContent",
-        image: '/akiyama/akiyama3.png'
+        image: "/akiyama/akiyama3.png",
       },
       {
         lat: 41.768672,
@@ -84,7 +84,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
         infoText: "はこだて",
         infoTitle: "ここはTitle",
         infoContent: "ここはContent",
-        image: '/akiyama/koara.jpg'
+        image: "/akiyama/koara.jpg",
       },
     ];
 
@@ -92,12 +92,10 @@ function Contents({ menutype }: { menutype: MenuType }) {
       <div>
         <h1>mozukuの地図</h1>
         <MapWithInfoMarker
-          apiKey={apiKey!}
           center={center}
           zoom={zoom}
           markers={markers}
-        >
-        </MapWithInfoMarker>
+        ></MapWithInfoMarker>
       </div>
     );
   }
@@ -107,6 +105,7 @@ export default function Home() {
   const [menu, setMenu] = useState(MenuType.TIIKAWA);
   const [appBarHeight, setAppBarHeight] = useState(0); // AppBarの高さを保存するstate
   const appBarRef = useRef<HTMLDivElement>(null); // AppBarの参照を保存するref
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY; // Google Maps APIキーをここに挿入
 
   // useEffectでAppBarの高さを取得
   useEffect(() => {
@@ -117,21 +116,23 @@ export default function Home() {
 
   return (
     <div>
-      {/* AppBarの参照をrefに渡す */}
-      <div ref={appBarRef}>
-        <PlaneAppBar />
-      </div>
+      <LoadScript googleMapsApiKey={apiKey!}>
+        {/* AppBarの参照をrefに渡す */}
+        <div ref={appBarRef}>
+          <PlaneAppBar />
+        </div>
 
-      {/* AppBarの高さに応じてpaddingTopを動的に設定 */}
-      <div style={{ paddingTop: `${appBarHeight + 48}px` }}>
-        <Contents menutype={menu} />
-      </div>
+        {/* AppBarの高さに応じてpaddingTopを動的に設定 */}
+        <div style={{ paddingTop: `${appBarHeight + 48}px` }}>
+          <Contents menutype={menu} />
+        </div>
 
-      <FixedBottomNavigation
-        onChangeMenu={(menutype: MenuType): void => {
-          setMenu(menutype);
-        }}
-      />
+        <FixedBottomNavigation
+          onChangeMenu={(menutype: MenuType): void => {
+            setMenu(menutype);
+          }}
+        />
+      </LoadScript>
     </div>
   );
 }

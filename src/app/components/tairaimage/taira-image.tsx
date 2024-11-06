@@ -7,7 +7,6 @@ import MapWithInfoMarker from "../../components/map/map";
 
 function Contents({ menutype }: { menutype: TabMenu }) {
   if (menutype === TabMenu.LAND) {
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY; // Google Maps APIキーをここに挿入
     const center = { lat: 35.6895, lng: 139.6917 }; // 東京の緯度と経度
     const zoom = 5; // ズームレベル
     const markers = [
@@ -52,7 +51,6 @@ function Contents({ menutype }: { menutype: TabMenu }) {
       <div>
         <h1>mozukuの地図</h1>
         <MapWithInfoMarker
-          apiKey={apiKey!}
           center={center}
           zoom={zoom}
           markers={markers}
