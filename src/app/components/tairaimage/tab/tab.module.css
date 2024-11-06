@@ -1,7 +1,7 @@
 .tabs {
   display: flex;
   justify-content: space-around;
-  background-color: #f7f7f7;
+  background-color: transparent;
   padding: 10px 0;
 }
 
