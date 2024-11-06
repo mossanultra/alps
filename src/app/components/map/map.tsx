@@ -1,7 +1,8 @@
-import React, { ReactNode, useState } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import ModalDialog from './modal-modal/modal-dialog';
+import React, { ReactNode, useState } from "react";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import ModalDialog from "./modal-modal/modal-dialog";
 import Image from "next/image";
+import { Zisla01 } from "./style/zisla01";
 
 type MarkerInfo = {
   lat: number;
@@ -9,7 +10,7 @@ type MarkerInfo = {
   iconUrl?: string;
   infoTitle: string;
   infoContent: string;
-  image:string
+  image: string;
 };
 
 type MapWithCustomModalMarkerProps = {
@@ -19,14 +20,23 @@ type MapWithCustomModalMarkerProps = {
   markers: MarkerInfo[];
   children?: ReactNode;
 };
+const googleMapOptions = {
+  styles: Zisla01,
+};
 
-const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({ apiKey, center, zoom, markers, children }) => {
+const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
+  apiKey,
+  center,
+  zoom,
+  markers,
+  children,
+}) => {
   const [selectedMarker, setSelectedMarker] = useState<MarkerInfo | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
   const containerStyle: React.CSSProperties = {
-    width: '100%',
-    height: '800px',
+    width: "100%",
+    height: "800px",
   };
 
   const handleMarkerClick = (marker: MarkerInfo) => {
@@ -45,6 +55,7 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({ api
         mapContainerStyle={containerStyle}
         center={center}
         zoom={zoom}
+        options={googleMapOptions}
       >
         {markers.map((marker, index) => (
           <Marker
@@ -64,8 +75,12 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({ api
             {children ? (
               children
             ) : (
-                <div
-                style={{ position: "relative", width: "300px", height: "300px" }}
+              <div
+                style={{
+                  position: "relative",
+                  width: "300px",
+                  height: "300px",
+                }}
               >
                 <Image
                   src={selectedMarker.image}
@@ -74,7 +89,7 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({ api
                   objectFit="contain" // 元のアスペクト比を保持
                 />
               </div>
-              )}
+            )}
           </ModalDialog>
         )}
       </GoogleMap>
