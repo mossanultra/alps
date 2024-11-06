@@ -3,6 +3,18 @@ import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import ModalDialog from "./modal-modal/modal-dialog";
 import Image from "next/image";
 import { Zisla01 } from "./style/zisla01";
+import { GreenMap } from "./style/greeenmap";
+import { AssassingsCreed } from "./style/assassins-creed";
+import { Modest } from "./style/modest";
+import { Pinky } from "./style/pinky";
+
+const googleMapStyles = [
+  { label: "Zisla01", style: Zisla01 },
+  { label: "GreenMap", style: GreenMap },
+  { label: "AssassingsCreed", style: AssassingsCreed },
+  { label: "Modest", style: Modest },
+  { label: "Pinky", style: Pinky },
+];
 
 type MarkerInfo = {
   lat: number;
@@ -20,9 +32,6 @@ type MapWithCustomModalMarkerProps = {
   markers: MarkerInfo[];
   children?: ReactNode;
 };
-const googleMapOptions = {
-  styles: Zisla01,
-};
 
 const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   apiKey,
@@ -33,6 +42,7 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
 }) => {
   const [selectedMarker, setSelectedMarker] = useState<MarkerInfo | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedStyle, setSelectedStyle] = useState(googleMapStyles[0].style);
 
   const containerStyle: React.CSSProperties = {
     width: "100%",
@@ -49,51 +59,68 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
     setModalOpen(false);
   };
 
-  return (
-    <LoadScript googleMapsApiKey={apiKey}>
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={zoom}
-        options={googleMapOptions}
-      >
-        {markers.map((marker, index) => (
-          <Marker
-            key={index}
-            position={{ lat: marker.lat, lng: marker.lng }}
-            // icon={{
-            //   url: marker.iconUrl,
-            //   scaledSize: new google.maps.Size(30, 30),
-            // }}
-            onClick={() => handleMarkerClick(marker)}
-          />
-        ))}
+  const handleStyleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = googleMapStyles.find(
+      (style) => style.label === event.target.value
+    );
+    if (selected) {
+      setSelectedStyle(selected.style);
+    }
+  };
 
-        {/* モーダルダイアログ */}
-        {isModalOpen && selectedMarker && (
-          <ModalDialog onClose={handleCloseModal}>
-            {children ? (
-              children
-            ) : (
-              <div
-                style={{
-                  position: "relative",
-                  width: "300px",
-                  height: "300px",
-                }}
-              >
-                <Image
-                  src={selectedMarker.image}
-                  alt=""
-                  layout="fill" // 親要素のサイズに合わせて画像を表示
-                  objectFit="contain" // 元のアスペクト比を保持
-                />
-              </div>
-            )}
-          </ModalDialog>
-        )}
-      </GoogleMap>
-    </LoadScript>
+  return (
+    <>
+      {/* ドロップダウンボックス */}
+      <p>Selecte Map Style</p>
+      <select onChange={handleStyleChange}>
+        {googleMapStyles.map((style, index) => (
+          <option key={index} value={style.label}>
+            {style.label}
+          </option>
+        ))}
+      </select>
+
+      <LoadScript googleMapsApiKey={apiKey}>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={zoom}
+          options={{ styles: selectedStyle }}
+        >
+          {markers.map((marker, index) => (
+            <Marker
+              key={index}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              onClick={() => handleMarkerClick(marker)}
+            />
+          ))}
+
+          {/* モーダルダイアログ */}
+          {isModalOpen && selectedMarker && (
+            <ModalDialog onClose={handleCloseModal}>
+              {children ? (
+                children
+              ) : (
+                <div
+                  style={{
+                    position: "relative",
+                    width: "300px",
+                    height: "300px",
+                  }}
+                >
+                  <Image
+                    src={selectedMarker.image}
+                    alt=""
+                    layout="fill"
+                    objectFit="contain"
+                  />
+                </div>
+              )}
+            </ModalDialog>
+          )}
+        </GoogleMap>
+      </LoadScript>
+    </>
   );
 };
 
