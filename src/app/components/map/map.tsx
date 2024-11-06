@@ -46,7 +46,7 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
 
   const containerStyle: React.CSSProperties = {
     width: "100%",
-    height: "800px",
+    height: "600px",
   };
 
   const handleMarkerClick = (marker: MarkerInfo) => {

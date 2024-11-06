@@ -1,22 +1,46 @@
 import { useState } from "react";
 import styles from "./tab.module.css";
 
-export default function Tab() {
-  const [activeTab, setActiveTab] = useState("トチの情報");
+export enum TabMenu {
+  LAND,
+  WORK,
+  LIFE,
+}
+interface TabMenuProps {
+  onChangeSelectedTab: (selectedTab: TabMenu) => void;
+}
 
-  const handleTabChange = (tabName: string) => {
-    setActiveTab(tabName);
+export default function Tab(props: TabMenuProps) {
+  const [activeTab, setActiveTab] = useState("トチの情報");
+  const tabs = [
+    {
+      name: "トチの情報",
+      type: TabMenu.LAND,
+    },
+    { name: "シゴトの情報", type: TabMenu.WORK },
+    { name: "クラシの情報", type: TabMenu.LIFE },
+  ];
+  type Tab = {
+    name: string;
+    type: TabMenu;
+  };
+
+  const handleTabChange = (tab: Tab) => {
+    setActiveTab(tab.name);
+    props.onChangeSelectedTab(tab.type);
   };
 
   return (
     <div className={styles.tabs}>
-      {["トチの情報", "シゴトの情報", "クラシの情報"].map((tabName, index) => (
+      {tabs.map((tab, index) => (
         <button
-          key={tabName}
-          className={`${styles.tab} ${activeTab === tabName ? styles[`active${index + 1}`] : ""}`}
-          onClick={() => handleTabChange(tabName)}
+          key={tab.name}
+          className={`${styles.tab} ${
+            activeTab === tab.name ? styles[`active${index + 1}`] : ""
+          }`}
+          onClick={() => handleTabChange(tab)}
         >
-          {tabName}
+          {tab.name}
         </button>
       ))}
     </div>
