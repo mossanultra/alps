@@ -45,6 +45,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
   if (menutype === MenuType.MARMOT) {
     return (
       <>
+      
       </>
     );
   }
