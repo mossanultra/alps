@@ -77,6 +77,15 @@ function Contents({ menutype }: { menutype: MenuType }) {
         infoContent: "ここはContent",
         image: '/akiyama/akiyama3.png'
       },
+      {
+        lat: 41.768672,
+        lng: 140.728932,
+        iconUrl: "/chikawa1.jpg",
+        infoText: "はこだて",
+        infoTitle: "ここはTitle",
+        infoContent: "ここはContent",
+        image: '/akiyama/koara.jpg'
+      },
     ];
 
     return (
