@@ -6,8 +6,8 @@
 }
 
 .card {
-  min-width: 300px; /* Set a fixed min-width to prevent shrinking */
-  height: 200px;
+  min-width: 150px; /* Set a fixed min-width to prevent shrinking */
+  height: 100px;
   display: flex;
   flex-direction: column;
   border: 1px solid #ddd;
