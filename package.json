@@ -12,7 +12,9 @@
     "@react-google-maps/api": "^2.20.3",
     "@react-three/drei": "^9.114.6",
     "@react-three/fiber": "^8.17.10",
+    "multer": "^1.4.5-lts.1",
     "next": "14.2.15",
+    "next-connect": "^1.0.0",
     "next-pwa": "^5.6.0",
     "react": "^18",
     "react-dom": "^18",
@@ -21,10 +23,12 @@
     "rss-parser": "^3.13.0",
     "styled-components": "^6.1.13",
     "three": "^0.169.0",
+    "uuid": "^11.0.2",
     "vercel": "^37.11.0"
   },
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",
+    "@types/multer": "^1.4.12",
     "@types/node": "^20.16.13",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18",

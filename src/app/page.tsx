@@ -43,11 +43,8 @@ function Contents({ menutype }: { menutype: MenuType }) {
             "https://pbs.twimg.com/profile_images/1597336893019934720/o_byHBVW_400x400.jpg"
           }
           username={"もずく"}
-          onSubmit={function (image: File | null, text: string): void {
-            console.log(image);
-            console.log(text);
-
-            throw new Error("Function not implemented.");
+          onPostCreated={function (): void {
+            console.log("created");
           }}
         ></PostForm>
       </>

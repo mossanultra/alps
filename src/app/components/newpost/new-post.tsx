@@ -3,13 +3,13 @@ import React, { useState } from "react";
 type PostFormProps = {
   profileImage: string;
   username: string;
-  onSubmit: (image: File | null, text: string) => void;
+  onPostCreated: () => void; // 投稿成功後のコールバック
 };
 
 const PostForm: React.FC<PostFormProps> = ({
   profileImage,
   username,
-  onSubmit,
+  onPostCreated,
 }) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [text, setText] = useState<string>("");
@@ -24,10 +24,33 @@ const PostForm: React.FC<PostFormProps> = ({
     setText(event.target.value);
   };
 
-  const handleSubmit = () => {
-    onSubmit(selectedImage, text);
-    setSelectedImage(null);
-    setText("");
+  const handleSubmit = async () => {
+    if (!selectedImage || !text) {
+      alert("Please select an image and write some text.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", selectedImage);
+    formData.append("text", text);
+
+    try {
+      const response = await fetch("/api/post", {
+        method: "POST",
+        body: formData,
+      });
+      if (response.ok) {
+        alert("Post created successfully!");
+        onPostCreated(); // 投稿成功後の処理を実行
+        setSelectedImage(null);
+        setText("");
+      } else {
+        alert("Failed to create post");
+      }
+    } catch (error) {
+      console.error("Error creating post:", error);
+      alert("An error occurred while creating the post");
+    }
   };
 
   return (
@@ -74,7 +97,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     margin: "0 auto",
     backgroundColor: "transparent",
     borderRadius: "8px",
-    // boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
   },
   header: {
     display: "flex",
