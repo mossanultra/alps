@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./content-grid.module.css";
+import HamstarLoader from "../../loading/hamster/hamster";
 
 type Post = {
   guid: string;
@@ -9,8 +10,10 @@ type Post = {
 
 export default function ContentGrid() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchPosts = async () => {
+    setLoading(true);
     try {
       const response = await fetch("/api/post", { method: "GET" });
       if (response.ok) {
@@ -22,17 +25,19 @@ export default function ContentGrid() {
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchPosts();
   }, []);
 
+  if(loading){
+    return <HamstarLoader></HamstarLoader>
+  }
+
   return (
     <>
-      <button onClick={fetchPosts} className={styles.refreshButton}>
-        Refresh
-      </button>
       <div className={styles.grid2}>
         {posts.map((post) => (
           <div className={styles.card2} key={post.guid}>
