@@ -42,7 +42,8 @@ export async function POST(req: NextRequest) {
 
   const guid = uuidv4();
   const fileName = `${guid}-${imageFile.name}`;
-  const filePath = path.join(process.cwd(), "tmp", fileName);
+//   const filePath = path.join(process.cwd(), "tmp", fileName);
+  const filePath = path.join("/tmp", fileName);
 
   // Ensure the uploads directory exists
   if (!fs.existsSync(path.dirname(filePath))) {
