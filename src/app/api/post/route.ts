@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
   const guid = uuidv4();
   const fileName = `${guid}-${imageFile.name}`;
-  const filePath = path.join(process.cwd(), "public/uploads", fileName);
+  const filePath = path.join(process.cwd(), "tmp", fileName);
 
   // Ensure the uploads directory exists
   if (!fs.existsSync(path.dirname(filePath))) {
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
   const buffer = Buffer.from(await imageFile.arrayBuffer());
   fs.writeFileSync(filePath, buffer);
 
-  const imageUrl = `/uploads/${fileName}`;
+  const imageUrl = `/tmp/${fileName}`;
   posts.push({ guid, text, imageUrl });
 
   return NextResponse.json({ guid, imageUrl });
