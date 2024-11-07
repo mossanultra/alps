@@ -59,6 +59,7 @@ const PostForm: React.FC<PostFormProps> = ({
         <img src={profileImage} alt="Profile" style={styles.profileImage} />
         <span style={styles.username}>{username}</span>
       </header>
+      <p>＊注意＊諸事情で大きい写真(約1MBまで)は投稿できないよ( ;∀;)</p>
       <div style={styles.form}>
         <input
           type="file"
