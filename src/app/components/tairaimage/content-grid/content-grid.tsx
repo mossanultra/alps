@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./content-grid.module.css";
 import HamstarLoader from "../../loading/hamster/hamster";
 import ModalDialog from "../../map/modal-modal/modal-dialog";
-import Image from "next/image";
+// import Image from "next/image";
 
 type Post = {
   guid: string;
