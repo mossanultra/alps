@@ -33,7 +33,6 @@ const PostForm: React.FC<PostFormProps> = ({
     const formData = new FormData();
     formData.append("image", selectedImage);
     formData.append("text", text);
-
     try {
       const response = await fetch("/api/post", {
         method: "POST",
