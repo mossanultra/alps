@@ -4,7 +4,7 @@ import styles from "./content-grid.module.css";
 type Post = {
   guid: string;
   text: string;
-  imageUrl: string;
+  imageBase64: string;
 };
 
 export default function ContentGrid() {
@@ -39,7 +39,7 @@ export default function ContentGrid() {
             {/* <div className={styles.cardImage2}> */}
               {/* Base64画像を<img>タグで表示 */}
               <img
-                src={post.imageUrl}
+                src={post.imageBase64}
                 alt={post.text}
                 className={styles.cardImage2}
               />
