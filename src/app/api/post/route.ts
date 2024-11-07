@@ -1,29 +1,71 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
+import { db } from "../../../firebase";
+import { collection, addDoc, getDocs, Timestamp, DocumentData } from "firebase/firestore";
 
-const posts: { guid: string; text: string; imageBase64: string }[] = [];
-
-export async function POST(req: NextRequest) {
-  const formData = await req.formData();
-  const text = formData.get("text") as string;
-  const imageFile = formData.get("image") as File;
-
-  if (!text || !imageFile) {
-    return NextResponse.json({ error: "Text and image are required" }, { status: 400 });
-  }
-
-  const guid = uuidv4();
-  const buffer = Buffer.from(await imageFile.arrayBuffer());
-  const base64Image = buffer.toString("base64");
-
-  // 画像のMIMEタイプを適切に設定
-  const imageBase64 = `data:image/${imageFile.type.split("/")[1]};base64,${base64Image}`;
-
-  posts.push({ guid, text, imageBase64 });
-
-  return NextResponse.json({ guid, imageBase64 });
+// 投稿データの型定義
+interface PostData {
+  guid: string;
+  text: string;
+  imageBase64: string;
 }
 
+// 画像データをBase64文字列として保存するAPI
+export async function POST(req: NextRequest) {
+  try {
+    const formData = await req.formData();
+    const text = formData.get("text");
+    const imageFile = formData.get("image");
+
+    if (!text || typeof text !== "string" || !imageFile || !(imageFile instanceof File)) {
+      return NextResponse.json({ error: "テキストと画像が必要です" }, { status: 400 });
+    }
+
+    const guid = uuidv4();
+
+    // 画像をBase64文字列に変換
+    const buffer = await imageFile.arrayBuffer();
+    const base64Image = Buffer.from(buffer).toString("base64");
+
+    // 画像のMIMEタイプを適切に設定
+    const imageBase64 = `data:${imageFile.type};base64,${base64Image}`;
+
+    // 投稿データを作成
+    const postData: PostData = {
+      guid,
+      text,
+      imageBase64,
+    };
+
+    // Firestoreに投稿データを保存
+    const postsCollection = db.collection("posts");
+    await postsCollection.add(postData);
+
+    return NextResponse.json({ guid, message: "投稿が正常に保存されました" });
+  } catch (error) {
+    console.error("投稿のアップロード中にエラーが発生しました:", error);
+    return NextResponse.json({ error: "投稿のアップロード中にエラーが発生しました" }, { status: 500 });
+  }
+}
+
+// 投稿一覧を取得するAPI
 export async function GET() {
-  return NextResponse.json(posts);
+  try {
+    const querySnapshot = await db.collection("posts").get();
+
+    // Firestoreから取得したドキュメントをPostData型に変換
+    const posts: PostData[] = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        guid: data.guid,
+        text: data.text,
+        imageBase64: data.imageBase64,
+      };
+    });
+
+    return NextResponse.json(posts);
+  } catch (error) {
+    console.error("投稿の取得中にエラーが発生しました:", error);
+    return NextResponse.json({ error: "投稿の取得中にエラーが発生しました" }, { status: 500 });
+  }
 }
