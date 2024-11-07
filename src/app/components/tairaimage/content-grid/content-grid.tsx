@@ -36,12 +36,14 @@ export default function ContentGrid() {
       <div className={styles.grid2}>
         {posts.map((post) => (
           <div className={styles.card2} key={post.guid}>
-            <div
-              className={styles.cardImage2}
-              style={{
-                backgroundImage: `url('${post.imageUrl}')`,
-              }}
-            />
+            {/* <div className={styles.cardImage2}> */}
+              {/* Base64画像を<img>タグで表示 */}
+              <img
+                src={post.imageUrl}
+                alt={post.text}
+                className={styles.cardImage2}
+              />
+            {/* </div> */}
             <div className={styles.cardText}>{post.text}</div>
             <div className={styles.cardSubtext}>山口県&nbsp;萩市</div>
           </div>
