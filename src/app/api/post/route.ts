@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../../firebase";
-import { collection, addDoc, getDocs, Timestamp, DocumentData } from "firebase/firestore";
 
 // 投稿データの型定義
 interface PostData {
