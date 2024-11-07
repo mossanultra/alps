@@ -46,9 +46,9 @@ export async function POST(req: NextRequest) {
   const filePath = path.join("/tmp", fileName);
 
   // Ensure the uploads directory exists
-  if (!fs.existsSync(path.dirname(filePath))) {
-    fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  }
+//   if (!fs.existsSync(path.dirname(filePath))) {
+//     fs.mkdirSync(path.dirname(filePath), { recursive: true });
+//   }
 
   // Save the file to the uploads directory
   const buffer = Buffer.from(await imageFile.arrayBuffer());
