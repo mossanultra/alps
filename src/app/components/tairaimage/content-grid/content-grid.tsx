@@ -1,8 +1,9 @@
+// ContentGrid.tsx
 import React, { useEffect, useState } from "react";
 import styles from "./content-grid.module.css";
 import HamstarLoader from "../../loading/hamster/hamster";
 import ModalDialog from "../../map/modal-modal/modal-dialog";
-// import Image from "next/image";
+import ContentCard from "../content-card/content-card"; // インポート
 
 type Post = {
   guid: string;
@@ -37,8 +38,9 @@ export default function ContentGrid() {
   }, []);
 
   if (loading) {
-    return <HamstarLoader></HamstarLoader>;
+    return <HamstarLoader />;
   }
+
   const handleCloseModal = () => {
     setSelectedPost(null);
     setModalOpen(false);
@@ -48,38 +50,25 @@ export default function ContentGrid() {
     <>
       <div className={styles.grid2}>
         {posts.map((post) => (
-          <div
-            className={styles.card2}
+          <ContentCard
             key={post.guid}
+            post={post}
             onClick={() => {
-              console.log("modal on");
               setSelectedPost(post);
               setModalOpen(true);
             }}
-          >
-            {/* <div className={styles.cardImage2}> */}
-            {/* Base64画像を<img>タグで表示 */}
-            <img
-              src={post.imageBase64}
-              alt={post.text}
-              className={styles.cardImage2}
-            />
-            {/* </div> */}
-            <div className={styles.cardText}>{post.text}</div>
-            <div className={styles.cardSubtext}>山口県&nbsp;萩市</div>
-          </div>
+          />
         ))}
-        {modalOpen && (
+        {modalOpen && selectedPost && (
           <ModalDialog onClose={handleCloseModal}>
             <div className={styles.modaldiv}>
-            <div className={styles.cardSubtext}>山口県&nbsp;萩市</div>
-            <img
-                src={selectedPost?.imageBase64}
-                alt={selectedPost?.guid}
-                className={styles.cardImage2}
+              <div className={styles.dialogSubText}>山口県&nbsp;萩市</div>
+              <img
+                src={selectedPost.imageBase64}
+                alt={selectedPost.guid}
+                className={styles.dialogImage}
               />
-              {/* </div> */}
-              <div className={styles.modaltext}>{selectedPost?.text}</div>
+              <div className={styles.dialogText}>{selectedPost.text}</div>
             </div>
           </ModalDialog>
         )}
