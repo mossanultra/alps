@@ -34,3 +34,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.env
+mozuku-2a730-firebase-adminsdk-y9ezn-d2acf6128a.json
