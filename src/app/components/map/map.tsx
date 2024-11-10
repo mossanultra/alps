@@ -40,7 +40,7 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   center,
   zoom,
   markers,
-  children,
+  // children,
 }) => {
   // const [selectedMarker, setSelectedMarker] = useState<MarkerInfo | null>(null);
   // const [isModalOpen, setModalOpen] = useState(false);
