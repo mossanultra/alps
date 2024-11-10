@@ -7,6 +7,9 @@ import { GreenMap } from "./style/greeenmap";
 import { AssassingsCreed } from "./style/assassins-creed";
 import { Modest } from "./style/modest";
 import { Pinky } from "./style/pinky";
+import ChatThread from "./chatthread/chatthread";
+import styles from "./map.module.css";
+import { useRouter } from 'next/navigation';
 
 const googleMapStyles = [
   { label: "Zisla01", style: Zisla01 },
@@ -19,10 +22,11 @@ const googleMapStyles = [
 type MarkerInfo = {
   lat: number;
   lng: number;
-  iconUrl?: string;
-  infoTitle: string;
-  infoContent: string;
-  image: string;
+  // iconUrl?: string;
+  // infoTitle: string;
+  // infoContent: string;
+  // image: string;
+  id: string;
 };
 
 type MapWithCustomModalMarkerProps = {
@@ -41,6 +45,7 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   const [selectedMarker, setSelectedMarker] = useState<MarkerInfo | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState(googleMapStyles[0].style);
+  const router = useRouter();
 
   const containerStyle: React.CSSProperties = {
     width: "100%",
@@ -48,8 +53,10 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   };
 
   const handleMarkerClick = (marker: MarkerInfo) => {
-    setSelectedMarker(marker);
-    setModalOpen(true);
+    // setSelectedMarker(marker);
+    // setModalOpen(true);
+    router.push(`/points/${marker.id}`);
+
   };
 
   const handleCloseModal = () => {
@@ -77,45 +84,52 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
           </option>
         ))}
       </select>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={zoom}
+        options={{ styles: selectedStyle }}
+      >
+        {markers.map((marker, index) => (
+          <Marker
+            key={index}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            onClick={() => handleMarkerClick(marker)}
+          />
+        ))}
 
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={zoom}
-          options={{ styles: selectedStyle }}
-        >
-          {markers.map((marker, index) => (
-            <Marker
-              key={index}
-              position={{ lat: marker.lat, lng: marker.lng }}
-              onClick={() => handleMarkerClick(marker)}
-            />
-          ))}
+        {/* モーダルダイアログ */}
+        {isModalOpen && selectedMarker && (
+          <ModalDialog onClose={handleCloseModal}>
+            {children ? (
+              children
+            ) : (
+              <div
+                // style={{
+                //   position: "relative",
+                //   width: "300px",
+                //   height: "300px",
+                // }}
+                className={styles.container}
+              >
+                <p style={{color: 'black'}}>ここで陶芸体験ができたよ！！</p>
+                <Image
+                  src={'/tougei.jpg'}
+                  alt=""
+                  layout="fill"
+                  objectFit="contain"
+                />
+                <ChatThread messages={[{
+                  text: 'シロをいけにえに！！',
+                  timestamp: Date().toString(),
+                  isSender: false
+                }]}></ChatThread>
 
-          {/* モーダルダイアログ */}
-          {isModalOpen && selectedMarker && (
-            <ModalDialog onClose={handleCloseModal}>
-              {children ? (
-                children
-              ) : (
-                <div
-                  style={{
-                    position: "relative",
-                    width: "300px",
-                    height: "300px",
-                  }}
-                >
-                  <Image
-                    src={selectedMarker.image}
-                    alt=""
-                    layout="fill"
-                    objectFit="contain"
-                  />
-                </div>
-              )}
-            </ModalDialog>
-          )}
-        </GoogleMap>
+              </div>
+            )}
+          </ModalDialog>
+        )}
+      </GoogleMap>
     </>
   );
 };

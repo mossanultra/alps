@@ -1,0 +1,44 @@
+.chatThread {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.sender {
+  align-self: flex-end;
+  background-color: #dcf8c6;
+  color: #333;
+}
+
+.receiver {
+  align-self: flex-start;
+  background-color: #fff;
+  color: #333;
+}
+
+.text {
+  margin-bottom: 4px;
+  color: black;
+}
+
+.timestamp {
+  font-size: 12px;
+  text-align: right;
+  color: #999;
+}
