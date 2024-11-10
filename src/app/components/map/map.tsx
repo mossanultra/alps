@@ -1,14 +1,14 @@
 import React, { ReactNode, useState } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
-import ModalDialog from "./modal-modal/modal-dialog";
-import Image from "next/image";
+// import ModalDialog from "./modal-modal/modal-dialog";
+// import Image from "next/image";
 import { Zisla01 } from "./style/zisla01";
 import { GreenMap } from "./style/greeenmap";
 import { AssassingsCreed } from "./style/assassins-creed";
 import { Modest } from "./style/modest";
 import { Pinky } from "./style/pinky";
-import ChatThread from "./chatthread/chatthread";
-import styles from "./map.module.css";
+// import ChatThread from "./chatthread/chatthread";
+// import styles from "./map.module.css";
 import { useRouter } from 'next/navigation';
 
 const googleMapStyles = [
@@ -42,8 +42,8 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   markers,
   children,
 }) => {
-  const [selectedMarker, setSelectedMarker] = useState<MarkerInfo | null>(null);
-  const [isModalOpen, setModalOpen] = useState(false);
+  // const [selectedMarker, setSelectedMarker] = useState<MarkerInfo | null>(null);
+  // const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState(googleMapStyles[0].style);
   const router = useRouter();
 
@@ -59,10 +59,10 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
 
   };
 
-  const handleCloseModal = () => {
-    setSelectedMarker(null);
-    setModalOpen(false);
-  };
+  // const handleCloseModal = () => {
+  //   setSelectedMarker(null);
+  //   setModalOpen(false);
+  // };
 
   const handleStyleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = googleMapStyles.find(
