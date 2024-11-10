@@ -35,11 +35,12 @@ export default function RootLayout({
       </head>
       <body className={`${uzura.variable}`}>
         <FirebaseAnalytics />
-        {transitions((style, item) => (
+        {/* {transitions((style, item) => (
           <animated.div key={item} style={style}>
             {children}
           </animated.div>
-        ))}
+        ))} */}
+         {children}
       </body>
     </html>
   );

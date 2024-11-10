@@ -98,7 +98,7 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
           />
         ))}
 
-        {/* モーダルダイアログ */}
+        {/* モーダルダイアログ
         {isModalOpen && selectedMarker && (
           <ModalDialog onClose={handleCloseModal}>
             {children ? (
@@ -128,7 +128,7 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
               </div>
             )}
           </ModalDialog>
-        )}
+        )} */}
       </GoogleMap>
     </>
   );
