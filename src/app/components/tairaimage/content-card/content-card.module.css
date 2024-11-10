@@ -5,7 +5,7 @@
   border-radius: 8px;
   overflow: hidden;
   background-color: #fff;
-  height: 200px;
+  height: 230px;
 }
 
 .cardImage2 {
@@ -29,5 +29,25 @@
 .cardSubtext {
   padding: 0 10px 10px;
   font-size: 12px;
+  color: #777;
+}
+
+.likeContainer {
+  display: flex;
+  align-items: center;
+  padding: 0 10px 10px;
+}
+
+.likeButton {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #e0245e;
+}
+
+.likeCount {
+  margin-left: 5px;
+  font-size: 14px;
   color: #777;
 }
