@@ -2,7 +2,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import FirebaseAnalytics from "./components/firebase/analytics";
-import { usePathname } from "next/navigation";
+// import { usePathname } from "next/navigation";
 // import { useTransition, animated } from "@react-spring/web";
 import React from "react";
 
