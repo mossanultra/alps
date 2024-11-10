@@ -8,7 +8,7 @@ export const markers = [
       infoTitle: "ここはTitle",
       infoContent: "ここはContent",
       image: "/akiyama/akiyama1.png",
-      id: 'ddb84bb7-5cbd-4366-874a-c62113cc512d'
+      id: 'ddb84bb7-5cbd-4366-874a-c62113cc5120'
     },
     {
       lat: 34.6937,
@@ -18,7 +18,7 @@ export const markers = [
       infoTitle: "ここはTitle",
       infoContent: "ここはContent",
       image: "/akiyama/akiyama2.png",
-      id: uuidv4()
+      id: 'ddb84bb7-5cbd-4366-874a-c62113cc5121'
     },
     {
       lat: 35.0116,
@@ -28,7 +28,7 @@ export const markers = [
       infoTitle: "ここはTitle",
       infoContent: "ここはContent",
       image: "/akiyama/akiyama3.png",
-      id: uuidv4()
+      id: 'ddb84bb7-5cbd-4366-874a-c62113cc5122'
     },
     {
       lat: 41.768672,
@@ -38,7 +38,7 @@ export const markers = [
       infoTitle: "ここはTitle",
       infoContent: "ここはContent",
       image: "/akiyama/koara.jpg",
-      id: uuidv4()
+      id: 'ddb84bb7-5cbd-4366-874a-c62113cc5123'
     },
   ];
   
