@@ -36,18 +36,19 @@ export default function PointPage({ params }: PointPageProps) {
     fetchPoints();
   }, []);
 
-  // データが取得できずに404の状態のとき
   if (!loading && !point) {
     notFound();
   }
 
-  // ローディング中の表示
   if (loading) {
-    return <HamstarLoader/>
+    return <HamstarLoader />;
   }
 
   return (
     <div>
+      <button onClick={() => window.history.back()} style={{ marginBottom: '10px' }}>
+        戻る
+      </button>
       <h1>まほさんが色々頑張って作るページ。コメントスレッドとか？</h1>
       <p>{point?.id}</p>
     </div>
