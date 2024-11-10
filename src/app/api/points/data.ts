@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 export const markers = [
     {
       lat: 37.7608,
