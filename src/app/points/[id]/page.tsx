@@ -5,7 +5,7 @@ import { Chat } from "@/app/api/chat/route";
 import HamstarLoader from "@/app/components/loading/hamster/hamster";
 import { notFound } from "next/navigation";
 import { useState, useEffect } from "react";
-import styles from "./page.module.css";
+
 import ChatBubble from "./ChatBubble/ChatBubble";
 
 interface PointPageProps {
