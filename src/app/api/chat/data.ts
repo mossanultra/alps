@@ -36,7 +36,7 @@ export const chats = [
     },
     {
       userName: 'もずく',
-      userIcon: 'https://pbs.twimg.com/media/Fp8zwAlagAE1i-Z.jpg',
+      userIcon: 'https://pbs.twimg.com/profile_images/1597336893019934720/o_byHBVW_400x400.jpg',
       text: "ぱんだかわいいよね",
     },
     {
