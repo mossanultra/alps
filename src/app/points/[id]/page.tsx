@@ -73,9 +73,9 @@ export default function PointPage({ params }: PointPageProps) {
       <button onClick={() => window.history.back()} style={{ marginBottom: '10px' }}>
         戻る
       </button>
-      <p>{JSON.stringify(chats)}</p>
+      {/* <p>{JSON.stringify(chats)}</p>
       <h1>まほさんが色々頑張って作るページ。コメントスレッドとか？</h1>
-      <p>{point?.id}</p>
+      <p>{point?.id}</p> */}
       {chats.map((chat, index) => (
         <>
           <ChatBubble key={index} {...chat} />
