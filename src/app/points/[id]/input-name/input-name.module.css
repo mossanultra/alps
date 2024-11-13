@@ -13,7 +13,14 @@
   width: 100%;
   padding: 15px 0;
   font-size: 18px;
-  color: black;
+  color: black; /* Default text color for light mode */
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  .input {
+    color: white; /* Text color in dark mode */
+  }
 }
 
 .input:focus,
