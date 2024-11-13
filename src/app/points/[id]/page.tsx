@@ -18,6 +18,10 @@ export default function PointPage({ params }: PointPageProps) {
   const [chats, setchats] = useState<Chat[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingChat, setLoadingChat] = useState(true);
+  const [sendText , setSendText] = useState('');
+  const [sendUserName , setSendUserName] = useState('');
+
+
 
   const fetchPoints = async () => {
     try {
@@ -55,6 +59,33 @@ export default function PointPage({ params }: PointPageProps) {
       setLoadingChat(false);
     }
   };
+  const handleSubmit = async () => {
+    if (!sendText || !sendUserName) {
+      alert("Please select an image and write some text.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("text", sendText);
+    formData.append("userName", sendUserName);
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        body: formData,
+      });
+      if (response.ok) {
+        alert("Post created successfully!");
+        // onPostCreated(); // 投稿成功後の処理を実行
+        // setSelectedImage(null);
+        // setText("");
+      } else {
+        alert("Failed to create post");
+      }
+    } catch (error) {
+      console.error("Error creating post:", error);
+      alert("An error occurred while creating the post");
+    }
+  };
   useEffect(() => {
     fetchPoints();
     fetchchats();
@@ -79,9 +110,21 @@ export default function PointPage({ params }: PointPageProps) {
       {chats.map((chat, index) => (
         <>
           <ChatBubble key={index} {...chat} />
+          
         </>
-
-      ))}
+      ))}<input type="text" onChange={(e) => {setSendText(e.target.value)}}/>
+          <input type="text" onChange={(e) => {setSendUserName(e.target.value)}}/>
+          <input type="button" value="送信" onClick={() => {
+            console.log(sendText);
+            console.log(sendUserName);
+            handleSubmit()
+          }}/>
+          <input type="button" value="更新" onClick={() => {
+            console.log(sendText);
+            console.log(sendUserName);
+            fetchchats();
+          }}/>
     </div>
   );
 }
+ 
