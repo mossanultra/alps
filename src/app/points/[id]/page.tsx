@@ -22,7 +22,7 @@ export default function PointPage({ params }: PointPageProps) {
   const [loading, setLoading] = useState(true);
   const [loadingChat, setLoadingChat] = useState(true);
   const [sendText, setSendText] = useState("");
-  const [sendUserName, setSendUserName] = useState("");
+  const [sendUserName, setSendUserName] = useState("もずく");
 
   const fetchPoints = async () => {
     try {
