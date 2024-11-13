@@ -6,7 +6,7 @@ export interface Chat {
   text: string;
 }
 
-let chats = [
+const chats = [
   {
     userName: 'タイラさん',
     userIcon: 'https://pbs.twimg.com/media/Fp8zwAlagAE1i-Z.jpg',
