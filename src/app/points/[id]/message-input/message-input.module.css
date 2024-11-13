@@ -1,0 +1,39 @@
+.message {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #40414f;
+  box-shadow: 5px 5px #34343f;
+  position: fixed; /* Stick to the bottom of the screen */
+  bottom: 0;
+  left: 0;
+  padding: 0 10px;
+  display: flex;      /* Flex container to align items */
+  align-items: center; /* Center items vertically */
+}
+
+.msgInput {
+  font-size: 18px;
+  border-radius: 5px;
+  background-color: #40414f;
+  border: none;
+  outline: none;
+  flex-grow: 1;         /* Make the input fill available space */
+  height: 30px;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.sendSVG {
+  min-width: 30px;     /* Ensure it doesn't shrink below 30px */
+  height: 30px;
+  margin-left: 10px;   /* Space between input and send button */
+  border-radius: 10px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.sendSVG:hover {
+  background-color: #2b2b35;
+}
