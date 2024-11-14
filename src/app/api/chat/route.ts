@@ -5,21 +5,24 @@ export interface Chat {
   userName: string;
   userIcon: string;
   text: string;
+  createdAt: string; // ISO形式のタイムスタンプ
 }
 
-// 登録されている座標のリスト
+// 登録されているチャットメッセージのリストを取得（作成順）
 export async function GET() {
   try {
-    const querySnapshot = await db.collection("chats").get();
-    console.log(querySnapshot.docs);
+    const querySnapshot = await db
+      .collection("chats")
+      .orderBy("createdAt", "asc") // 作成順に並べ替え
+      .get();
 
     const _chats: Chat[] = querySnapshot.docs.map((doc) => {
       const data = doc.data();
-      console.log(data);
       return {
         userName: data.userName,
         userIcon: data.userIcon,
         text: data.text,
+        createdAt: data.createdAt,
       };
     });
 
@@ -28,6 +31,8 @@ export async function GET() {
     return NextResponse.json({ error: error }, { status: 500 });
   }
 }
+
+// ユーザーアイコン取得関数
 function getUserIcon(userName: string) {
   if (userName === "もずく") {
     return "https://pbs.twimg.com/profile_images/1597336893019934720/o_byHBVW_400x400.jpg";
@@ -37,6 +42,8 @@ function getUserIcon(userName: string) {
     return "https://pbs.twimg.com/media/GHyhV0pasAA4dDZ?format=png&name=900x900";
   }
 }
+
+// 新しいチャットを作成
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -60,11 +67,14 @@ export async function POST(req: NextRequest) {
     if (!iconUrl || typeof iconUrl !== "string") {
       return NextResponse.json({ error: "iconUrlが必要です" }, { status: 400 });
     }
+
     const chat = {
       text: text,
       userName: username,
       userIcon: iconUrl,
+      createdAt: new Date().toISOString(), // ISO形式のタイムスタンプ
     };
+
     // Firestoreに投稿データを保存
     const postsCollection = db.collection("chats");
     await postsCollection.add(chat);
