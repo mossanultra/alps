@@ -9,10 +9,10 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
   const [message, setMessage] = useState('')
 
   const handleSendClick = () => {
-    if (message.trim()) {
+    // if (message.trim()) {
       onSendMessage(message)
       setMessage('') // Clear the input after sending
-    }
+    // }
   }
 
   return (

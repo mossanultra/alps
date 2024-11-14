@@ -7,16 +7,15 @@ export interface Chat {
   text: string;
 }
 
-
 // 登録されている座標のリスト
 export async function GET() {
   try {
     const querySnapshot = await db.collection("chats").get();
-    console.log(querySnapshot.docs)
+    console.log(querySnapshot.docs);
 
     const _chats: Chat[] = querySnapshot.docs.map((doc) => {
       const data = doc.data();
-      console.log(data)
+      console.log(data);
       return {
         userName: data.userName,
         userIcon: data.userIcon,
@@ -29,13 +28,20 @@ export async function GET() {
     return NextResponse.json({ error: error }, { status: 500 });
   }
 }
+function getUserIcon(userName: string) {
+  if (userName === "もずく") {
+    return "https://pbs.twimg.com/profile_images/1597336893019934720/o_byHBVW_400x400.jpg";
+  } else if (userName === "まほ") {
+    return "https://pbs.twimg.com/profile_images/1852191679215996928/FHxV4OqS_400x400.jpg";
+  } else {
+    return "https://pbs.twimg.com/media/GHyhV0pasAA4dDZ?format=png&name=900x900";
+  }
+}
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const text = formData.get("text");
     const username = formData.get("userName");
-    const iconUrl =
-      "https://pbs.twimg.com/profile_images/1597336893019934720/o_byHBVW_400x400.jpg";
 
     if (!text || typeof text !== "string") {
       return NextResponse.json(
@@ -49,6 +55,8 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+    const iconUrl = getUserIcon(username);
+
     if (!iconUrl || typeof iconUrl !== "string") {
       return NextResponse.json({ error: "iconUrlが必要です" }, { status: 400 });
     }

@@ -21,7 +21,7 @@ export default function PointPage({ params }: PointPageProps) {
   const [chats, setchats] = useState<Chat[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingChat, setLoadingChat] = useState(true);
-  const [sendText, setSendText] = useState("");
+  // const [sendText, setSendText] = useState("");
   const [sendUserName, setSendUserName] = useState("もずく");
 
   const fetchPoints = async () => {
@@ -60,14 +60,14 @@ export default function PointPage({ params }: PointPageProps) {
       setLoadingChat(false);
     }
   };
-  const handleSubmit = async () => {
-    if (!sendText || !sendUserName) {
+  const handleSubmit = async (message: string) => {
+    if (!message || !sendUserName) {
       alert("Please select an image and write some text.");
       return;
     }
 
     const formData = new FormData();
-    formData.append("text", sendText);
+    formData.append("text", message);
     formData.append("userName", sendUserName);
     try {
       const response = await fetch("/api/chat", {
@@ -131,8 +131,8 @@ export default function PointPage({ params }: PointPageProps) {
         } } label={"input username"} value={sendUserName}      />
 
         <MessageBox onSendMessage={function (message: string): void {
-        setSendText(message);
-        handleSubmit();
+        // setSendText();
+        handleSubmit(message);
       } }></MessageBox>
 
       {/* <input
