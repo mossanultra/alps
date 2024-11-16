@@ -13,8 +13,10 @@ export async function GET() {
   try {
     const querySnapshot = await db
       .collection("chats")
-      .orderBy("createdAt", "asc") // 作成順に並べ替え
+      .orderBy("createdAt", "desc") // 作成順に並べ替え
+      .limit(20)
       .get();
+  
 
     const _chats: Chat[] = querySnapshot.docs.map((doc) => {
       const data = doc.data();
@@ -26,7 +28,10 @@ export async function GET() {
       };
     });
 
-    return NextResponse.json(_chats);
+    _chats.sort((a: Chat, b: Chat) => {
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    });
+        return NextResponse.json(_chats);
   } catch (error) {
     return NextResponse.json({ error: error }, { status: 500 });
   }
