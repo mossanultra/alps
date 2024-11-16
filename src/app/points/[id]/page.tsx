@@ -113,7 +113,7 @@ export default function PointPage({ params }: PointPageProps) {
       <p>{point?.id}</p> */}
       {chats.map((chat, index) => (
         <>
-          <ChatBubble key={index} {...chat} />
+          <ChatBubble isselfchat={chat.userName==="まほ"} key={index} {...chat} />
         </>
       ))}
       <div>
