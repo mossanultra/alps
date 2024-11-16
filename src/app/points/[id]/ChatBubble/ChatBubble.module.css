@@ -4,6 +4,7 @@
   margin: 10px 0;
   flex-direction: row-reverse;
 }
+
 .chatContainer_other {
   display: flex;
   align-items: flex-start;
@@ -29,14 +30,24 @@
   margin-bottom: 3px;
   text-align: right;
 }
+
 .userName_other {
   font-size: 0.8rem;
   color: #888;
   margin-bottom: 3px;
-  
 }
-.chatBubble {
-  background-color: #e0f7fa;
+
+.chatBubble_self {
+  background-color: #7bf7aa;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #333;
+}
+
+.chatBubble_other {
+  background-color: #e8fcff;
   padding: 10px;
   border-radius: 8px;
   font-size: 1rem;

@@ -12,12 +12,13 @@ interface ChatBubbleProps {
 const ChatBubble: React.FC<ChatBubbleProps> = ({ userName, userIcon, text, isselfchat }) => {
   const containerstyle = isselfchat ? styles.chatContainer_self : styles.chatContainer_other;
   const usernamestyle = isselfchat ? styles.userName_self : styles.userName_other;
+  const chatBubblestyle = isselfchat ? styles.chatBubble_self : styles.chatBubble_other;
   return (
     <div className={containerstyle}>
       <img src={userIcon} alt={`${userName} icon`} className={styles.userIcon} />
       <div className={styles.bubbleWrapper}>
         <div className={usernamestyle}>{userName}</div>
-        <div className={styles.chatBubble}>{text}</div>
+        <div className={chatBubblestyle}>{text}</div>
       </div>
     </div>
   );
