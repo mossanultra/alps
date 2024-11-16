@@ -21,6 +21,7 @@ export default function PointPage({ params }: PointPageProps) {
   const [chats, setchats] = useState<Chat[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingChat, setLoadingChat] = useState(true);
+  // const [sendText, setSendText] = useState("");
   const [sendUserName, setSendUserName] = useState("もずく");
 
   const fetchPoints = async () => {
@@ -47,6 +48,8 @@ export default function PointPage({ params }: PointPageProps) {
       const response = await fetch(path, { method: "GET" });
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
+        // setPoint(data);
         setchats(data);
       } else {
         console.error("Failed to fetch");
@@ -73,6 +76,9 @@ export default function PointPage({ params }: PointPageProps) {
       });
       if (response.ok) {
         alert("Post created successfully!");
+        // onPostCreated(); // 投稿成功後の処理を実行
+        // setSelectedImage(null);
+        // setText("");
       } else {
         alert("Failed to create post");
       }
@@ -102,9 +108,12 @@ export default function PointPage({ params }: PointPageProps) {
       >
         戻る
       </button>
+      {/* <p>{JSON.stringify(chats)}</p>
+      <h1>まほさんが色々頑張って作るページ。コメントスレッドとか？</h1>
+      <p>{point?.id}</p> */}
       {chats.map((chat, index) => (
         <>
-          <ChatBubble isMineChat={chat.userName==="もずく"? false: true} key={index} {...chat} />
+          <ChatBubble key={index} {...chat} />
         </>
       ))}
       <div>
@@ -119,17 +128,29 @@ export default function PointPage({ params }: PointPageProps) {
       <InputName
         onChange={(e) => {
           setSendUserName(e);
-        }}
-        label={"input username"}
-        value={sendUserName}
-      />
+        } } label={"input username"} value={sendUserName}      />
 
-      <MessageBox
-        onSendMessage={function (message: string): void {
-          // setSendText();
-          handleSubmit(message);
+        <MessageBox onSendMessage={function (message: string): void {
+        // setSendText();
+        handleSubmit(message);
+      } }></MessageBox>
+
+      {/* <input
+        type="text"
+        onChange={(e) => {
+          setSendUserName(e.target.value);
         }}
-      ></MessageBox>
+      />
+ */}
+      {/* <div>
+        <Button
+          onClick={() => {
+            handleSubmit();
+          }}
+        >
+          {"Send"}
+        </Button>{" "}
+      </div> */}
     </div>
   );
 }

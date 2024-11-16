@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import styles from "./message-input.module.css";
+import React, { useState } from 'react'
+import styles from './message-input.module.css'
 
 interface MessageInputProps {
   onSendMessage: (message: string) => void;
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('')
 
   const handleSendClick = () => {
     // if (message.trim()) {
-    onSendMessage(message);
-    setMessage(""); // Clear the input after sending
+      onSendMessage(message)
+      setMessage('') // Clear the input after sending
     // }
-  };
+  }
 
   return (
     <div className={styles.message}>
@@ -41,7 +41,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
       </svg>
       <span className={styles.l}></span>
     </div>
-  );
-};
+  )
+}
 
-export default MessageInput;
+export default MessageInput

@@ -1,6 +1,6 @@
 // FormControl.tsx
-import React, { FC } from "react";
-import styles from "./input-name.module.css";
+import React, { FC } from 'react';
+import styles from './input-name.module.css';
 
 interface FormControlProps {
   label: string;
@@ -23,7 +23,7 @@ const InputName: FC<FormControlProps> = ({ label, value, onChange }) => {
         className={styles.input}
       />
       <label className={styles.label}>
-        {label.split("").map((char, index) => (
+        {label.split('').map((char, index) => (
           <span
             key={index}
             className={styles.labelSpan}

@@ -8,7 +8,7 @@
   bottom: 0;
   left: 0;
   padding: 0 10px;
-  display: flex; /* Flex container to align items */
+  display: flex;      /* Flex container to align items */
   align-items: center; /* Center items vertically */
 }
 
@@ -18,7 +18,7 @@
   background-color: #40414f;
   border: none;
   outline: none;
-  flex-grow: 1; /* Make the input fill available space */
+  flex-grow: 1;         /* Make the input fill available space */
   height: 30px;
   color: white;
   padding: 10px;
@@ -26,9 +26,9 @@
 }
 
 .sendSVG {
-  min-width: 30px; /* Ensure it doesn't shrink below 30px */
+  min-width: 30px;     /* Ensure it doesn't shrink below 30px */
   height: 30px;
-  margin-left: 10px; /* Space between input and send button */
+  margin-left: 10px;   /* Space between input and send button */
   border-radius: 10px;
   transition: 0.3s;
   cursor: pointer;
