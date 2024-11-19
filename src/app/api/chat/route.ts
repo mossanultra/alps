@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
         query = query.startAfter(pagingDoc);
       } else {
         return NextResponse.json(
-          { error: "指定されたIDのデータが見つかりません" },
+          { error: "no data" },
           { status: 404 }
         );
       }
