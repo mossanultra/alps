@@ -90,10 +90,12 @@ export default function PointPage({ params }: PointPageProps) {
         return;
       }
       try {
+        const formData = new FormData();
+        formData.append("text", message);
+        formData.append("userName", sendUserName);
         const response = await fetch("/api/chat", {
           method: "POST",
-          body: JSON.stringify({ text: message, userName: sendUserName }),
-          headers: { "Content-Type": "application/json" },
+          body: formData,
         });
         if (response.ok) {
           alert("メッセージを送信しました！");
