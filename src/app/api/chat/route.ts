@@ -6,17 +6,31 @@ export interface Chat {
   userIcon: string;
   text: string;
   createdAt: string; // ISO形式のタイムスタンプ
+  id: string;
 }
 
 // 登録されているチャットメッセージのリストを取得（作成順）
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const querySnapshot = await db
-      .collection("chats")
-      .orderBy("createdAt", "desc") // 作成順に並べ替え
-      .limit(20)
-      .get();
-  
+    const { searchParams } = new URL(req.url);
+    const pagingId = searchParams.get("pagingId"); // クエリパラメータからIDを取得
+
+    let query = db.collection("chats").orderBy("createdAt", "desc").limit(20);
+
+    // pagingIdがある場合は指定されたドキュメント以降のデータを取得
+    if (pagingId) {
+      const pagingDoc = await db.collection("chats").doc(pagingId).get();
+      if (pagingDoc.exists) {
+        query = query.startAfter(pagingDoc);
+      } else {
+        return NextResponse.json(
+          { error: "指定されたIDのデータが見つかりません" },
+          { status: 404 }
+        );
+      }
+    }
+
+    const querySnapshot = await query.get();
 
     const _chats: Chat[] = querySnapshot.docs.map((doc) => {
       const data = doc.data();
@@ -25,15 +39,19 @@ export async function GET() {
         userIcon: data.userIcon,
         text: data.text,
         createdAt: data.createdAt,
+        id: doc.id,
       };
     });
 
+    // 作成日時で昇順に並べ替え
     _chats.sort((a: Chat, b: Chat) => {
       return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
     });
-        return NextResponse.json(_chats);
+
+    return NextResponse.json(_chats);
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    console.error("データの取得中にエラーが発生しました:", error);
+    return NextResponse.json({ error: "データの取得中にエラーが発生しました" }, { status: 500 });
   }
 }
 
