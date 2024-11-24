@@ -28,8 +28,7 @@ export default function PointPage({ params }: PointPageProps) {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const userId = searchParams.get("userId");
-    fetchProfile(userId!);
+    fetchProfile();
   }, [fetchProfile, searchParams]);
 
   /** ポイントデータを取得 */
@@ -66,7 +65,6 @@ export default function PointPage({ params }: PointPageProps) {
     },
     [profile, sendMessage]
   );
-
   /** 初回データ取得 */
   useEffect(() => {
     fetchPoints();
@@ -86,8 +84,13 @@ export default function PointPage({ params }: PointPageProps) {
     }
   }, []);
 
+  function LoadProfile(){
+    return <p>Profile Loading ...</p>
+  }
+
   // ロード中の場合
-  if (loading || !profile) return <HamstarLoader />;
+  if (loading) return <HamstarLoader />;
+  if (!profile) return LoadProfile();
   if (!point && !loadingMore) return notFound();
 
   return (

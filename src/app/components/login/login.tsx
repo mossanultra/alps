@@ -1,11 +1,11 @@
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthContext } from "@/app/context/AuthContext";
 import { useState } from "react";
 
 export default function AuthView() {
   const [isSingUp, setIsSigneUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { SignIn, SignUp } = useAuth();
+  const { SignIn, SignUp } = useAuthContext();
 
   const handleAuth = async () => {
     if (isSingUp) {

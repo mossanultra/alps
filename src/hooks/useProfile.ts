@@ -1,11 +1,13 @@
 import { useState, useCallback } from "react";
 import { Profile } from "@/app/api/profile/route";
+import { useAuthContext } from "@/app/context/AuthContext";
 
 export function useProfile() {
   const [profile, setProfile] = useState<Profile | null>(null);
+  const { userId } = useAuthContext();
 
   /** チャットデータを取得 */
-  const fetchProfile = useCallback(async (userId: string) => {
+  const fetchProfile = useCallback(async () => {
     try {
       console.log(userId);
       const path = `/api/profile?userId=${userId}`;

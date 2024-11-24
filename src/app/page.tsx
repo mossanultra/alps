@@ -12,12 +12,12 @@ import { LoadScript } from "@react-google-maps/api";
 import Profile from "./components/profile/profile";
 import PostForm from "./components/newpost/new-post";
 import AuthView from "./components/login/login";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthContext } from "./context/AuthContext";
 // import Image from "next/image";
 
 function Contents({ menutype }: { menutype: MenuType }) {
   const [selectCityId, setSelectCityId] = useState("017010");
-  const { userId } = useAuth();
+  const { userId } = useAuthContext();
 
   if (menutype === MenuType.TIIKAWA) {
     return <TairaImage />;
@@ -81,7 +81,7 @@ export default function Home() {
   const [appBarHeight, setAppBarHeight] = useState(0); // AppBarの高さを保存するstate
   const appBarRef = useRef<HTMLDivElement>(null); // AppBarの参照を保存するref
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY; // Google Maps APIキーをここに挿入
-  const { userId } = useAuth();
+  const { userId } = useAuthContext();
 
   // useEffectでAppBarの高さを取得
   useEffect(() => {

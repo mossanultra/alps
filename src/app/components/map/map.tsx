@@ -10,7 +10,6 @@ import { Pinky } from "./style/pinky";
 // import ChatThread from "./chatthread/chatthread";
 // import styles from "./map.module.css";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
 
 const googleMapStyles = [
   { label: "Zisla01", style: Zisla01 },
@@ -47,7 +46,6 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   // const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState(googleMapStyles[0].style);
   const router = useRouter();
-  const { userId } = useAuth();
 
   const containerStyle: React.CSSProperties = {
     width: "100%",
@@ -55,15 +53,9 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   };
 
   const handleMarkerClick = (marker: MarkerInfo) => {
-    // setSelectedMarker(marker);
-    // setModalOpen(true);
-    router.push(`/points/${marker.id}?userId=${userId}`);
+    router.push(`/points/${marker.id}`);
   };
 
-  // const handleCloseModal = () => {
-  //   setSelectedMarker(null);
-  //   setModalOpen(false);
-  // };
 
   const handleStyleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = googleMapStyles.find(

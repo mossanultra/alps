@@ -5,6 +5,7 @@ import FirebaseAnalytics from "./components/firebase/analytics";
 // import { usePathname } from "next/navigation";
 // import { useTransition, animated } from "@react-spring/web";
 import React from "react";
+import { AuthProvider } from "./context/AuthContext";
 
 const uzura = localFont({
   src: "./fonts/uzurafont100/uzura.ttf",
@@ -17,14 +18,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const pathname = usePathname();
-
-  // const transitions = useTransition(pathname, {
-  //   from: { opacity: 0, transform: "translateX(100%)" },
-  //   enter: { opacity: 1, transform: "translateX(0%)" },
-  //   leave: { opacity: 0, transform: "translateX(-100%)" },
-  // });
-
   return (
     <html lang="en">
       <head>
@@ -35,12 +28,7 @@ export default function RootLayout({
       </head>
       <body className={`${uzura.variable}`}>
         <FirebaseAnalytics />
-        {/* {transitions((style, item) => (
-          <animated.div key={item} style={style}>
-            {children}
-          </animated.div>
-        ))} */}
-         {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
