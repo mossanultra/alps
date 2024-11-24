@@ -58,13 +58,13 @@ export default function PointPage({ params }: PointPageProps) {
   /** メッセージ送信 */
   const handleSubmit = useCallback(
     async (message: string) => {
-      if (!message || !sendUserName) {
+      if (!message) {
         alert("名前とメッセージを入力してください。");
         return;
       }
-      sendMessage(message, sendUserName);
+      sendMessage(message, profile!.userName);
     },
-    [sendMessage, sendUserName]
+    [profile, sendMessage]
   );
 
   /** 初回データ取得 */
