@@ -7,7 +7,7 @@ import {
 import { useState } from "react";
 
 export function useAuth() {
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>();
 
   function SignIn(email: string, password: string) {
     signInWithEmailAndPassword(auth, email, password)

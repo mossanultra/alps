@@ -17,6 +17,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 function Contents({ menutype }: { menutype: MenuType }) {
   const [selectCityId, setSelectCityId] = useState("017010");
+  const { userId } = useAuth();
 
   if (menutype === MenuType.TIIKAWA) {
     return <TairaImage />;
@@ -68,6 +69,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
           bio="筋肉エンジニア"
           followers={1200}
           following={300}
+          userId={userId!}
         />
       </div>
     );

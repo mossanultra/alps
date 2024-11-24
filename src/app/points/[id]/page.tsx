@@ -2,7 +2,7 @@
 
 import { Point } from "@/app/api/points/route";
 import HamstarLoader from "@/app/components/loading/hamster/hamster";
-import { notFound } from "next/navigation";
+import { notFound, useSearchParams } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
 import ChatBubble from "./ChatBubble/ChatBubble";
 import InputName from "./input-name/input-name";
@@ -10,6 +10,7 @@ import MessageBox from "./message-input/message-input";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import Button from "./send-button/send-button";
 import { useChat } from "@/hooks/useChat";
+import { useProfile } from "@/hooks/useProfile";
 
 interface PointPageProps {
   params: { id: string };
@@ -21,7 +22,15 @@ export default function PointPage({ params }: PointPageProps) {
   const [loading, setLoading] = useState(true);
   const [sendUserName, setSendUserName] = useState("もずく");
   const virtuosoRef = useRef<VirtuosoHandle | null>(null);
-  const { chats, loadingMore, fetchChats, fetchMoreChats, sendMessage } = useChat();
+  const { chats, loadingMore, fetchChats, fetchMoreChats, sendMessage } =
+    useChat();
+  const { profile, fetchProfile } = useProfile();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const userId = searchParams.get("userId");
+    fetchProfile(userId!);
+  }, [fetchProfile, searchParams]);
 
   /** ポイントデータを取得 */
   const fetchPoints = useCallback(async () => {
@@ -78,7 +87,7 @@ export default function PointPage({ params }: PointPageProps) {
   }, []);
 
   // ロード中の場合
-  if (loading) return <HamstarLoader />;
+  if (loading || !profile) return <HamstarLoader />;
   if (!point && !loadingMore) return notFound();
 
   return (
@@ -120,7 +129,7 @@ export default function PointPage({ params }: PointPageProps) {
       <InputName
         onChange={setSendUserName}
         label="名前を入力"
-        value={sendUserName}
+        value={profile!.userName}
       />
       <MessageBox onSendMessage={handleSubmit} />
     </div>
