@@ -1,0 +1,79 @@
+/* LoginPage.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    #f7e4c0,
+    #8c6239
+  ); /* ウイスキーの色調 */
+  font-family: "Arial", sans-serif;
+  color: #2c2c2c;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #452e1c; /* ウイスキー樽のような色 */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.pandaIcon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+  background-image: url("/panda.png"); /* パンダの画像を用意してください */
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 300px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.input {
+  padding: 10px;
+  border: 2px solid #8c6239;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.input:focus {
+  border-color: #f7a76c; /* ウイスキーグラスの反射をイメージ */
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 175, 120, 0.8);
+}
+
+.button {
+  padding: 10px;
+  background: #2c2c2c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background: #452e1c;
+}
+
+.footer {
+  margin-top: 20px;
+  font-size: 0.8rem;
+  color: #f7e4c0; /* ウイスキーのクリーミーな雰囲気 */
+}
