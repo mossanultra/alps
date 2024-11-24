@@ -1,7 +1,6 @@
 "use client";
 
 import { Point } from "@/app/api/points/route";
-import { Chat } from "@/app/api/chat/route";
 import HamstarLoader from "@/app/components/loading/hamster/hamster";
 import { notFound } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
@@ -10,6 +9,7 @@ import InputName from "./input-name/input-name";
 import MessageBox from "./message-input/message-input";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import Button from "./send-button/send-button";
+import { useChat } from "@/hooks/useChat";
 
 interface PointPageProps {
   params: { id: string };
@@ -18,13 +18,10 @@ interface PointPageProps {
 export default function PointPage({ params }: PointPageProps) {
   const { id } = params;
   const [point, setPoint] = useState<Point | null>(null);
-  const [chats, setChats] = useState<Chat[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
   const [sendUserName, setSendUserName] = useState("もずく");
-  const [lastDocId, setLastDocId] = useState<string | null>(null);
-  const [hasMoreChats, setHasMoreChats] = useState(true);
   const virtuosoRef = useRef<VirtuosoHandle | null>(null);
+  const { chats, loadingMore, fetchChats, fetchMoreChats, sendMessage } = useChat();
 
   /** ポイントデータを取得 */
   const fetchPoints = useCallback(async () => {
@@ -43,44 +40,11 @@ export default function PointPage({ params }: PointPageProps) {
     }
   }, [id]);
 
-  /** チャットデータを取得 */
-  const fetchChats = useCallback(async (pagingId: string | null = null) => {
-    try {
-      const path = pagingId ? `/api/chat?pagingId=${pagingId}` : `/api/chat`;
-      const response = await fetch(path, { method: "GET" });
-      if (response.ok) {
-        const data: Chat[] = await response.json();
-
-        if (pagingId) {
-          setChats((prevChats) => [...data, ...prevChats]);
-        } else {
-          setChats([...data]);
-        }
-        setLastDocId(data[0]?.id || null);
-        setHasMoreChats(data.length === 20); // 20件ずつ取得
-      } else {
-        console.error("Failed to fetch chats");
-      }
-    } catch (error) {
-      console.error("Error fetching chats:", error);
-    } finally {
-      setLoadingMore(false);
-    }
-  }, []);
   const handleAtTop = (atTop: boolean) => {
     if (atTop) {
-      handleFetchMore();
+      fetchMoreChats();
     }
   };
-
-  /** さらにチャットを取得 */
-  const handleFetchMore = useCallback(() => {
-    console.log("handleFetchMore", hasMoreChats, loadingMore, lastDocId);
-    if (hasMoreChats && !loadingMore && lastDocId) {
-      setLoadingMore(true);
-      fetchChats(lastDocId);
-    }
-  }, [hasMoreChats, loadingMore, lastDocId, fetchChats]);
 
   /** メッセージ送信 */
   const handleSubmit = useCallback(
@@ -89,25 +53,9 @@ export default function PointPage({ params }: PointPageProps) {
         alert("名前とメッセージを入力してください。");
         return;
       }
-      try {
-        const formData = new FormData();
-        formData.append("text", message);
-        formData.append("userName", sendUserName);
-        const response = await fetch("/api/chat", {
-          method: "POST",
-          body: formData,
-        });
-        if (response.ok) {
-          alert("メッセージを送信しました！");
-        } else {
-          alert("送信に失敗しました。");
-        }
-      } catch (error) {
-        console.error("Error sending message:", error);
-        alert("エラーが発生しました。");
-      }
+      sendMessage(message, sendUserName);
     },
-    [sendUserName]
+    [sendMessage, sendUserName]
   );
 
   /** 初回データ取得 */
@@ -116,28 +64,14 @@ export default function PointPage({ params }: PointPageProps) {
     fetchChats();
   }, [fetchChats, fetchPoints]);
 
-  /** チャットデータ更新時に最下部へスクロール */
-  useEffect(() => {
-    const virtuoso = virtuosoRef.current;
-    console.log("virtuoso:", virtuoso);
-    console.log(chats);
-    // if (virtuoso) {
-    //   setTimeout(() => {
-    //     console.log("scroll to index");
-    //     virtuoso.scrollToIndex({ index: "LAST", behavior: "auto" });
-    //   });
-    // }
-  }, [chats]);
   useEffect(() => {
     const virtuoso = virtuosoRef.current;
     if (virtuoso === null) {
-      console.log("virtuoso is null");
       return;
     }
 
     if (virtuoso) {
       setTimeout(() => {
-        console.log("scroll to index");
         virtuoso.scrollToIndex({ index: "LAST", behavior: "auto" });
       });
     }
