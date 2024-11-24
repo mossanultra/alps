@@ -40,7 +40,7 @@ export default function LoginPage() {
           新規登録
         </button>
       </div>
-      <p className={styles.footer}>© 2024 Maho&Mozuku</p>
+      <p className={styles.footer}>© 2024 Maho with Shinya</p>
     </div>
   );
 }
