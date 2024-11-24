@@ -1,5 +1,6 @@
-import { getAnalytics } from 'firebase/analytics'
-import { getApps, initializeApp } from 'firebase/app'
+import { getAnalytics } from "firebase/analytics";
+import { getApps, initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -9,12 +10,11 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-}
+};
 
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0]
-const analytics =
-  typeof window !== 'undefined'
-    ? getAnalytics(app)
-    : undefined
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+const analytics = typeof window !== "undefined" ? getAnalytics(app) : undefined;
 
-export { analytics }
+const auth = getAuth(app);
+
+export { analytics, auth };
