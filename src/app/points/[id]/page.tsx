@@ -25,20 +25,11 @@ export default function PointPage({ params }: PointPageProps) {
   const { chats, loadingMore, fetchChats, fetchMoreChats, sendMessage } =
     useChat();
   const { profile, fetchProfile } = useProfile();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        fetchProfile(); // 復帰時にプロフィールを再取得
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [fetchProfile]);
+    fetchProfile();
+  }, [fetchProfile, searchParams]);
 
   /** ポイントデータを取得 */
   const fetchPoints = useCallback(async () => {
@@ -93,8 +84,8 @@ export default function PointPage({ params }: PointPageProps) {
     }
   }, []);
 
-  function LoadProfile() {
-    return <p>Profile Loading ...</p>;
+  function LoadProfile(){
+    return <p>Profile Loading ...</p>
   }
 
   // ロード中の場合
