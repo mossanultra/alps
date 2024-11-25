@@ -23,7 +23,7 @@ export function useProfile() {
       console.error("Error fetching chats:", error);
     } finally {
     }
-  }, []);
+  }, [userId]);
 
   return {
     profile,
