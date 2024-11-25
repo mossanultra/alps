@@ -2,7 +2,7 @@
 
 import { Point } from "@/app/api/points/route";
 import HamstarLoader from "@/app/components/loading/hamster/hamster";
-import { notFound, useSearchParams } from "next/navigation";
+import { notFound } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
 import ChatBubble from "./ChatBubble/ChatBubble";
 import InputName from "./input-name/input-name";
