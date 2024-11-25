@@ -25,11 +25,10 @@ export default function PointPage({ params }: PointPageProps) {
   const { chats, loadingMore, fetchChats, fetchMoreChats, sendMessage } =
     useChat();
   const { profile, fetchProfile } = useProfile();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     fetchProfile();
-  }, [fetchProfile, searchParams]);
+  }, [fetchProfile]);
 
   /** ポイントデータを取得 */
   const fetchPoints = useCallback(async () => {
