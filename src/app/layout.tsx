@@ -13,6 +13,18 @@ const uzura = localFont({
   weight: "100 900",
 });
 
+const marumonica = localFont({
+  src: "./fonts/x12y16pxMaruMonica.ttf",
+  variable: "--font-marumonica",
+  weight: "100 900",
+});
+
+const kurobara = localFont({
+  src: "./fonts/kurobara-cinderella.ttf",
+  variable: "--font-kurobara",
+  weight: "100 900",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,7 +38,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon.png" />
         <meta name="theme-color" content="#a8a6a3" />
       </head>
-      <body className={`${uzura.variable}`}>
+      <body className={`${uzura.variable} ${marumonica.variable} ${kurobara.variable}`}>
         <FirebaseAnalytics />
         <AuthProvider>{children}</AuthProvider>
       </body>
