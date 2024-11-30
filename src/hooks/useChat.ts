@@ -7,11 +7,18 @@ export function useChat() {
   const [lastDocId, setLastDocId] = useState<string | null>(null);
   const [hasMoreChats, setHasMoreChats] = useState(true);
 
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
+
   /** チャットデータを取得 */
   const fetchChats = useCallback(
-    async (pagingId: string | null = null) => {
+    async (pagingId: string | null = null, lat: number, lng: number) => {
       try {
-        const path = pagingId ? `/api/chat?pagingId=${pagingId}` : `/api/chat`;
+        setLat(lat);
+        setLng(lng);
+        const path = pagingId
+          ? `/api/chat?pagingId=${pagingId}&lat=${lat}&lng=${lng}`
+          : `/api/chat?lat=${lat}&lng=${lng}`;
         const response = await fetch(path, { method: "GET" });
         if (response.ok) {
           const data: Chat[] = await response.json();
@@ -39,13 +46,13 @@ export function useChat() {
   const fetchMoreChats = useCallback(() => {
     if (hasMoreChats && !loadingMore && lastDocId) {
       setLoadingMore(true);
-      fetchChats(lastDocId);
+      fetchChats(lastDocId, lat, lng);
     }
-  }, [hasMoreChats, loadingMore, lastDocId, fetchChats]);
+  }, [hasMoreChats, loadingMore, lastDocId, fetchChats, lat, lng]);
 
   /** メッセージ送信 */
   const sendMessage = useCallback(
-    async (message: string, userName: string) => {
+    async (message: string, userName: string, lat: number, lng: number) => {
       if (!message || !userName) {
         alert("名前とメッセージを入力してください。");
         return;
@@ -54,13 +61,15 @@ export function useChat() {
         const formData = new FormData();
         formData.append("text", message);
         formData.append("userName", userName);
+        formData.append("lat", String(lat));
+        formData.append("lng", String(lng));
         const response = await fetch("/api/chat", {
           method: "POST",
           body: formData,
         });
         if (response.ok) {
           alert("メッセージを送信しました！");
-          await fetchChats(); // 新しいメッセージを取得
+          await fetchChats(null, lat, lng); // 新しいメッセージを取得
         } else {
           alert("送信に失敗しました。");
         }

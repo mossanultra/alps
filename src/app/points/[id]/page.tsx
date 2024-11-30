@@ -60,15 +60,25 @@ export default function PointPage({ params }: PointPageProps) {
         alert("名前とメッセージを入力してください。");
         return;
       }
-      sendMessage(message, profile!.userName);
+      sendMessage(message, profile!.userName, point!.lat, point!.lng);
     },
-    [profile, sendMessage]
+    [point, profile, sendMessage]
   );
   /** 初回データ取得 */
   useEffect(() => {
-    fetchPoints();
-    fetchChats();
-  }, [fetchChats, fetchPoints]);
+    const fetchData = async () => {
+      await fetchPoints();
+    };
+  
+    fetchData();
+  }, [fetchPoints]);
+    useEffect(() => {
+      console.log("point")
+      console.log(point)
+    if (point) {
+      fetchChats(null, point!.lat, point!.lng);
+    }
+  }, [fetchChats, point]);
 
   useEffect(() => {
     const virtuoso = virtuosoRef.current;
@@ -83,8 +93,8 @@ export default function PointPage({ params }: PointPageProps) {
     }
   }, []);
 
-  function LoadProfile(){
-    return <p>Profile Loading ...</p>
+  function LoadProfile() {
+    return <p>Profile Loading ...</p>;
   }
 
   // ロード中の場合
@@ -122,7 +132,7 @@ export default function PointPage({ params }: PointPageProps) {
       <div>
         <Button
           onClick={() => {
-            fetchChats();
+            fetchChats(null, point!.lat, point!.lng);
           }}
         >
           {"Refresh"}

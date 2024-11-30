@@ -35,19 +35,20 @@ type MapWithCustomModalMarkerProps = {
   zoom: number;
   markers: MarkerInfo[];
   children?: ReactNode;
+  onPointRegisterd: () => void;
 };
 
 const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   center,
   zoom,
   markers,
-  // children,
+  onPointRegisterd,
 }) => {
   // const [selectedMarker, setSelectedMarker] = useState<MarkerInfo | null>(null);
   // const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState(googleMapStyles[0].style);
   const router = useRouter();
-  const {registerPoint} = usePoint();
+  const { registerPoint } = usePoint();
   const containerStyle: React.CSSProperties = {
     width: "100%",
     height: "600px",
@@ -56,7 +57,6 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   const handleMarkerClick = (marker: MarkerInfo) => {
     router.push(`/points/${marker.id}`);
   };
-
 
   const handleStyleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = googleMapStyles.find(
@@ -71,9 +71,18 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
       const lat = event.latLng.lat();
       const lng = event.latLng.lng();
       console.log("Clicked location:", { lat, lng });
-      await registerPoint(lat,lng)
+      // ここでポイントが追加されてる
+      await registerPoint(lat, lng);
+
+      // リロードする
+      onPointRegisterd();
     }
   };
+  const handleZoomChanged = () => {
+    // setZoom(map.getZoom());
+  };
+
+
   return (
     <>
       {/* ドロップダウンボックス */}
@@ -90,8 +99,9 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
         center={center}
         zoom={zoom}
         options={{ styles: selectedStyle }}
-
         onClick={handleMapClick}
+        onZoomChanged={handleZoomChanged}
+
       >
         {markers.map((marker, index) => (
           <Marker
