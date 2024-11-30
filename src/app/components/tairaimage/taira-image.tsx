@@ -20,6 +20,7 @@ function Contents({ menutype }: { menutype: TabMenu }) {
       const response = await fetch("/api/points", { method: "GET" });
       if (response.ok) {
         const data = await response.json();
+        console.log(data)
         setPoints(data);
       } else {
         console.error("Failed to fetch");

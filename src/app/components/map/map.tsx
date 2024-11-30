@@ -10,6 +10,7 @@ import { Pinky } from "./style/pinky";
 // import ChatThread from "./chatthread/chatthread";
 // import styles from "./map.module.css";
 import { useRouter } from "next/navigation";
+import { usePoint } from "@/hooks/usePoint";
 
 const googleMapStyles = [
   { label: "Zisla01", style: Zisla01 },
@@ -46,7 +47,7 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   // const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState(googleMapStyles[0].style);
   const router = useRouter();
-
+  const {registerPoint} = usePoint();
   const containerStyle: React.CSSProperties = {
     width: "100%",
     height: "600px",
@@ -65,7 +66,14 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
       setSelectedStyle(selected.style);
     }
   };
-
+  const handleMapClick = async (event: google.maps.MapMouseEvent) => {
+    if (event.latLng) {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      console.log("Clicked location:", { lat, lng });
+      await registerPoint(lat,lng)
+    }
+  };
   return (
     <>
       {/* ドロップダウンボックス */}
@@ -82,6 +90,8 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
         center={center}
         zoom={zoom}
         options={{ styles: selectedStyle }}
+
+        onClick={handleMapClick}
       >
         {markers.map((marker, index) => (
           <Marker
