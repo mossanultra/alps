@@ -21,7 +21,7 @@ body {
   background: var(--background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: var(--font-kurobara);
+  font-family: var(--font-mplus);
 }
 
 * {

@@ -24,6 +24,11 @@ const kurobara = localFont({
   variable: "--font-kurobara",
   weight: "100 900",
 });
+const mplus = localFont({
+  src: "./fonts/rounded-mplus-1c-regular.ttf",
+  variable: "--font-mplus",
+  weight: "100 900",
+});
 
 export default function RootLayout({
   children,
@@ -38,7 +43,9 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon.png" />
         <meta name="theme-color" content="#a8a6a3" />
       </head>
-      <body className={`${uzura.variable} ${marumonica.variable} ${kurobara.variable}`}>
+      <body
+        className={`${mplus.variable} ${uzura.variable} ${marumonica.variable} ${kurobara.variable}`}
+      >
         <FirebaseAnalytics />
         <AuthProvider>{children}</AuthProvider>
       </body>
