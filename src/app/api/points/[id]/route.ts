@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { markers } from "../data";
 import { db } from "@/firebaseAdmin";
 import { Point } from "../route";
 
