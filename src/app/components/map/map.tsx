@@ -1,16 +1,12 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState, useRef, useEffect, useMemo } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
-// import ModalDialog from "./modal-modal/modal-dialog";
-// import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { usePoint } from "@/hooks/usePoint";
 import { Zisla01 } from "./style/zisla01";
 import { GreenMap } from "./style/greeenmap";
 import { AssassingsCreed } from "./style/assassins-creed";
 import { Modest } from "./style/modest";
 import { Pinky } from "./style/pinky";
-// import ChatThread from "./chatthread/chatthread";
-// import styles from "./map.module.css";
-import { useRouter } from "next/navigation";
-import { usePoint } from "@/hooks/usePoint";
 
 const googleMapStyles = [
   { label: "Zisla01", style: Zisla01 },
@@ -23,125 +19,131 @@ const googleMapStyles = [
 type MarkerInfo = {
   lat: number;
   lng: number;
-  // iconUrl?: string;
-  // infoTitle: string;
-  // infoContent: string;
-  // image: string;
   id: string;
 };
 
-type MapWithCustomModalMarkerProps = {
+type MapProps = {
   center: { lat: number; lng: number };
   zoom: number;
-  markers: MarkerInfo[];
   children?: ReactNode;
-  onPointRegisterd: () => void;
+  onPointRegisterd?: () => void;
 };
 
-const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
+const MapWithCustomModalMarker: React.FC<MapProps> = ({
   center,
   zoom,
-  markers,
   onPointRegisterd,
 }) => {
-  // const [selectedMarker, setSelectedMarker] = useState<MarkerInfo | null>(null);
-  // const [isModalOpen, setModalOpen] = useState(false);
+  const [mapState, setMapState] = useState({
+    center,
+    zoom,
+  });
   const [selectedStyle, setSelectedStyle] = useState(googleMapStyles[0].style);
+  const mapRef = useRef<google.maps.Map | null>(null);
   const router = useRouter();
-  const { registerPoint } = usePoint();
+  const { registerPoint, fetchPoints, points } = usePoint();
+
   const containerStyle: React.CSSProperties = {
     width: "100%",
     height: "600px",
   };
+
+  const mapStylesOptions = useMemo(() => googleMapStyles, []);
+
+  useEffect(() => {
+    fetchPoints();
+  }, [fetchPoints]);
 
   const handleMarkerClick = (marker: MarkerInfo) => {
     router.push(`/points/${marker.id}`);
   };
 
   const handleStyleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selected = googleMapStyles.find(
+    const selected = mapStylesOptions.find(
       (style) => style.label === event.target.value
     );
-    if (selected) {
-      setSelectedStyle(selected.style);
-    }
+    if (selected) setSelectedStyle(selected.style);
   };
+
   const handleMapClick = async (event: google.maps.MapMouseEvent) => {
     if (event.latLng) {
       const lat = event.latLng.lat();
       const lng = event.latLng.lng();
       console.log("Clicked location:", { lat, lng });
-      // ここでポイントが追加されてる
       await registerPoint(lat, lng);
-
-      // リロードする
-      onPointRegisterd();
+      if (onPointRegisterd) onPointRegisterd();
+      fetchPoints();
     }
   };
-  const handleZoomChanged = () => {
-    // setZoom(map.getZoom());
+
+  const handleCenterChanged = () => {
+    if (mapRef.current) {
+      const newCenter = mapRef.current.getCenter();
+      if (newCenter) {
+        const lat = newCenter.lat();
+        const lng = newCenter.lng();
+
+        setMapState((prev) => ({
+          ...prev,
+          center: { lat, lng },
+        }));
+      }
+    }
   };
 
+  const handleZoomChanged = () => {
+    if (mapRef.current) {
+      const newZoom = mapRef.current.getZoom();
+      if (newZoom) {
+        setMapState((prev) => ({
+          ...prev,
+          zoom: newZoom,
+        }));
+      }
+    }
+  };
+
+  const onLoad = (map: google.maps.Map) => {
+    mapRef.current = map;
+  };
+
+  const onUnmount = () => {
+    mapRef.current = null;
+  };
 
   return (
     <>
-      {/* ドロップダウンボックス */}
-      <p>Selecte Map Style</p>
+      <p>Select Map Style</p>
       <select onChange={handleStyleChange}>
-        {googleMapStyles.map((style, index) => (
+        {mapStylesOptions.map((style, index) => (
           <option key={index} value={style.label}>
             {style.label}
           </option>
         ))}
       </select>
+      <p>Current Zoom: {mapState.zoom}</p>
+      <p>
+        Current Center: Latitude {mapState.center.lat}, Longitude{" "}
+        {mapState.center.lng}
+      </p>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={center}
-        zoom={zoom}
+        center={mapState.center}
+        zoom={mapState.zoom}
         options={{ styles: selectedStyle }}
         onClick={handleMapClick}
         onZoomChanged={handleZoomChanged}
-
+        onCenterChanged={handleCenterChanged}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
       >
-        {markers.map((marker, index) => (
+        {points.map((marker, index) => (
           <Marker
             key={index}
             position={{ lat: marker.lat, lng: marker.lng }}
             onClick={() => handleMarkerClick(marker)}
           />
         ))}
-
-        {/* モーダルダイアログ
-        {isModalOpen && selectedMarker && (
-          <ModalDialog onClose={handleCloseModal}>
-            {children ? (
-              children
-            ) : (
-              <div
-                // style={{
-                //   position: "relative",
-                //   width: "300px",
-                //   height: "300px",
-                // }}
-                className={styles.container}
-              >
-                <p style={{color: 'black'}}>ここで陶芸体験ができたよ！！</p>
-                <Image
-                  src={'/tougei.jpg'}
-                  alt=""
-                  layout="fill"
-                  objectFit="contain"
-                />
-                <ChatThread messages={[{
-                  text: 'シロをいけにえに！！',
-                  timestamp: Date().toString(),
-                  isSender: false
-                }]}></ChatThread>
-
-              </div>
-            )}
-          </ModalDialog>
-        )} */}
       </GoogleMap>
     </>
   );

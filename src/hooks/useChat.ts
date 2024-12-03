@@ -1,56 +1,93 @@
-import { useState, useCallback } from "react";
+import { useReducer, useCallback } from "react";
 import { Chat } from "@/app/api/chat/route";
 
+type State = {
+  chats: Chat[];
+  loadingMore: boolean;
+  lastDocId: string | null;
+  hasMoreChats: boolean;
+  lat: number;
+  lng: number;
+};
+
+type Action =
+  | { type: "SET_CHATS"; chats: Chat[] }
+  | { type: "ADD_CHATS"; chats: Chat[] }
+  | { type: "SET_LOADING"; loading: boolean }
+  | { type: "SET_LAST_DOC_ID"; id: string | null }
+  | { type: "SET_HAS_MORE"; hasMore: boolean }
+  | { type: "SET_LOCATION"; lat: number; lng: number };
+
+const initialState: State = {
+  chats: [],
+  loadingMore: false,
+  lastDocId: null,
+  hasMoreChats: true,
+  lat: 0,
+  lng: 0,
+};
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "SET_CHATS":
+      return { ...state, chats: action.chats };
+    case "ADD_CHATS":
+      return { ...state, chats: [...state.chats, ...action.chats] };
+    case "SET_LOADING":
+      return { ...state, loadingMore: action.loading };
+    case "SET_LAST_DOC_ID":
+      return { ...state, lastDocId: action.id };
+    case "SET_HAS_MORE":
+      return { ...state, hasMoreChats: action.hasMore };
+    case "SET_LOCATION":
+      return { ...state, lat: action.lat, lng: action.lng };
+    default:
+      return state;
+  }
+}
+
+function buildApiPath(pagingId: string | null, lat: number, lng: number) {
+  const params = new URLSearchParams({ lat: String(lat), lng: String(lng) });
+  if (pagingId) params.append("pagingId", pagingId);
+  return `/api/chat?${params.toString()}`;
+}
+
 export function useChat() {
-  const [chats, setChats] = useState<Chat[]>([]);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [lastDocId, setLastDocId] = useState<string | null>(null);
-  const [hasMoreChats, setHasMoreChats] = useState(true);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const [lat, setLat] = useState(0);
-  const [lng, setLng] = useState(0);
-
-  /** チャットデータを取得 */
   const fetchChats = useCallback(
     async (pagingId: string | null = null, lat: number, lng: number) => {
+      dispatch({ type: "SET_LOCATION", lat, lng });
       try {
-        setLat(lat);
-        setLng(lng);
-        const path = pagingId
-          ? `/api/chat?pagingId=${pagingId}&lat=${lat}&lng=${lng}`
-          : `/api/chat?lat=${lat}&lng=${lng}`;
-        const response = await fetch(path, { method: "GET" });
+        const response = await fetch(buildApiPath(pagingId, lat, lng));
         if (response.ok) {
           const data: Chat[] = await response.json();
-
           if (pagingId) {
-            setChats((prevChats) => [...data, ...prevChats]);
+            dispatch({ type: "ADD_CHATS", chats: data });
           } else {
-            setChats([...data]);
+            dispatch({ type: "SET_CHATS", chats: data });
           }
-          setLastDocId(data[0]?.id || null);
-          setHasMoreChats(data.length === 20); // 20件ずつ取得
+          dispatch({ type: "SET_LAST_DOC_ID", id: data[0]?.id || null });
+          dispatch({ type: "SET_HAS_MORE", hasMore: data.length === 20 });
         } else {
           console.error("Failed to fetch chats");
         }
       } catch (error) {
         console.error("Error fetching chats:", error);
       } finally {
-        setLoadingMore(false);
+        dispatch({ type: "SET_LOADING", loading: false });
       }
     },
     []
   );
 
-  /** さらにチャットを取得 */
   const fetchMoreChats = useCallback(() => {
-    if (hasMoreChats && !loadingMore && lastDocId) {
-      setLoadingMore(true);
-      fetchChats(lastDocId, lat, lng);
+    if (state.hasMoreChats && !state.loadingMore && state.lastDocId) {
+      dispatch({ type: "SET_LOADING", loading: true });
+      fetchChats(state.lastDocId, state.lat, state.lng);
     }
-  }, [hasMoreChats, loadingMore, lastDocId, fetchChats, lat, lng]);
+  }, [state, fetchChats]);
 
-  /** メッセージ送信 */
   const sendMessage = useCallback(
     async (message: string, userName: string, lat: number, lng: number) => {
       if (!message || !userName) {
@@ -63,13 +100,15 @@ export function useChat() {
         formData.append("userName", userName);
         formData.append("lat", String(lat));
         formData.append("lng", String(lng));
+
         const response = await fetch("/api/chat", {
           method: "POST",
           body: formData,
         });
+
         if (response.ok) {
           alert("メッセージを送信しました！");
-          await fetchChats(null, lat, lng); // 新しいメッセージを取得
+          await fetchChats(null, lat, lng);
         } else {
           alert("送信に失敗しました。");
         }
@@ -82,9 +121,9 @@ export function useChat() {
   );
 
   return {
-    chats,
-    loadingMore,
-    hasMoreChats,
+    chats: state.chats,
+    loadingMore: state.loadingMore,
+    hasMoreChats: state.hasMoreChats,
     fetchChats,
     fetchMoreChats,
     sendMessage,
