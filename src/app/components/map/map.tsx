@@ -31,7 +31,6 @@ type MarkerInfo = {
 };
 
 type MapWithCustomModalMarkerProps = {
-  center: { lat: number; lng: number };
   zoom: number;
   markers: MarkerInfo[];
   children?: ReactNode;
@@ -39,7 +38,6 @@ type MapWithCustomModalMarkerProps = {
 };
 
 const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
-  center,
   zoom,
   markers,
   onPointRegisterd,
@@ -53,6 +51,7 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
     width: "100%",
     height: "600px",
   };
+  const [center, setcenter] = useState({ lat: 37.7608, lng: 140.473 });
 
   const handleMarkerClick = (marker: MarkerInfo) => {
     router.push(`/points/${marker.id}`);
@@ -64,6 +63,9 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
     );
     if (selected) {
       setSelectedStyle(selected.style);
+      const  lat=center.lat+1;
+      setcenter({lat:lat,lng:center.lng})
+      console.log(lat)
     }
   };
   const handleMapClick = async (event: google.maps.MapMouseEvent) => {

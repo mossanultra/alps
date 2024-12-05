@@ -17,7 +17,6 @@ function Contents({ menutype }: { menutype: TabMenu }) {
   // const [center , setCenter] = useState({ lat: 37.7608, lng: 140.473 });
   // const [zoom , setZoom] = useState(8.5);
 
-  const center = { lat: 37.7608, lng: 140.473 }; // 東京の緯度と経度
   const zoom = 8.5; // ズームレベル
   const fetchPoints = async () => {
     setLoading(true);
@@ -49,7 +48,6 @@ function Contents({ menutype }: { menutype: TabMenu }) {
       <div>
         <h1>mozukuの地図</h1>
         <MapWithInfoMarker
-          center={center}
           zoom={zoom}
           markers={points}
           onPointRegisterd={fetchPoints}
