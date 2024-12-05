@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 // import ModalDialog from "./modal-modal/modal-dialog";
 // import Image from "next/image";
@@ -56,15 +56,35 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   const handleMarkerClick = (marker: MarkerInfo) => {
     router.push(`/points/${marker.id}`);
   };
+  useEffect(() => { 
+    updateCurrentPosition();
+  }, []);
 
+  const updateCurrentPosition = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position: GeolocationPosition) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          setcenter(pos)
+
+
+        },
+        () => {
+        }
+      )
+    };
+  }
   const handleStyleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = googleMapStyles.find(
       (style) => style.label === event.target.value
     );
     if (selected) {
       setSelectedStyle(selected.style);
-      const  lat=center.lat+1;
-      setcenter({lat:lat,lng:center.lng})
+      const lat = center.lat + 1;
+      setcenter({ lat: lat, lng: center.lng })
       console.log(lat)
     }
   };
