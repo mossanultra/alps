@@ -1,57 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./taira-image.module.css";
 import Tab, { TabMenu } from "./tab/tab";
 import PrGrid from "./pr-grid/pr-grid";
 import ContentGrid from "./content-grid/content-grid";
 import MapWithInfoMarker from "../../components/map/map";
-import HamstarLoader from "../loading/hamster/hamster";
-type Point = {
-  lat: number;
-  lng: number;
-  id: string;
-};
 
 function Contents({ menutype }: { menutype: TabMenu }) {
-  const [points, setPoints] = useState<Point[]>([]);
-  const [loading, setLoading] = useState(false);
-  // const [center , setCenter] = useState({ lat: 37.7608, lng: 140.473 });
-  // const [zoom , setZoom] = useState(8.5);
-
-  const zoom = 8.5; // ズームレベル
-  const fetchPoints = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch("/api/points", { method: "GET" });
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setPoints(data);
-      } else {
-        console.error("Failed to fetch");
-      }
-    } catch (error) {
-      console.error("Error fetching:", error);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchPoints();
-  }, []);
+  const zoom = 13; // ズームレベル
 
   if (menutype === TabMenu.LAND) {
-    if (loading) {
-      return <HamstarLoader />;
-    }
-
     return (
       <div>
         <h1>mozukuの地図</h1>
-        <MapWithInfoMarker
-          zoom={zoom}
-          markers={points}
-          onPointRegisterd={fetchPoints}
-        ></MapWithInfoMarker>
+        <MapWithInfoMarker zoom={zoom}></MapWithInfoMarker>
       </div>
     );
   }
@@ -78,7 +39,6 @@ const TairaImage = () => {
         }}
       />
       <Contents menutype={selectedTab}></Contents>
-
     </div>
   );
 };
