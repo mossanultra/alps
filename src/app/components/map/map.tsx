@@ -8,6 +8,7 @@ import { Pinky } from "./style/pinky";
 import { useRouter } from "next/navigation";
 import { usePoint } from "@/hooks/usePoint";
 import HamstarLoader from "../loading/hamster/hamster";
+import { useGeoLocation } from "@/hooks/useGeoLocation";
 
 const googleMapStyles = [
   { label: "Zisla01", style: Zisla01 },
@@ -41,6 +42,7 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   const [center, setcenter] = useState({ lat: 37.7608, lng: 140.473 });
   const { fetchPoints, points } = usePoint();
   const hasFetched = useRef(false);
+  const { fetchLocation } = useGeoLocation();
 
   const handleMarkerClick = (marker: MarkerInfo) => {
     router.push(`/points/${marker.id}`);
@@ -87,10 +89,28 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
       const lat = event.latLng.lat();
       const lng = event.latLng.lng();
       console.log("Clicked location:", { lat, lng });
-      // ここでポイントが追加されてる
-      await registerPoint(lat, lng);
+
+      // 確認ダイアログを表示
+      const geoLocation = await fetchLocation(lat, lng);
+      const isConfirmed = window.confirm(
+        `${geoLocation?.city},${geoLocation?.town}にピンを立てますか？`
+      );
+
+      // ユーザーが "Yes" を選択した場合のみ処理を実行
+      if (isConfirmed) {
+        // alert(JSON.stringify(location2));
+
+        // 必要に応じてここでポイントの登録処理を実行
+        await registerPoint(lat, lng);
+      } else {
+        console.log("User canceled the operation.");
+      }
     }
   };
+  useEffect(() => {
+    console.log(points);
+  }, [points]);
+
   const handleZoomChanged = () => {
     // setZoom(map.getZoom());
   };
