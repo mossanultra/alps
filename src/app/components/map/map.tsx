@@ -147,8 +147,8 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
         <Marker
           position={{ lat: center.lat, lng: center.lng }}
           icon={{
-            url: "/otokoume.jpg", // publicディレクトリから画像を参照
-            scaledSize: new google.maps.Size(50, 50), // サイズを調整
+            url: "/36959.png", // publicディレクトリから画像を参照
+            scaledSize: new google.maps.Size(30, 30), // サイズを調整
           }}
         />
       </GoogleMap>
