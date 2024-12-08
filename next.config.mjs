@@ -11,6 +11,13 @@ const nextConfig = withPWA({
 })({
   reactStrictMode: false, // ReactのStrictモード
   swcMinify: true, // SWCを使用した最適化
+  // 開発時にソースマップを有効化
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.devtool = 'source-map';
+    }
+    return config;
+  },
 });
 
 export default nextConfig;
