@@ -11,7 +11,7 @@ import TairaImage from "./components/tairaimage/taira-image";
 import { LoadScript } from "@react-google-maps/api";
 import Profile from "./components/profile/profile";
 import PostForm from "./components/newpost/new-post";
-import AuthView from "./components/login/login";
+import LoginPage from "./components/login/login";
 import { useAuthContext } from "./context/AuthContext";
 // import Image from "next/image";
 
@@ -56,7 +56,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
   if (menutype === MenuType.MARMOT) {
     return (
       <>
-        <AuthView></AuthView>
+        <LoginPage></LoginPage>
       </>
     );
   }
@@ -81,7 +81,6 @@ export default function Home() {
   const [appBarHeight, setAppBarHeight] = useState(0); // AppBarの高さを保存するstate
   const appBarRef = useRef<HTMLDivElement>(null); // AppBarの参照を保存するref
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY; // Google Maps APIキーをここに挿入
-  const { userId } = useAuthContext();
 
   // useEffectでAppBarの高さを取得
   useEffect(() => {
@@ -89,10 +88,6 @@ export default function Home() {
       setAppBarHeight(appBarRef.current.clientHeight); // AppBarの高さを取得してstateに保存
     }
   }, []);
-
-  if (userId === null) {
-    return <AuthView></AuthView>;
-  }
 
   return (
     <div>

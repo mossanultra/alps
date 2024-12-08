@@ -50,14 +50,13 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   useEffect(() => {
     if (!hasFetched.current) {
       updateCurrentPosition();
-      console.log("?????");
       const fetchData = async () => {
         await fetchPoints();
       };
       fetchData();
       hasFetched.current = true;
     }
-  }, []);
+  }, [fetchPoints]);
 
   const updateCurrentPosition = () => {
     if (navigator.geolocation) {
@@ -79,9 +78,6 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
     );
     if (selected) {
       setSelectedStyle(selected.style);
-      const lat = center.lat + 1;
-      setcenter({ lat: lat, lng: center.lng });
-      console.log(lat);
     }
   };
   const handleMapClick = async (event: google.maps.MapMouseEvent) => {
@@ -102,6 +98,8 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
 
         // 必要に応じてここでポイントの登録処理を実行
         await registerPoint(lat, lng);
+
+        fetchPoints();
       } else {
         console.log("User canceled the operation.");
       }

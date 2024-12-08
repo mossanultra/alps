@@ -1,7 +1,5 @@
 "use client";
 
-import { Point } from "@/app/api/points/route";
-import HamstarLoader from "@/app/components/loading/hamster/hamster";
 import { notFound } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
 import ChatBubble from "./ChatBubble/ChatBubble";
@@ -11,6 +9,9 @@ import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import Button from "./send-button/send-button";
 import { useChat } from "@/hooks/useChat";
 import { useProfile } from "@/hooks/useProfile";
+import { useAuthContext } from "@/app/context/AuthContext";
+import { Point, usePoint } from "@/hooks/usePoint";
+import HamstarLoader from "@/app/components/loading/hamster/hamster";
 
 interface PointPageProps {
   params: { id: string };
@@ -18,34 +19,20 @@ interface PointPageProps {
 
 export default function PointPage({ params }: PointPageProps) {
   const { id } = params;
-  const [point, setPoint] = useState<Point | null>(null);
-  const [loading, setLoading] = useState(true);
   const [sendUserName, setSendUserName] = useState("もずく");
   const virtuosoRef = useRef<VirtuosoHandle | null>(null);
   const { chats, loadingMore, fetchChats, fetchMoreChats, sendMessage } =
     useChat();
   const { profile, fetchProfile } = useProfile();
+  const { fetchPoint } = usePoint();
+  const { userId } = useAuthContext();
+  const [point, setPoint] = useState<Point | null>(null);
 
   useEffect(() => {
-    fetchProfile();
-  }, [fetchProfile]);
-
-  /** ポイントデータを取得 */
-  const fetchPoints = useCallback(async () => {
-    try {
-      const response = await fetch(`/api/points/${id}`, { method: "GET" });
-      if (response.ok) {
-        const data = await response.json();
-        setPoint(data);
-      } else {
-        console.error("Failed to fetch points");
-      }
-    } catch (error) {
-      console.error("Error fetching points:", error);
-    } finally {
-      setLoading(false);
+    if (userId) {
+      fetchProfile(userId);
     }
-  }, [id]);
+  }, [fetchProfile, userId]);
 
   const handleAtTop = (atTop: boolean) => {
     if (atTop) {
@@ -66,15 +53,16 @@ export default function PointPage({ params }: PointPageProps) {
   );
   /** 初回データ取得 */
   useEffect(() => {
+    if (!id) {
+      return;
+    }
     const fetchData = async () => {
-      await fetchPoints();
+      const p = await fetchPoint(id);
+      setPoint(p);
     };
-  
     fetchData();
-  }, [fetchPoints]);
-    useEffect(() => {
-      console.log("point")
-      console.log(point)
+  }, [fetchPoint, id]);
+  useEffect(() => {
     if (point) {
       fetchChats(null, point!.lat, point!.lng);
     }
@@ -98,7 +86,7 @@ export default function PointPage({ params }: PointPageProps) {
   }
 
   // ロード中の場合
-  if (loading) return <HamstarLoader />;
+  if (!point) return <HamstarLoader />;
   if (!profile) return LoadProfile();
   if (!point && !loadingMore) return notFound();
 

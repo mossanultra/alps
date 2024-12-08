@@ -6,6 +6,7 @@ import FirebaseAnalytics from "./components/firebase/analytics";
 // import { useTransition, animated } from "@react-spring/web";
 import React from "react";
 import { AuthProvider } from "./context/AuthContext";
+import AuthGuard from "./components/auth-guard/auth-guard";
 
 const uzura = localFont({
   src: "./fonts/uzurafont100/uzura.ttf",
@@ -47,7 +48,9 @@ export default function RootLayout({
         className={`${mplus.variable} ${uzura.variable} ${marumonica.variable} ${kurobara.variable}`}
       >
         <FirebaseAnalytics />
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <AuthGuard>{children}</AuthGuard>
+        </AuthProvider>
       </body>
     </html>
   );
