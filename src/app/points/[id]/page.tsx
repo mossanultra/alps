@@ -28,66 +28,65 @@ export default function PointPage({ params }: PointPageProps) {
   const { userId } = useAuthContext();
   const [point, setPoint] = useState<Point | null>(null);
 
+  // Fetch user profile
   useEffect(() => {
-    if (userId) {
-      fetchProfile(userId);
-    }
+    if (userId) fetchProfile(userId);
   }, [fetchProfile, userId]);
 
-  const handleAtTop = (atTop: boolean) => {
-    if (atTop) {
-      fetchMoreChats();
-    }
-  };
+  // Handle scrolling to the top of the chat list
+  const handleAtTop = useCallback(
+    (atTop: boolean) => {
+      if (atTop) fetchMoreChats();
+    },
+    [fetchMoreChats]
+  );
 
-  /** メッセージ送信 */
+  // Handle message submission
   const handleSubmit = useCallback(
     async (message: string) => {
       if (!message) {
         alert("名前とメッセージを入力してください。");
         return;
       }
-      sendMessage(message, profile!.userName, point!.lat, point!.lng);
+      if (profile && point) {
+        sendMessage(message, profile.userName, point.lat, point.lng);
+      }
     },
-    [point, profile, sendMessage]
+    [profile, point, sendMessage]
   );
-  /** 初回データ取得 */
+
+  // Fetch point data
   useEffect(() => {
-    if (!id) {
-      return;
-    }
+    if (!id) return;
+
     const fetchData = async () => {
       const p = await fetchPoint(id);
       setPoint(p);
     };
+
     fetchData();
   }, [fetchPoint, id]);
+
+  // Fetch chats when point data is available
   useEffect(() => {
-    if (point) {
-      fetchChats(null, point!.lat, point!.lng);
-    }
+    if (point) fetchChats(null, point.lat, point.lng);
   }, [fetchChats, point]);
 
+  // Scroll to the last chat message on mount
   useEffect(() => {
-    const virtuoso = virtuosoRef.current;
-    if (virtuoso === null) {
-      return;
-    }
-
-    if (virtuoso) {
+    if (virtuosoRef.current) {
       setTimeout(() => {
-        virtuoso.scrollToIndex({ index: "LAST", behavior: "auto" });
-      });
+        virtuosoRef.current?.scrollToIndex({ index: "LAST", behavior: "auto" });
+      }, 0);
     }
   }, []);
 
-  function LoadProfile() {
-    return <p>Profile Loading ...</p>;
-  }
+  // Profile loading fallback
+  const LoadProfile = () => <p>Profile Loading ...</p>;
 
-  // ロード中の場合
+  // Loading and error handling
   if (!point) return <HamstarLoader />;
-  if (!profile) return LoadProfile();
+  if (!profile) return <LoadProfile />;
   if (!point && !loadingMore) return notFound();
 
   return (
@@ -99,7 +98,6 @@ export default function PointPage({ params }: PointPageProps) {
         戻る
       </button>
       <Virtuoso
-        // key={virtuosoKey} // リセット用の key
         ref={virtuosoRef}
         style={{ flex: 1 }}
         data={chats}
@@ -118,18 +116,14 @@ export default function PointPage({ params }: PointPageProps) {
         }}
       />
       <div>
-        <Button
-          onClick={() => {
-            fetchChats(null, point!.lat, point!.lng);
-          }}
-        >
-          {"Refresh"}
+        <Button onClick={() => fetchChats(null, point.lat, point.lng)}>
+          Refresh
         </Button>
       </div>
       <InputName
         onChange={setSendUserName}
         label="名前を入力"
-        value={profile!.userName}
+        value={profile.userName}
       />
       <MessageBox onSendMessage={handleSubmit} />
     </div>
