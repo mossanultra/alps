@@ -20,7 +20,7 @@ const Profile: React.FC<ProfileProps> = ({
   const { profile, fetchProfile } = useProfile();
 
   useEffect(() => {
-    fetchProfile();
+    fetchProfile(userId);
   }, [fetchProfile, userId]);
 
   if (profile === null) {
