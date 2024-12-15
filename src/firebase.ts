@@ -4,6 +4,7 @@ import { getAuth } from "firebase/auth";
 import {
   getMessaging,
   getToken,
+  MessagePayload,
   Messaging,
   onMessage,
 } from "firebase/messaging";
@@ -56,7 +57,7 @@ export const requestForToken = async (): Promise<void> => {
 /**
  * メッセージ受信リスナー
  */
-export const onMessageListener = (): Promise<unknown> => {
+export const onMessageListener = (): Promise<MessagePayload> => {
   return new Promise((resolve, reject) => {
     if (!messaging) {
       console.warn("Messaging is not available in this environment.");

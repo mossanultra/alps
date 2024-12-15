@@ -13,6 +13,7 @@ import Profile from "./components/profile/profile";
 import PostForm from "./components/newpost/new-post";
 import LoginPage from "./components/login/login";
 import { useAuthContext } from "./context/AuthContext";
+import NotificationToken from "./components/firebase/notifications";
 // import Image from "next/image";
 
 function Contents({ menutype }: { menutype: MenuType }) {
@@ -96,6 +97,7 @@ export default function Home() {
         <div ref={appBarRef}>
           <PlaneAppBar />
         </div>
+        <NotificationToken />
 
         {/* AppBarの高さに応じてpaddingTopを動的に設定 */}
         <div style={{ paddingTop: `${appBarHeight + 48}px` }}>
