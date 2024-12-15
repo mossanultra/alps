@@ -7,14 +7,6 @@
  // Initialize the Firebase app in the service worker by passing in
  // your app's Firebase config object.
  // https://firebase.google.com/docs/web/setup#config-object
- firebase.initializeApp({
-   apiKey: "AIzaSyAZChcy5vQ4ay_0EhSczwtbXfxiHjXUttc",
-   authDomain: "mozuku-2a730.firebaseapp.com",
-   projectId: "mozuku-2a730",
-   storageBucket: "mozuku-2a730.firebasestorage.app",
-   messagingSenderId: "777209033136",
-   appId: "1:777209033136:web:47f68d38d5fdce620be675"
- });
 
  // Retrieve an instance of Firebase Messaging so that it can handle background
  // messages.
