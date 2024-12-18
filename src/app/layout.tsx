@@ -39,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>もずくううううう</title>
+        <title>tetra v1</title>
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon.png" />
         <meta name="theme-color" content="#a8a6a3" />
