@@ -22,7 +22,6 @@ function Contents({ menutype }: { menutype: TabMenu }) {
   if (menutype === TabMenu.WORK) {
     return (
       <>
-        <PrGrid />
         <ContentGrid />
       </>
     );
