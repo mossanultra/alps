@@ -5,13 +5,13 @@
         {
             "purpose": "maskable",
             "sizes": "512x512",
-            "src": "mikkiwww-fotor-bg-remover-2024102393545.png",
+            "src": "jackdaniel.jpg",
             "type": "image/png"
         },
         {
             "purpose": "any",
             "sizes": "512x512",
-            "src": "mikkiwww-fotor-bg-remover-2024102393545.png",
+            "src": "jackdaniel.jpg",
             "type": "image/png"
         }
     ],
@@ -19,8 +19,8 @@
     "display": "fullscreen",
     "dir": "auto",
     "lang": "ja-JP",
-    "name": "tairabase",
-    "short_name": "taira",
+    "name": "daniel",
+    "short_name": "daniel",
     "start_url": "/",
     "scope": "/"
 }
