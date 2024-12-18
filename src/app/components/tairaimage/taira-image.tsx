@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styles from "./taira-image.module.css";
 import Tab, { TabMenu } from "./tab/tab";
-import PrGrid from "./pr-grid/pr-grid";
 import ContentGrid from "./content-grid/content-grid";
 import MapWithInfoMarker from "../../components/map/map";
 
