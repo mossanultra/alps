@@ -50,15 +50,18 @@ export async function POST(req: NextRequest) {
 // 投稿一覧を取得するAPI
 export async function GET() {
   try {
-    const querySnapshot = await db.collection("posts").get();
+    const querySnapshot = await db.collection("media").get();
 
     // Firestoreから取得したドキュメントをPostData型に変換
     const posts: PostData[] = querySnapshot.docs.map((doc) => {
       const data = doc.data();
       return {
-        guid: data.guid,
+        guid: data.id,
         text: data.text,
         imageBase64: data.imageBase64,
+        imgSrc:data.imgSrc,
+        href:data.href,
+        savedAt:data.savedAt,
       };
     });
 

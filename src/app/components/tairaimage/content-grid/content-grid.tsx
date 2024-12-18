@@ -8,7 +8,7 @@ import ContentCard from "../content-card/content-card"; // インポート
 type Post = {
   guid: string;
   text: string;
-  imageBase64: string;
+  imgSrc: string;
 };
 
 export default function ContentGrid() {
@@ -62,9 +62,8 @@ export default function ContentGrid() {
         {modalOpen && selectedPost && (
           <ModalDialog onClose={handleCloseModal}>
             <div className={styles.modaldiv}>
-              <div className={styles.dialogSubText}>山口県&nbsp;萩市</div>
               <img
-                src={selectedPost.imageBase64}
+                src={selectedPost.imgSrc}
                 alt={selectedPost.guid}
                 className={styles.dialogImage}
               />
