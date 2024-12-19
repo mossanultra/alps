@@ -10,6 +10,33 @@ export function useChat() {
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
   const [userId, setUserId] = useState("");
+  
+  const updateLastReadAt = useCallback(
+    async (userId: string, lat: number, lng: number) => {
+      if (!userId) {
+        alert("userIdは必須です");
+        return;
+      }
+      try {
+        const formData = new FormData();
+        formData.append("userId", userId);
+        formData.append("lat", String(lat));
+        formData.append("lng", String(lng));
+        const response = await fetch("/api/chat/lastReadAt", {
+          method: "POST",
+          body: formData,
+        });
+        if (response.ok) {
+        } else {
+          alert("エラーが発生しました。");
+        }
+      } catch (error) {
+        console.error("Error sending message:", error);
+        alert("エラーが発生しました。");
+      }
+    },
+    []
+  );
 
   /** チャットデータを取得 */
   const fetchChats = useCallback(
@@ -49,7 +76,7 @@ export function useChat() {
         setLoadingMore(false);
       }
     },
-    []
+    [updateLastReadAt]
   );
 
   /** さらにチャットを取得 */
@@ -88,24 +115,25 @@ export function useChat() {
         alert("エラーが発生しました。");
       }
     },
-    [fetchChats]
+    [fetchChats, userId]
   );
 
-  const updateLastReadAt = useCallback(
+  const getUnread = useCallback(
     async (userId: string, lat: number, lng: number) => {
       if (!userId) {
         alert("userIdは必須です");
         return;
       }
       try {
-        const formData = new FormData();
-        formData.append("userId", userId);
-        formData.append("lat", String(lat));
-        formData.append("lng", String(lng));
-        const response = await fetch("/api/chat/lastReadAt", {
-          method: "POST",
-          body: formData,
-        });
+        const path = `/api/chat/isRead?userId=${userId}&lat=${lat}&lng=${lng}`;
+        const response = await fetch(path, { method: "GET" });
+        if (response.ok) {
+          const isUnread = await response.json();
+
+          return isUnread;
+        } else {
+          console.error("Failed to fetch");
+        }
         if (response.ok) {
         } else {
           alert("エラーが発生しました。");
@@ -126,5 +154,6 @@ export function useChat() {
     fetchMoreChats,
     sendMessage,
     updateLastReadAt,
+    getUnread
   };
 }

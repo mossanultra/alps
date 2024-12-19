@@ -10,8 +10,9 @@ import Button from "./send-button/send-button";
 import { useChat } from "@/hooks/useChat";
 import { useProfile } from "@/hooks/useProfile";
 import { useAuthContext } from "@/app/context/AuthContext";
-import { Point, usePoint } from "@/hooks/usePoint";
+import { usePoint } from "@/hooks/usePoint";
 import HamstarLoader from "@/app/components/loading/hamster/hamster";
+import { Point } from "@/app/api/points/route";
 
 interface PointPageProps {
   params: { id: string };

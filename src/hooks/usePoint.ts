@@ -1,10 +1,5 @@
+import { Point } from "@/app/api/points/route";
 import { useCallback, useState } from "react";
-
-export type Point = {
-  lat: number;
-  lng: number;
-  id: string;
-};
 
 export function usePoint() {
   const [points, setPoints] = useState<Point[]>();
@@ -36,12 +31,14 @@ export function usePoint() {
   }, []);
 
   /** ポイント取得 */
-  const fetchPoints = useCallback(async () => {
+  const fetchPoints = useCallback(async (userId? : string) => {
     try {
-      const response = await fetch("/api/points", { method: "GET" });
+      const path = userId ? `/api/points?userId=${userId}` : `/api/points`;
+      const response = await fetch(path, { method: "GET" });
       if (response.ok) {
         const data = await response.json();
         setPoints(data);
+        console.log(data)
       } else {
         console.error("Failed to fetch points");
       }

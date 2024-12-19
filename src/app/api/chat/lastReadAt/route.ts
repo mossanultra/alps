@@ -6,22 +6,27 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const userId = searchParams.get("userId");
-    const lng = searchParams.get("lng");
     const lat = searchParams.get("lat");
+    const lng = searchParams.get("lng");
+
+    if (!userId || !lat || !lng) {
+      return NextResponse.json({ error: "パラメータが不足しています" }, { status: 400 });
+    }
 
     const querySnapshot = await db
-    .collection("lastReadAt")
-    .where('userId', '==' , userId)
-    .where('lat', '==' , Number(lat))
-    .where('lng', '==' , Number(lng)).get();
+      .collection("lastReadAt")
+      .where("userId", "==", userId)
+      .where("lat", "==", Number(lat))
+      .where("lng", "==", Number(lng))
+      .get();
 
     if (querySnapshot.empty) {
-      return NextResponse.json({ error: "not found" }, { status: 404 });
+      return NextResponse.json({ error: "該当するデータが見つかりません" }, { status: 404 });
     }
 
     const lastRecord = querySnapshot.docs[0].data();
 
-    return NextResponse.json(lastRecord.lastReadAt);
+    return NextResponse.json({ lastReadAt: lastRecord.lastReadAt });
   } catch (error) {
     console.error("データの取得中にエラーが発生しました:", error);
     return NextResponse.json(
@@ -30,7 +35,8 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-// 最終既読日を登録OR更新
+
+// 最終既読日を登録または更新
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -39,27 +45,45 @@ export async function POST(req: NextRequest) {
     const lng = formData.get("lng");
 
     if (!userId || typeof userId !== "string") {
-      return NextResponse.json(
-        { error: "テキストが必要です" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "userIdが必要です" }, { status: 400 });
     }
+    if (!lat || typeof lat !== "string") {
+      return NextResponse.json({ error: "latが必要です" }, { status: 400 });
+    }
+    if (!lng || typeof lng !== "string") {
+      return NextResponse.json({ error: "lngが必要です" }, { status: 400 });
+    }
+
     const lastReadAt = {
-      userId: userId,
+      userId,
       lat: Number(lat),
       lng: Number(lng),
       lastReadAt: new Date().toISOString(), // ISO形式のタイムスタンプ
     };
 
-    // Firestoreに投稿データを保存
-    const postsCollection = db.collection("lastReadAt");
-    await postsCollection.add(lastReadAt);
+    const collection = db.collection("lastReadAt");
 
-    return NextResponse.json({ message: "最終既読時間を更新しました" });
+    // 既存のデータをチェック
+    const querySnapshot = await collection
+      .where("userId", "==", userId)
+      .where("lat", "==", Number(lat))
+      .where("lng", "==", Number(lng))
+      .get();
+
+    if (!querySnapshot.empty) {
+      // レコードが存在する場合は更新
+      const docId = querySnapshot.docs[0].id;
+      await collection.doc(docId).update(lastReadAt);
+      return NextResponse.json({ message: "最終既読時間を更新しました" });
+    } else {
+      // レコードが存在しない場合は新規作成
+      await collection.add(lastReadAt);
+      return NextResponse.json({ message: "最終既読時間を登録しました" });
+    }
   } catch (error) {
     console.error("エラーが発生しました:", error);
     return NextResponse.json(
-      { error: "エラーが発生しました" },
+      { error: "データの登録または更新中にエラーが発生しました" },
       { status: 500 }
     );
   }
