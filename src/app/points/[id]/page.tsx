@@ -69,8 +69,10 @@ export default function PointPage({ params }: PointPageProps) {
 
   // Fetch chats when point data is available
   useEffect(() => {
-    if (point) fetchChats(null, point.lat, point.lng);
-  }, [fetchChats, point]);
+    if (!profile) return;
+
+    if (point) fetchChats(null, point.lat, point.lng, profile.userId);
+  }, [fetchChats, point, profile]);
 
   // Scroll to the last chat message on mount
   useEffect(() => {
@@ -116,7 +118,7 @@ export default function PointPage({ params }: PointPageProps) {
         }}
       />
       <div>
-        <Button onClick={() => fetchChats(null, point.lat, point.lng)}>
+        <Button onClick={() => fetchChats(null, point.lat, point.lng, profile.userId)}>
           Refresh
         </Button>
       </div>

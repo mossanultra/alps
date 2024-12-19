@@ -9,13 +9,20 @@ export function useChat() {
 
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
+  const [userId, setUserId] = useState("");
 
   /** チャットデータを取得 */
   const fetchChats = useCallback(
-    async (pagingId: string | null = null, lat: number, lng: number) => {
+    async (
+      pagingId: string | null = null,
+      lat: number,
+      lng: number,
+      userId: string
+    ) => {
       try {
         setLat(lat);
         setLng(lng);
+        setUserId(userId);
         const path = pagingId
           ? `/api/chat?pagingId=${pagingId}&lat=${lat}&lng=${lng}`
           : `/api/chat?lat=${lat}&lng=${lng}`;
@@ -30,6 +37,9 @@ export function useChat() {
           }
           setLastDocId(data[0]?.id || null);
           setHasMoreChats(data.length === 20); // 20件ずつ取得
+
+          // 最終既読日を更新する
+          updateLastReadAt(userId, lat, lng);
         } else {
           console.error("Failed to fetch chats");
         }
@@ -46,9 +56,9 @@ export function useChat() {
   const fetchMoreChats = useCallback(() => {
     if (hasMoreChats && !loadingMore && lastDocId) {
       setLoadingMore(true);
-      fetchChats(lastDocId, lat, lng);
+      fetchChats(lastDocId, lat, lng, userId);
     }
-  }, [hasMoreChats, loadingMore, lastDocId, fetchChats, lat, lng]);
+  }, [hasMoreChats, loadingMore, lastDocId, fetchChats, lat, lng, userId]);
 
   /** メッセージ送信 */
   const sendMessage = useCallback(
@@ -69,7 +79,7 @@ export function useChat() {
         });
         if (response.ok) {
           alert("メッセージを送信しました！");
-          await fetchChats(null, lat, lng); // 新しいメッセージを取得
+          await fetchChats(null, lat, lng, userId); // 新しいメッセージを取得
         } else {
           alert("送信に失敗しました。");
         }
@@ -81,6 +91,33 @@ export function useChat() {
     [fetchChats]
   );
 
+  const updateLastReadAt = useCallback(
+    async (userId: string, lat: number, lng: number) => {
+      if (!userId) {
+        alert("userIdは必須です");
+        return;
+      }
+      try {
+        const formData = new FormData();
+        formData.append("userId", userId);
+        formData.append("lat", String(lat));
+        formData.append("lng", String(lng));
+        const response = await fetch("/api/chat/lastReadAt", {
+          method: "POST",
+          body: formData,
+        });
+        if (response.ok) {
+        } else {
+          alert("エラーが発生しました。");
+        }
+      } catch (error) {
+        console.error("Error sending message:", error);
+        alert("エラーが発生しました。");
+      }
+    },
+    []
+  );
+
   return {
     chats,
     loadingMore,
@@ -88,5 +125,6 @@ export function useChat() {
     fetchChats,
     fetchMoreChats,
     sendMessage,
+    updateLastReadAt,
   };
 }

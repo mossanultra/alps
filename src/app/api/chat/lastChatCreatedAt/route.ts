@@ -7,8 +7,6 @@ export async function GET(req: NextRequest) {
     const lng = searchParams.get("lng"); // クエリパラメータからIDを取得
     const lat = searchParams.get("lat"); // クエリパラメータからIDを取得
 
-    console.log("lat", Number(lat));
-    console.log("lng", Number(lng));
     const querySnapshot = await db
       .collection("chats")
       .where("lat", "==", Number(lat))
