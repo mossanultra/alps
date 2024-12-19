@@ -5,7 +5,7 @@ type ContentCardProps = {
   post: {
     guid: string;
     text: string;
-    imageBase64: string;
+    imgSrc: string;
   };
   onClick: () => void;
 };
@@ -22,9 +22,8 @@ const ContentCard: React.FC<ContentCardProps> = ({ post, onClick }) => {
 
   return (
     <div className={styles.card2} onClick={onClick}>
-      <img src={post.imageBase64} alt={post.text} className={styles.cardImage2} />
+      <img src={post.imgSrc} alt={post.text} className={styles.cardImage2} />
       <div className={styles.cardText}>{post.text}</div>
-      <div className={styles.cardSubtext}>山口県&nbsp;萩市</div>
       <div className={styles.likeContainer}>
         <button className={styles.likeButton} onClick={handleLike}>
           {liked ? "❤️" : "♡"}
