@@ -89,7 +89,7 @@ export function useChat() {
 
   /** メッセージ送信 */
   const sendMessage = useCallback(
-    async (message: string, userName: string, lat: number, lng: number) => {
+    async (message: string, userName: string, lat: number, lng: number, userId: string) => {
       if (!message || !userName) {
         alert("名前とメッセージを入力してください。");
         return;
@@ -100,6 +100,7 @@ export function useChat() {
         formData.append("userName", userName);
         formData.append("lat", String(lat));
         formData.append("lng", String(lng));
+        formData.append("userId", userId);
         const response = await fetch("/api/chat", {
           method: "POST",
           body: formData,
@@ -115,7 +116,7 @@ export function useChat() {
         alert("エラーが発生しました。");
       }
     },
-    [fetchChats, userId]
+    [fetchChats]
   );
 
   const getUnread = useCallback(

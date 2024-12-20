@@ -50,7 +50,7 @@ export default function PointPage({ params }: PointPageProps) {
         return;
       }
       if (profile && point) {
-        sendMessage(message, profile.userName, point.lat, point.lng);
+        sendMessage(message, profile.userName, point.lat, point.lng, profile.userId);
       }
     },
     [profile, point, sendMessage]

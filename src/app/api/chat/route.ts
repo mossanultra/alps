@@ -4,6 +4,7 @@ import { db } from "../../../firebaseAdmin";
 export interface Chat {
   userName: string;
   userIcon: string;
+  userId?: string;
   text: string;
   createdAt: string; // ISO形式のタイムスタンプ
   id: string;
@@ -15,45 +16,72 @@ export interface Chat {
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const pagingId = searchParams.get("pagingId"); // クエリパラメータからIDを取得
-    const lng = searchParams.get("lng"); // クエリパラメータからIDを取得
-    const lat = searchParams.get("lat"); // クエリパラメータからIDを取得
+    const pagingId = searchParams.get("pagingId");
+    const lat = parseFloat(searchParams.get("lat") || "0");
+    const lng = parseFloat(searchParams.get("lng") || "0");
 
-    console.log('lat',Number(lat));
-    console.log('lng',Number(lng))
+    if (isNaN(lat) || isNaN(lng)) {
+      return NextResponse.json(
+        { error: "有効な緯度と経度が必要です" },
+        { status: 400 }
+      );
+    }
+
     let query = db
-    .collection("chats")
-    .where('lat', '==' , Number(lat))
-    .where('lng', '==' , Number(lng))
-    .orderBy("createdAt", "desc").limit(20);
+      .collection("chats")
+      .where("lat", "==", lat)
+      .where("lng", "==", lng)
+      .orderBy("createdAt", "desc")
+      .limit(20);
 
-    // pagingIdがある場合は指定されたドキュメント以降のデータを取得
+    // pagingIdがある場合のクエリ範囲指定
     if (pagingId) {
       const pagingDoc = await db.collection("chats").doc(pagingId).get();
       if (pagingDoc.exists) {
         query = query.startAfter(pagingDoc);
       } else {
-        return NextResponse.json({ error: "no data" }, { status: 404 });
+        return NextResponse.json({ error: "ページングデータが存在しません" }, { status: 404 });
       }
     }
 
     const querySnapshot = await query.get();
 
-    const _chats: Chat[] = querySnapshot.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        userName: data.userName,
-        userIcon: data.userIcon,
-        text: data.text,
-        createdAt: data.createdAt,
-        id: doc.id,
-        lat: data.lat,
-        lng: data.lng,
-      };
-    });
+    // 非同期処理でデータを取得
+    const _chats: Chat[] = await Promise.all(
+      querySnapshot.docs.map(async (doc) => {
+        const data = doc.data();
+        const userId = data.userId;
+
+        let userIcon = data.userIcon;
+        let userName = data.userName;
+        if (userId) {
+          const profileSnapshot = await db
+            .collection("profile")
+            .where("userId", "==", userId)
+            .get();
+
+          if (!profileSnapshot.empty) {
+            const profileData = profileSnapshot.docs[0].data();
+            userIcon = profileData?.userIcon || userIcon;
+            userName = profileData?.userName || userName;
+          }
+        }
+
+        return {
+          userName: userName,
+          userIcon: userIcon,
+          text: data.text,
+          createdAt: data.createdAt,
+          id: doc.id,
+          lat: data.lat,
+          lng: data.lng,
+          userId: userId
+        };
+      })
+    );
 
     // 作成日時で昇順に並べ替え
-    _chats.sort((a: Chat, b: Chat) => {
+    _chats.sort((a, b) => {
       return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
     });
 
@@ -62,6 +90,55 @@ export async function GET(req: NextRequest) {
     console.error("データの取得中にエラーが発生しました:", error);
     return NextResponse.json(
       { error: "データの取得中にエラーが発生しました" },
+      { status: 500 }
+    );
+  }
+}
+
+// 新しいチャットを作成
+export async function POST(req: NextRequest) {
+  try {
+    const formData = await req.formData();
+    const text = formData.get("text");
+    const userName = formData.get("userName");
+    const lat = parseFloat(formData.get("lat") as string);
+    const lng = parseFloat(formData.get("lng") as string);
+    const userId = formData.get("userId");
+
+    if (!text || typeof text !== "string") {
+      return NextResponse.json({ error: "テキストが必要です" }, { status: 400 });
+    }
+
+    if (!userName || typeof userName !== "string") {
+      return NextResponse.json({ error: "userNameが必要です" }, { status: 400 });
+    }
+
+    if (isNaN(lat) || isNaN(lng)) {
+      return NextResponse.json(
+        { error: "有効な緯度と経度が必要です" },
+        { status: 400 }
+      );
+    }
+
+    const iconUrl = getUserIcon(userName);
+    const chat = {
+      text,
+      userName,
+      userIcon: iconUrl,
+      lat,
+      lng,
+      createdAt: new Date().toISOString(),
+      userId,
+    };
+
+    // Firestoreに投稿データを保存
+    await db.collection("chats").add(chat);
+
+    return NextResponse.json({ message: "投稿が正常に保存されました" });
+  } catch (error) {
+    console.error("投稿のアップロード中にエラーが発生しました:", error);
+    return NextResponse.json(
+      { error: "投稿のアップロード中にエラーが発生しました" },
       { status: 500 }
     );
   }
@@ -78,52 +155,3 @@ function getUserIcon(userName: string) {
   }
 }
 
-// 新しいチャットを作成
-export async function POST(req: NextRequest) {
-  try {
-    const formData = await req.formData();
-    const text = formData.get("text");
-    const username = formData.get("userName");
-    const lat = formData.get("lat");
-    const lng = formData.get("lng");
-
-    if (!text || typeof text !== "string") {
-      return NextResponse.json(
-        { error: "テキストが必要です" },
-        { status: 400 }
-      );
-    }
-    if (!username || typeof username !== "string") {
-      return NextResponse.json(
-        { error: "usernameが必要です" },
-        { status: 400 }
-      );
-    }
-    const iconUrl = getUserIcon(username);
-
-    if (!iconUrl || typeof iconUrl !== "string") {
-      return NextResponse.json({ error: "iconUrlが必要です" }, { status: 400 });
-    }
-
-    const chat = {
-      text: text,
-      userName: username,
-      userIcon: iconUrl,
-      lat: Number(lat),
-      lng: Number(lng),
-      createdAt: new Date().toISOString(), // ISO形式のタイムスタンプ
-    };
-
-    // Firestoreに投稿データを保存
-    const postsCollection = db.collection("chats");
-    await postsCollection.add(chat);
-
-    return NextResponse.json({ message: "投稿が正常に保存されました" });
-  } catch (error) {
-    console.error("投稿のアップロード中にエラーが発生しました:", error);
-    return NextResponse.json(
-      { error: "投稿のアップロード中にエラーが発生しました" },
-      { status: 500 }
-    );
-  }
-}
