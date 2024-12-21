@@ -32,7 +32,8 @@ export default function PointPage({ params }: PointPageProps) {
   // Fetch user profile
   useEffect(() => {
     if (userId) fetchProfile(userId);
-  }, [fetchProfile, userId]);
+    console.log(sendUserName)
+  }, [fetchProfile, sendUserName, userId]);
 
   // Handle scrolling to the top of the chat list
   const handleAtTop = useCallback(
@@ -108,7 +109,7 @@ export default function PointPage({ params }: PointPageProps) {
         itemContent={(_, chat) => (
           <ChatBubble
             key={chat.id}
-            isselfchat={chat.userName === sendUserName}
+            isselfchat={chat.userName === profile.userName}
             {...chat}
           />
         )}
