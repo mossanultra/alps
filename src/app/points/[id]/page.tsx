@@ -109,7 +109,7 @@ export default function PointPage({ params }: PointPageProps) {
         itemContent={(_, chat) => (
           <ChatBubble
             key={chat.id}
-            isselfchat={chat.userName === profile.userName}
+            isselfchat={chat.userId === profile.userId}
             {...chat}
           />
         )}

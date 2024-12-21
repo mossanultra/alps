@@ -3,8 +3,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   padding: 10px;
-  flex: 1;
-  overflow-y: auto;
+  align-items: start; /* 各グリッド要素の高さを自動調整 */
 }
 
 

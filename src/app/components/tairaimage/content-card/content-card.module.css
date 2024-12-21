@@ -1,41 +1,52 @@
-.card2 {
+/* content-card.module.css */
+.card {
   display: flex;
   flex-direction: column;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  background-color: #fff;
-  height: 230px;
+  background: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
 }
 
-.cardImage2 {
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.cardImage {
   width: 100%;
-  aspect-ratio: 4 / 3; /* 横4に対して縦3の比率で表示 */
-  background-color: transparent;
+  aspect-ratio: 16 / 9;
+  background-color: #f0f0f0;
   background-size: cover;
   background-position: center;
 }
 
-.cardText {
-  padding: 10px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #777;
-  white-space: nowrap; /* 一行で表示 */
-  overflow: hidden; /* 内容が溢れた場合は隠す */
-  text-overflow: ellipsis; /* 溢れた部分に省略記号 "..." を表示 */
+.cardBody {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.cardSubtext {
-  padding: 0 10px 10px;
-  font-size: 12px;
-  color: #777;
+.cardText {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+  line-height: 1.5;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .likeContainer {
   display: flex;
   align-items: center;
-  padding: 0 10px 10px;
+  justify-content: flex-start;
+  gap: 8px;
 }
 
 .likeButton {
@@ -44,10 +55,14 @@
   font-size: 20px;
   cursor: pointer;
   color: #e0245e;
+  transition: transform 0.2s;
+}
+
+.likeButton:hover {
+  transform: scale(1.2);
 }
 
 .likeCount {
-  margin-left: 5px;
   font-size: 14px;
-  color: #777;
+  color: #555;
 }
