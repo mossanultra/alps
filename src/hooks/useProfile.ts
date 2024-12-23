@@ -1,5 +1,5 @@
+import { Profile } from "@/app/types/profile";
 import { useState, useCallback } from "react";
-import { Profile } from "@/app/api/profile/route";
 
 export function useProfile() {
   const [profile, setProfile] = useState<Profile | null>(null);

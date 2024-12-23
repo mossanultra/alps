@@ -9,8 +9,8 @@ import { useRouter } from "next/navigation";
 import { usePoint } from "@/hooks/usePoint";
 import HamstarLoader from "../loading/hamster/hamster";
 import { useGeoLocation } from "@/hooks/useGeoLocation";
-import { Point } from "@/app/api/points/route";
 import { useAuthContext } from "@/app/context/AuthContext";
+import { Point } from "@/app/types/point";
 
 const googleMapStyles = [
   { label: "Zisla01", style: Zisla01 },

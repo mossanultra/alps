@@ -36,3 +36,6 @@ yarn-error.log*
 next-env.d.ts
 .env
 mozuku-2a730-firebase-adminsdk-y9ezn-d2acf6128a.json
+
+public/sw.js
+public/sw.js.map

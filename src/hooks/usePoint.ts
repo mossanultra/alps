@@ -1,4 +1,4 @@
-import { Point } from "@/app/api/points/route";
+import { Point } from "@/app/types/point";
 import { useCallback, useState } from "react";
 
 export function usePoint() {

@@ -1,5 +1,5 @@
+import { Chat } from "@/app/types/chat";
 import { useState, useCallback } from "react";
-import { Chat } from "@/app/api/chat/route";
 
 export function useChat() {
   const [chats, setChats] = useState<Chat[]>([]);
