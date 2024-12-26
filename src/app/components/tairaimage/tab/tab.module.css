@@ -1,0 +1,82 @@
+/* 共通スタイル */
+.tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border-bottom: 2px solid #ccc;
+  padding: 10px 0;
+}
+
+.tab {
+  flex: 1;
+  max-width: 200px;
+  text-align: center;
+  padding: 12px 16px;
+  background-color: transparent;
+  border: none;
+  border-radius: 16px;
+  margin: 0 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #555;
+  box-shadow: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.tab:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.tab.active1 {
+  background-color: #6b5006;
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tab.active2 {
+  background-color: #fc7d06;
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tab.active3 {
+  background-color: #06420b;
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* スマートフォン (480px以下) */
+@media (max-width: 480px) {
+  .tab {
+    margin: 8px 0;
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+/* タブレット (縦向き: 481px～768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .tab {
+    padding: 12px 16px;
+    font-size: 16px;
+  }
+}
+
+/* タブレット (横向き: 769px～1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .tab {
+    margin: 0 12px;
+    padding: 14px 20px;
+    font-size: 18px;
+  }
+}
+
+/* 大型画面 (1025px以上) */
+@media (min-width: 1025px) {
+  .tab {
+    font-size: 18px;
+    padding: 16px 24px;
+  }
+}

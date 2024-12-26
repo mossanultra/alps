@@ -1,0 +1,39 @@
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 10px;
+  align-items: start; /* 各グリッド要素の高さを自動調整 */
+}
+
+
+.dialogImage {
+  width: 100%;
+  aspect-ratio: 4 / 3; /* 横4に対して縦3の比率で表示 */
+  background-color: transparent;
+  background-size: cover;
+  background-position: center;
+}
+
+.dialogText {
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #777;
+  white-space: nowrap; /* 一行で表示 */
+  overflow: hidden;    /* 内容が溢れた場合は隠す */
+  text-overflow: ellipsis; /* 溢れた部分に省略記号 "..." を表示 */
+}
+
+.dialogSubText {
+  padding: 0 10px 10px;
+  font-size: 12px;
+  color: #777;
+}
+
+.modaldiv {
+  background-color: white;
+}
+.modaltext {
+  color: black;
+}

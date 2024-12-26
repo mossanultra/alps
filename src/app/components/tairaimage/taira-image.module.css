@@ -1,0 +1,32 @@
+.tairaImageApp {
+  /* font-family: Arial, sans-serif; */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ボトムナビゲーション */
+.bottomNavigation {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.navItem {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  color: #555;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.navItem:hover {
+  color: #000;
+}

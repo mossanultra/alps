@@ -1,0 +1,61 @@
+.chatContainer_self {
+  display: flex;
+  align-items: flex-start;
+  margin: 10px 0;
+  flex-direction: row-reverse;
+}
+
+.chatContainer_other {
+  display: flex;
+  align-items: flex-start;
+  margin: 10px 0;
+}
+
+.userIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.bubbleWrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+}
+
+.userName_self {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 3px;
+  text-align: right;
+}
+
+.userName_other {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 3px;
+}
+
+.chatBubble_self {
+  background-color: #7bf7aa;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #333;
+}
+
+.chatBubble_other {
+  background-color: #e8fcff;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #333;
+}
+
+.chatContainer:nth-child(odd) .chatBubble {
+  background-color: #d1c4e9;
+  align-self: flex-end;
+}
