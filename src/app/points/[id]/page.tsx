@@ -19,7 +19,6 @@ interface PointPageProps {
 
 export default function PointPage({ params }: PointPageProps) {
   const { id } = params;
-  const [sendUserName, setSendUserName] = useState("もずく");
   const virtuosoRef = useRef<VirtuosoHandle | null>(null);
   const { chats, loadingMore, fetchChats, fetchMoreChats, sendMessage } =
     useChat();
@@ -31,8 +30,7 @@ export default function PointPage({ params }: PointPageProps) {
   // Fetch user profile
   useEffect(() => {
     if (userId) fetchProfile(userId);
-    console.log(sendUserName);
-  }, [fetchProfile, sendUserName, userId]);
+  }, [fetchProfile, userId]);
 
   // Handle scrolling to the top of the chat list
   const handleAtTop = useCallback(
