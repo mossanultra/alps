@@ -34,7 +34,6 @@
 
 .navItem {
   position: relative; /* 波紋エフェクト用 */
-  /* 既存のスタイル */
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -44,14 +43,15 @@
   color: #666;
   font-size: 0.875rem;
   text-align: center;
+  height: 100%; /* 各項目が全体の高さを使用 */
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain; /* アイコンの比率を保ちながら表示 */
 }
 
 .activeNavItem {
   color: #000;
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
-  margin-bottom: 4px;
 }

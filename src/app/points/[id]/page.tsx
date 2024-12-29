@@ -32,7 +32,7 @@ export default function PointPage({ params }: PointPageProps) {
   // Fetch user profile
   useEffect(() => {
     if (userId) fetchProfile(userId);
-    console.log(sendUserName)
+    console.log(sendUserName);
   }, [fetchProfile, sendUserName, userId]);
 
   // Handle scrolling to the top of the chat list
@@ -51,7 +51,13 @@ export default function PointPage({ params }: PointPageProps) {
         return;
       }
       if (profile && point) {
-        sendMessage(message, profile.userName, point.lat, point.lng, profile.userId);
+        sendMessage(
+          message,
+          profile.userName,
+          point.lat,
+          point.lng,
+          profile.userId
+        );
       }
     },
     [profile, point, sendMessage]
@@ -94,7 +100,17 @@ export default function PointPage({ params }: PointPageProps) {
   if (!point && !loadingMore) return notFound();
 
   return (
-    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        backgroundImage: `url('/184158ea-4241-43f1-aa75-c8a548647222.jpg')`, // ここで画像のパスを指定
+        backgroundSize: "cover", // 画像を全体に拡大・縮小してカバー
+        backgroundPosition: "center", // 画像を中央に配置
+        backgroundRepeat: "no-repeat", // 繰り返しを無効化
+      }}
+    >
       <button
         onClick={() => window.history.back()}
         style={{ marginBottom: "10px" }}
@@ -119,16 +135,18 @@ export default function PointPage({ params }: PointPageProps) {
           Footer: () => (loadingMore ? <div>読み込み中...</div> : null),
         }}
       />
-      <div>
-        <Button onClick={() => fetchChats(null, point.lat, point.lng, profile.userId)}>
+      <div style={{marginBottom: '50px'}}>
+        <Button
+          onClick={() => fetchChats(null, point.lat, point.lng, profile.userId)}
+        >
           Refresh
         </Button>
       </div>
-      <InputName
+      {/* <InputName
         onChange={setSendUserName}
         label="名前を入力"
         value={profile.userName}
-      />
+      /> */}
       <MessageBox onSendMessage={handleSubmit} />
     </div>
   );

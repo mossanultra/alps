@@ -54,11 +54,11 @@ export default function FixedBottomNavigation(props: FixedBottomNavigationProps)
   return (
     <div className={styles.container} ref={ref}>
       <div className={styles.bottomNav}>
-        {[{ src: "/footer/home.png", text: "ホーム", menuValue: 0 },
-          { src: "/footer/search.png", text: "検索", menuValue: 1 },
-          { src: "/footer/plus.png", text: "投稿", menuValue: 2 },
-          { src: "/footer/heart.png", text: "お気に入り", menuValue: 3 },
-          { src: "/footer/profile.png", text: "マイページ", menuValue: 4 }]
+        {[{ src: "/home.jpg", text: "ホーム", menuValue: 0 },
+          { src: "/search.jpg", text: "検索", menuValue: 1 },
+          { src: "/post.jpg", text: "投稿", menuValue: 2 },
+          { src: "/fava.jpg", text: "お気に入り", menuValue: 3 },
+          { src: "/profile.jpg", text: "マイページ", menuValue: 4 }]
           .map((item, index) => (
           <div
             key={index}
