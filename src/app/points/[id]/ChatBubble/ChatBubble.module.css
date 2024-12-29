@@ -26,14 +26,14 @@
 
 .userName_self {
   font-size: 0.8rem;
-  color: #888;
+  color: #0a0a0a;
   margin-bottom: 3px;
   text-align: right;
 }
 
 .userName_other {
   font-size: 0.8rem;
-  color: #888;
+  color: #050505;
   margin-bottom: 3px;
 }
 
