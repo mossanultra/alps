@@ -3,7 +3,6 @@
 import { notFound } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
 import ChatBubble from "./ChatBubble/ChatBubble";
-import InputName from "./input-name/input-name";
 import MessageBox from "./message-input/message-input";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import Button from "./send-button/send-button";
