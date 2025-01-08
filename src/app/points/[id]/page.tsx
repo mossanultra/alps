@@ -102,7 +102,7 @@ export default function PointPage({ params }: PointPageProps) {
         height: "100vh",
         display: "flex",
         flexDirection: "column",
-        backgroundImage: `url('/home.jpg')`, // ここで画像のパスを指定
+        backgroundImage: `url('/_3bceba53-bbe7-4266-88bf-99e370a54153.jpg')`, // ここで画像のパスを指定
         backgroundSize: "cover", // 画像を全体に拡大・縮小してカバー
         backgroundPosition: "center", // 画像を中央に配置
         backgroundRepeat: "no-repeat", // 繰り返しを無効化
