@@ -11,15 +11,16 @@ import TairaImage from "./components/tairaimage/taira-image";
 import { LoadScript } from "@react-google-maps/api";
 import Profile from "./components/profile/profile";
 import PostForm from "./components/newpost/new-post";
-import LoginPage from "./components/login/login";
+
 import { useAuthContext } from "./context/AuthContext";
 import NotificationToken from "./components/firebase/notifications";
+import { useRouter } from "next/navigation";
 // import Image from "next/image";
 
 function Contents({ menutype }: { menutype: MenuType }) {
   const [selectCityId, setSelectCityId] = useState("017010");
   const { userId } = useAuthContext();
-
+  const router = useRouter();
   if (menutype === MenuType.TIIKAWA) {
     return <TairaImage />;
   }
@@ -55,9 +56,10 @@ function Contents({ menutype }: { menutype: MenuType }) {
     );
   }
   if (menutype === MenuType.MARMOT) {
+    router.push("/points/dkIv3dObBOzxVGJGIdpc")
     return (
       <>
-        <LoginPage></LoginPage>
+       
       </>
     );
   }
