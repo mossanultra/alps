@@ -56,7 +56,7 @@ function Contents({ menutype }: { menutype: MenuType }) {
     );
   }
   if (menutype === MenuType.MARMOT) {
-    router.push("/points/dkIv3dObBOzxVGJGIdpc")
+    router.push("/favorite")
     return (
       <>
        
