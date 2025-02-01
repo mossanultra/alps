@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "../../../firebaseAdmin";
+import { XMLParser } from "fast-xml-parser";
 
 export interface favorite {
   userId: string;
   pointId: string;
+  lat: number;
+  lng: number;
+  cityName: string;
 }
 
 // 登録されているチャットメッセージのリストを取得（作成順）
@@ -12,21 +16,51 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const userId = searchParams.get("userId");
 
-
-    let query = db
-      .collection("favorite")
-      .where("userId", "==", userId)
+    const query = db.collection("favorite").where("userId", "==", userId);
 
     const querySnapshot = await query.get();
-    const favoriteList = querySnapshot.docs.map(f => {
-      const data = f.data();
-      const pointId = data.pointId;
-      const userId = data.userId;
-      return {
-        pointId , userId
-      }
-    });
+    const favoriteList = await Promise.all(
+      querySnapshot.docs.map(async (f) => {
+        const data = f.data();
+        const pointId = data.pointId;
+        const userId = data.userId;
+        const latlng = await db.collection("points").doc(pointId).get();
+        let lat = 0,
+          lng = 0;
 
+        if (!latlng.data()) {
+        } else {
+          lat = latlng.data()!.lat;
+          lng = latlng.data()!.lng;
+        }
+        function decodeNumericCharacterReference(str: string) {
+          return str.replace(/&#(\d+);/g, (match, code) => {
+            return String.fromCharCode(parseInt(code, 10));
+          });
+        }
+
+        const url = `https://geoapi.heartrails.com/api/xml?method=searchByGeoLocation&x=${lng}&y=${lat}`;
+        const geoLocationResponse = await fetch(url);
+        const responseTxt = await geoLocationResponse.text();
+        const decodedString = decodeNumericCharacterReference(responseTxt);
+        const parser = new XMLParser();
+        const jsonObj = parser.parse(decodedString);
+        const response = jsonObj.response.location[0];
+
+        console.log(JSON.stringify(response));
+
+        // https://geoapi.heartrails.com/api/xml?method=searchByGeoLocation&x=135.0&y=35.0
+        const cityName = `${response.prefecture} ${response.city} ${response.town}`;
+        const responseValue = {
+          pointId,
+          userId,
+          lat,
+          lng,
+          cityName,
+        };
+        return responseValue;
+      })
+    );
     return NextResponse.json(favoriteList);
   } catch (error) {
     console.error("データの取得中にエラーが発生しました:", error);
@@ -45,21 +79,28 @@ export async function POST(req: NextRequest) {
     const userId = formData.get("userId");
 
     if (!pointId || typeof pointId !== "string") {
-      return NextResponse.json({ error: "テキストが必要です" }, { status: 400 });
+      return NextResponse.json(
+        { error: "テキストが必要です" },
+        { status: 400 }
+      );
     }
 
     if (!userId || typeof userId !== "string") {
-      return NextResponse.json({ error: "userNameが必要です" }, { status: 400 });
+      return NextResponse.json(
+        { error: "userNameが必要です" },
+        { status: 400 }
+      );
     }
     const favorite = { userId, pointId };
 
-    let query = db.collection("favorite")
-    .where("userId", "==", userId)
-    .where("pointId", "==", pointId);
-    
+    const query = db
+      .collection("favorite")
+      .where("userId", "==", userId)
+      .where("pointId", "==", pointId);
+
     const querySnapshot = await query.get();
 
-    if(querySnapshot.docs.length > 0){
+    if (querySnapshot.docs.length > 0) {
       return NextResponse.json({ message: "投稿が正常に保存されました" });
     }
     // Firestoreに投稿データを保存

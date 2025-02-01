@@ -96,6 +96,7 @@ export default function PointPage({ params }: PointPageProps) {
       method: "POST",
       body: formData,
     });
+    return response;
   }
   // Profile loading fallback
   const LoadProfile = () => <p>Profile Loading ...</p>;

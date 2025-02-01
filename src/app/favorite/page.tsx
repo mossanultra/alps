@@ -3,41 +3,44 @@
 import { useFavorite } from "@/hooks/useFavorite";
 import { useAuthContext } from "../context/AuthContext";
 import { useEffect } from "react";
-import HamstarLoader from "../components/loading/hamster/hamster";
 
 interface favoriteListProps {
-    favorite: Favorite[];
+  favorite: Favorite[];
 }
 function FavoriteListNode(props: favoriteListProps) {
-    return (
-        <>
-            {props.favorite.map(e => {
-                const linkUrl = `/points/${e.pointId}`;
-                return (
-                    <a href={linkUrl}>{e.pointId}</a>
-                )
-            })}
-        </>
-    )
+  if (!props.favorite) {
+    return;
+  }
+  return (
+    <>
+      {props.favorite.map((e, index) => {
+        const linkUrl = `/points/${e.pointId}`;
+        return (
+          <div key={index}>
+            <a  href={linkUrl}>
+              {e.cityName}
+            </a>
+          </div>
+        );
+      })}
+    </>
+  );
 }
 
 export default function Favorite() {
-    const { loading, favorite, fetchFavorite } = useFavorite();
-    const { userId } = useAuthContext();
+  const { favorite, fetchFavorite } = useFavorite();
+  const { userId } = useAuthContext();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            await fetchFavorite(userId!);
-        };
-        fetchData();
-    }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchFavorite(userId!);
+    };
+    fetchData();
+  }, [fetchFavorite, userId]);
 
-    if (loading) {
-        return <HamstarLoader></HamstarLoader>
-    }
-
-    return
-    (<div>
-        <FavoriteListNode favorite={favorite!}></FavoriteListNode>
-    </div>)
+  return (
+    <div>
+      <FavoriteListNode favorite={favorite!}></FavoriteListNode>
+    </div>
+  );
 }
