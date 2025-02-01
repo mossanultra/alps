@@ -88,6 +88,15 @@ export default function PointPage({ params }: PointPageProps) {
     }
   }, []);
 
+  async function registfavorite(pointId: string, userId: string) {
+    const formData = new FormData();
+    formData.append("userId", userId);
+    formData.append("pointId", pointId);
+    const response = await fetch("/api/favorite", {
+      method: "POST",
+      body: formData,
+    });
+  }
   // Profile loading fallback
   const LoadProfile = () => <p>Profile Loading ...</p>;
 
@@ -132,11 +141,18 @@ export default function PointPage({ params }: PointPageProps) {
           Footer: () => (loadingMore ? <div>読み込み中...</div> : null),
         }}
       />
-      <div style={{marginBottom: '50px'}}>
+      <div style={{ marginBottom: '50px' }}>
         <Button
           onClick={() => fetchChats(null, point.lat, point.lng, profile.userId)}
         >
           Refresh
+        </Button>
+      </div>
+      <div style={{ marginBottom: '50px' }}>
+        <Button
+          onClick={() => registfavorite(id, profile.userId)}
+        >
+          Favorite
         </Button>
       </div>
       {/* <InputName
