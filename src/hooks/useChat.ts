@@ -106,7 +106,6 @@ export function useChat() {
           body: formData,
         });
         if (response.ok) {
-          alert("メッセージを送信しました！");
           await fetchChats(null, lat, lng, userId); // 新しいメッセージを取得
         } else {
           alert("送信に失敗しました。");
