@@ -90,6 +90,9 @@ export default function PointPage({ params }: PointPageProps) {
 
   return (
     <div>
+      <button onClick={() => window.history.back()} style={{ marginBottom: "10px" }}>
+        戻る
+      </button>
       <div
         style={{
           height: "100vh",
@@ -101,9 +104,6 @@ export default function PointPage({ params }: PointPageProps) {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <button onClick={() => window.history.back()} style={{ marginBottom: "10px" }}>
-          戻る
-        </button>
         <Virtuoso
           ref={virtuosoRef}
           style={{ flex: 1 }}
@@ -120,10 +120,10 @@ export default function PointPage({ params }: PointPageProps) {
         />
       </div>
       <SendBox
-          onSend={handleSubmit}
-          onRefresh={() => fetchChats(null, point.lat, point.lng, profile.userId)}
-          onFavorite={() => registfavorite(id, userId!)}
-        />
+        onSend={handleSubmit}
+        onRefresh={() => fetchChats(null, point.lat, point.lng, profile.userId)}
+        onFavorite={() => registfavorite(id, userId!)}
+      />
     </div>
   );
 }

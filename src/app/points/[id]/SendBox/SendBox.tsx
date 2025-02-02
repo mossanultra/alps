@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AiOutlineStar, AiOutlineReload, AiOutlineSend } from "react-icons/ai";
 import styles from "./SendBox.module.css";
 
 interface SendBoxProps {
@@ -18,8 +19,12 @@ export default function SendBox({ onSend, onRefresh, onFavorite }: SendBoxProps)
 
   return (
     <div className={styles.sendBox}>
-      <button className={styles.iconButton} onClick={onFavorite}>❤️</button>
-      <button className={styles.iconButton} onClick={onRefresh}>🔄</button>
+      <button className={styles.iconButton} onClick={onFavorite}>
+        <AiOutlineStar />
+      </button>
+      <button className={styles.iconButton} onClick={onRefresh}>
+        <AiOutlineReload />
+      </button>
       <input
         type="text"
         className={styles.input}
@@ -27,7 +32,9 @@ export default function SendBox({ onSend, onRefresh, onFavorite }: SendBoxProps)
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
-      <button className={styles.sendButton} onClick={handleSend}>📩</button>
+      <button className={styles.sendButton} onClick={handleSend}>
+        <AiOutlineSend />
+      </button>
     </div>
   );
 }
