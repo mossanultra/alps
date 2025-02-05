@@ -1,4 +1,3 @@
-// src/app/(home)/points/[id]/PointPage.tsx
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -30,55 +29,51 @@ export default function PointPage({
   } | null>(null);
 
   // チャットデータの取得
-  useEffect(() => {
-    async function fetchData() {
-      const chatData = await fetchChats(null, pointData.lat, pointData.lng);
-      setChats(chatData);
-      console.log(chatData);
-    }
-    fetchData();
+  const loadChats = useCallback(async () => {
+    const chatData = await fetchChats(null, pointData.lat, pointData.lng);
+    setChats(chatData);
   }, [pointData]);
 
-  const fetchMoreChats = useCallback(async () => {
-    console.log("fetch more chat");
+  useEffect(() => {
+    loadChats();
+  }, [loadChats]);
 
-    if (chats?.hasMoreChats && chats?.lastDocId) {
+  // 追加のチャットデータを取得
+  const fetchMoreChats = useCallback(async () => {
+    if (chats?.hasMoreChats && chats.lastDocId) {
       const moreChats = await fetchChats(
         chats.lastDocId,
         pointData.lat,
         pointData.lng
       );
-
-      // 既存のチャットリストと新しいチャットリストを結合
       setChats((prevChats) => ({
-        chats: [...(prevChats?.chats || []), ...moreChats.chats].reverse(),
+        chats: [...moreChats.chats, ...(prevChats?.chats || [])], // 上に追加
         lastDocId: moreChats.lastDocId,
         hasMoreChats: moreChats.hasMoreChats,
       }));
     }
   }, [chats, pointData]);
 
-  // 自動スクロール
+  // 自動スクロール（初回のみ）
   useEffect(() => {
     if (virtuosoRef.current) {
       setTimeout(() => {
         virtuosoRef.current?.scrollToIndex({ index: "LAST", behavior: "auto" });
       }, 0);
     }
-  }, []);
+  }, [chats]);
 
-  async function registFavorite(pointId: string, userId: string) {
-    const formData = new FormData();
-    formData.append("userId", userId);
-    formData.append("pointId", pointId);
-    await fetch("/api/favorite", {
-      method: "POST",
-      body: formData,
-    });
-  }
-  if (!chats) {
-    return null;
-  }
+  const registFavorite = useCallback(
+    async (pointId: string, userId: string) => {
+      const formData = new FormData();
+      formData.append("userId", userId);
+      formData.append("pointId", pointId);
+      await fetch("/api/favorite", { method: "POST", body: formData });
+    },
+    []
+  );
+
+  if (!chats) return null;
 
   return (
     <div>
@@ -102,7 +97,7 @@ export default function PointPage({
         <Virtuoso
           ref={virtuosoRef}
           style={{ flex: 1 }}
-          data={chats?.chats || []}
+          data={chats.chats}
           computeItemKey={(_, chat) => chat.id}
           itemContent={(_, chat) => (
             <ChatBubble
@@ -112,9 +107,9 @@ export default function PointPage({
             />
           )}
           atTopStateChange={(atTop) => atTop && fetchMoreChats()}
-          initialTopMostItemIndex={chats!.chats.length - 1 || 0}
+          initialTopMostItemIndex={Math.max(0, chats.chats.length - 1)}
           components={{
-            Footer: () => <div></div>,
+            Footer: () => <div />, // または undefined にする
           }}
         />
       </div>
@@ -132,7 +127,7 @@ export default function PointPage({
             userProfile.userId
           );
         }}
-        onRefresh={() => fetchChats(null, pointData.lat, pointData.lng)}
+        onRefresh={loadChats}
         onFavorite={() => registFavorite(id, userProfile.userId)}
       />
     </div>
