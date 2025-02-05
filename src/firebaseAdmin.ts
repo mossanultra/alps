@@ -1,5 +1,7 @@
 import { cert, getApp, getApps, initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import admin from 'firebase-admin';
+import { getAuth } from "firebase-admin/auth";
 
 // Firebaseの初期化
 const firebaseAdmin = getApps().length === 0 ? initializeApp({
@@ -12,5 +14,16 @@ const firebaseAdmin = getApps().length === 0 ? initializeApp({
 
 // Firestoreインスタンスを取得
 const db = getFirestore(firebaseAdmin);
+const auth = getAuth();
 
-export { db };
+export const verifyIdToken = async (token: string): Promise<admin.auth.DecodedIdToken | null> => {
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    return decodedToken;
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    return null;
+  }
+};
+
+export { db, auth };

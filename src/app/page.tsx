@@ -1,117 +1,95 @@
-"use client";
-import { useRef, useState, useEffect } from "react";
-import PlaneAppBar from "./components/appbar-plane/plane-appbar";
-import FixedBottomNavigation, {
-  MenuType,
-} from "./components/fixex-bottom-navigation/fixed-bottom-navigation";
-import Wheather from "./components/wheather/wheather";
-import RadioButton from "./components/radio-button/radio-button";
-import TairaImage from "./components/tairaimage/taira-image";
-// import Map from "./components/map/map";
-import { LoadScript } from "@react-google-maps/api";
-import Profile from "./components/profile/profile";
-import PostForm from "./components/newpost/new-post";
-
-import { useAuthContext } from "./context/AuthContext";
-import NotificationToken from "./components/firebase/notifications";
-import { useRouter } from "next/navigation";
-// import Image from "next/image";
-
-function Contents({ menutype }: { menutype: MenuType }) {
-  const [selectCityId, setSelectCityId] = useState("017010");
-  const { userId } = useAuthContext();
-  const router = useRouter();
-  if (menutype === MenuType.TIIKAWA) {
-    return <TairaImage />;
-  }
-  if (menutype === MenuType.HATIWARE) {
-    return (
-      <>
-        <RadioButton
-          citylist={[
-            { name: "函館", id: "017010" },
-            { name: "東京", id: "130010" },
-          ]}
-          onSelect={function (id: string): void {
-            setSelectCityId(id);
-          }}
-        ></RadioButton>
-        <Wheather city={selectCityId}></Wheather>;
-      </>
-    );
-  }
-  if (menutype === MenuType.KURIMANJUU) {
-    return (
-      <>
-        <PostForm
-          profileImage={
-            "https://pbs.twimg.com/profile_images/1597336893019934720/o_byHBVW_400x400.jpg"
-          }
-          username={"もずく"}
-          onPostCreated={function (): void {
-            console.log("created");
-          }}
-        ></PostForm>
-      </>
-    );
-  }
-  if (menutype === MenuType.MARMOT) {
-    router.push("/favorite")
-    return (
-      <>
-       
-      </>
-    );
-  }
-  if (menutype === MenuType.USAGI) {
-    return (
-      <div>
-        <Profile
-          profileImage="https://pbs.twimg.com/profile_images/1597336893019934720/o_byHBVW_400x400.jpg"
-          username="もずく"
-          bio="筋肉エンジニア"
-          followers={1200}
-          following={300}
-          userId={userId!}
-        />
-      </div>
-    );
-  }
-}
+import Image from "next/image";
+import styles from "./page.module.css";
 
 export default function Home() {
-  const [menu, setMenu] = useState(MenuType.TIIKAWA);
-  const [appBarHeight, setAppBarHeight] = useState(0); // AppBarの高さを保存するstate
-  const appBarRef = useRef<HTMLDivElement>(null); // AppBarの参照を保存するref
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY; // Google Maps APIキーをここに挿入
-
-  // useEffectでAppBarの高さを取得
-  useEffect(() => {
-    if (appBarRef.current) {
-      setAppBarHeight(appBarRef.current.clientHeight); // AppBarの高さを取得してstateに保存
-    }
-  }, []);
-
   return (
-    <div>
-      <LoadScript googleMapsApiKey={apiKey!}>
-        {/* AppBarの参照をrefに渡す */}
-        <div ref={appBarRef}>
-          <PlaneAppBar />
-        </div>
-        <NotificationToken />
-
-        {/* AppBarの高さに応じてpaddingTopを動的に設定 */}
-        <div style={{ paddingTop: `${appBarHeight + 48}px` }}>
-          <Contents menutype={menu} />
-        </div>
-
-        <FixedBottomNavigation
-          onChangeMenu={(menutype: MenuType): void => {
-            setMenu(menutype);
-          }}
+    <div className={styles.page}>
+      <main className={styles.main}>
+        <Image
+          className={styles.logo}
+          src="/next.svg"
+          alt="Next.js logo"
+          width={180}
+          height={38}
+          priority
         />
-      </LoadScript>
+        <ol>
+          <li>
+            Get started by editing <code>src/app/page.tsx</code>.
+          </li>
+          <li>Save and see your changes instantly.</li>
+        </ol>
+
+        <div className={styles.ctas}>
+          <a
+            className={styles.primary}
+            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              className={styles.logo}
+              src="/vercel.svg"
+              alt="Vercel logomark"
+              width={20}
+              height={20}
+            />
+            Deploy now
+          </a>
+          <a
+            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.secondary}
+          >
+            Read our docs
+          </a>
+        </div>
+      </main>
+      <footer className={styles.footer}>
+        <a
+          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/file.svg"
+            alt="File icon"
+            width={16}
+            height={16}
+          />
+          Learn
+        </a>
+        <a
+          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/window.svg"
+            alt="Window icon"
+            width={16}
+            height={16}
+          />
+          Examples
+        </a>
+        <a
+          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/globe.svg"
+            alt="Globe icon"
+            width={16}
+            height={16}
+          />
+          Go to nextjs.org →
+        </a>
+      </footer>
     </div>
   );
 }

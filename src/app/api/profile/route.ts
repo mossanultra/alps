@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "../../../firebaseAdmin";
+import { db } from "@/firebaseAdmin";
 
 export interface Profile {
   userName: string;
