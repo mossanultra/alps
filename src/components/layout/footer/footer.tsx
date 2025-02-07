@@ -20,20 +20,14 @@ const menuItems = [
 export default function Footer() {
   return (
     <div className={styles.container}>
-    <div className={styles.bottomNav} >
-      {menuItems.map((item, index) => (
-        <div
-          key={index}
-          className={styles.navItem}
-          onClick={() => {
-            
-          }}
-        >
-          <img src={item.src} alt={item.text} className={styles.icon} />
-          <span>{item.text}</span>
-        </div>
-      ))}
-    </div>
+      <div className={styles.bottomNav}>
+        {menuItems.map((item, index) => (
+          <div key={index} className={styles.navItem} onClick={() => {}}>
+            <img src={item.src} alt={item.text} className={styles.icon} />
+            <span>{item.text}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

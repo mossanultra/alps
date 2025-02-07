@@ -1,5 +1,6 @@
 .container {
-  padding-bottom: 56px; /* Reserve space for the bottom navigation */
+  bottom: 0;
+  position: absolute;
 }
 
 .bottomNav {
@@ -47,8 +48,8 @@
 }
 
 .icon {
-  width: 48px;
-  height: 48px;
+  width: 30px;
+  height: 30px;
   object-fit: contain; /* アイコンの比率を保ちながら表示 */
 }
 
