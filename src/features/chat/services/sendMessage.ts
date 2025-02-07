@@ -13,10 +13,15 @@ export async function sendMessage(
   }
 
   try {
-    const body = { text: message, userName, lat, lng, userId };
+    const formData = new FormData();
+    formData.append("text", message);
+    formData.append("userName", userName);
+    formData.append("lat", String(lat));
+    formData.append("lng", String(lng));
+    formData.append("userId", userId);
     const result = await apiFetch<{ success: boolean }>("/api/chat", {
       method: "POST",
-      body: JSON.stringify(body),
+      body: formData,
     });
 
     return result?.success ?? false;

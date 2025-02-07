@@ -12,10 +12,12 @@ export async function registerPoint(
   }
 
   try {
-    const body = JSON.stringify({ lat, lng });
+    const formData = new FormData();
+    formData.append("lat", String(lat));
+    formData.append("lng", String(lng));
     const result = await apiFetch<{ success: boolean }>("/api/points", {
       method: "POST",
-      body,
+      body: formData,
     });
 
     return result?.success ?? false;

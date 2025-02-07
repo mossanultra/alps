@@ -8,7 +8,6 @@ export async function apiFetch<T>(
     const response = await fetch(`${baseUrl}${endpoint}`, {
       ...options,
       headers: {
-        "Content-Type": "application/json",
         ...(options.headers || {}),
       },
     });
