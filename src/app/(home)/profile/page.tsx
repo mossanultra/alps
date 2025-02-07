@@ -3,16 +3,10 @@ import { auth } from "../../../../auth";
 
 const Profile = async () => {
   const session = await auth();
-  let profile;
-  if (session && session.user && session.user.id) {
-    profile = await fetchProfile(session.user.id);
-    console.log(profile)
-    if (!profile) {
-      return (
-        <div style={styles.error}>プロフィールが取得できませんでした。</div>
-      );
-    }
+  if (!session?.user?.id) {
+    return null;
   }
+  const profile = await fetchProfile(session.user.id);
 
   return (
     <div style={styles.container}>
