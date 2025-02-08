@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import styles from "./loginForm.module.css";
+import DanielLogo from "@/components/layout/logo/logo";
 // import { signInWithEmailAndPassword } from "firebase/auth";
 // import { auth } from "@/firebase";
 
@@ -47,8 +48,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleLogin}>
       <div className={styles.container}>
-        <div className={styles.pandaIcon}></div>
-        <h1 className={styles.title}>Welcome</h1>
+        <DanielLogo/>
         <div className={styles.form}>
           <input
             type="email"
