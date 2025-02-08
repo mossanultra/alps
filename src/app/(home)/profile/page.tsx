@@ -15,7 +15,7 @@ const Profile = async () => {
           .userIcon} alt="Profile" style={styles.profileImage} />
         <h2 style={styles.username}>{profile!.userName}</h2>
       </div>
-      <p style={styles.bio}>{profile!.userIcon}</p>
+      <p style={styles.bio}></p>
       <div style={styles.statsContainer}>
         <div style={styles.statItem}>
           <span style={styles.statCount}>100</span>

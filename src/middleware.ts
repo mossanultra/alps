@@ -3,7 +3,14 @@ import type { NextRequest } from "next/server";
 import { auth } from "../auth";
 
 export async function middleware(req: NextRequest) {
-  console.log("[Middleware] Request received:", req.nextUrl.pathname);
+  const { pathname } = req.nextUrl;
+
+  // ルートパス（"/"）へのアクセスの場合 "/home" にリダイレクト
+  if (pathname === "/") {
+    return NextResponse.redirect(new URL("/home", req.url));
+  }
+
+  console.log("[Middleware] Request received:", pathname);
   const session = await auth();
 
   if (!session) {
@@ -15,5 +22,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/profile/:path*","/favorite/:path*"],
+  matcher: ["/profile/:path*", "/favorite/:path*", "/home/:path*", "/"],
 };

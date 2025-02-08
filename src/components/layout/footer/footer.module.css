@@ -56,3 +56,12 @@
 .activeNavItem {
   color: #000;
 }
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}

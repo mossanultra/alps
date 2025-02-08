@@ -4,9 +4,7 @@ import { fetchPoints } from "@/features/point/hooks/usePoint";
 import { auth } from "../../../../auth";
 import MapWithCustomModalMarker from "./map";
 
-export default async function ServerPointPage({
-  params,
-}: {
+export default async function ServerPointPage({}: {
   params: Promise<{ id: string }>;
 }) {
   const session = await auth();
