@@ -3,6 +3,7 @@
 import { useAuthContext } from "@/app/context/AuthContext";
 import { useState } from "react";
 import styles from "./login.module.css";
+import DanielLogo from "../logo/logo";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -18,8 +19,7 @@ export default function LoginPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.pandaIcon}></div>
-      <h1 className={styles.title}>Welcome</h1>
+      <DanielLogo/>
       <div className={styles.form}>
         <input
           type="email"
