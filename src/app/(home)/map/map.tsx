@@ -6,44 +6,26 @@ import { useRouter } from "next/navigation";
 import { useGeoLocation } from "@/features/geoLocation/hooks/useGeoLocation";
 import { Point } from "@/features/point/types/point";
 import { fetchPoints, registerPoint } from "@/features/point/hooks/usePoint";
+import { useSession } from "next-auth/react";
 
 type MapWithCustomModalMarkerProps = {
   zoom: number;
-  userId: string;
-  points: Point[];
   children?: ReactNode;
 };
 
 const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
   zoom,
-  points,
 }) => {
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "", // .env に APIキーを設定
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
   });
 
   const router = useRouter();
   const hasFetched = useRef(false);
   const { fetchLocation } = useGeoLocation();
-  const [pointList, setPoints] = useState<Point[]>(points);
-
-  const containerStyle: React.CSSProperties = {
-    width: "100%",
-    height: "600px",
-  };
-
+  const [pointList, setPoints] = useState<Point[]>();
+  const { data: session, status } = useSession();
   const [center, setCenter] = useState({ lat: 37.7608, lng: 140.473 });
-
-  const handleMarkerClick = (marker: Point) => {
-    router.push(`/points/${marker.id}`);
-  };
-
-  useEffect(() => {
-    if (!hasFetched.current) {
-      updateCurrentPosition();
-      hasFetched.current = true;
-    }
-  }, []);
 
   const updateCurrentPosition = () => {
     if (navigator.geolocation) {
@@ -57,6 +39,42 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
         (error) => console.error("Failed to get current position:", error)
       );
     }
+  };
+
+  useEffect(() => {
+    if (!hasFetched.current) {
+      updateCurrentPosition();
+      hasFetched.current = true;
+    }
+  }, []);
+
+  useEffect(() => {
+    const loadPoints = async () => {
+      if (session?.user?.id) {
+        const pointData = await fetchPoints(session.user.id);
+        if (pointData) {
+          setPoints(pointData);
+        }
+      }
+    };
+    loadPoints();
+  }, [session]);
+
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (!session) {
+    return <p>Not logged in</p>;
+  }
+
+  const containerStyle: React.CSSProperties = {
+    width: "100%",
+    height: "600px",
+  };
+
+  const handleMarkerClick = (marker: Point) => {
+    router.push(`/points/${marker.id}`);
   };
 
   const renderMarker = (point: Point, index: number) => {
@@ -76,7 +94,6 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
     );
   };
 
-
   const handleMapClick = async (event: google.maps.MapMouseEvent) => {
     if (event.latLng) {
       const lat = event.latLng.lat();
@@ -88,7 +105,7 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
         );
         if (isConfirmed) {
           await registerPoint(lat, lng);
-          const newPoints = await fetchPoints();
+          const newPoints = await fetchPoints(session.user?.id);
           setPoints(newPoints);
         }
       } catch (error) {
@@ -109,7 +126,7 @@ const MapWithCustomModalMarker: React.FC<MapWithCustomModalMarkerProps> = ({
         zoom={zoom}
         onClick={handleMapClick}
       >
-        {pointList.map((point, index) => renderMarker(point, index))}
+        {pointList?.map((point, index) => renderMarker(point, index))}
         <Marker
           position={center}
           icon={{
