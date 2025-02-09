@@ -11,7 +11,7 @@ function Contents({ menutype }: { menutype: TabMenu }) {
   if (menutype === TabMenu.LAND) {
     return (
       <div>
-        <MapWithCustomModalMarker zoom={zoom} userId={""} points={[]}></MapWithCustomModalMarker>
+        <MapWithCustomModalMarker zoom={zoom} ></MapWithCustomModalMarker>
       </div>
     );
   }
