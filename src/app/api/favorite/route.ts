@@ -47,8 +47,6 @@ export async function GET(req: NextRequest) {
         const jsonObj = parser.parse(decodedString);
         const response = jsonObj.response.location[0];
 
-        console.log(JSON.stringify(response));
-
         // https://geoapi.heartrails.com/api/xml?method=searchByGeoLocation&x=135.0&y=35.0
         const cityName = `${response.prefecture} ${response.city} ${response.town}`;
         const responseValue = {

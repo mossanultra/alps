@@ -25,7 +25,6 @@ export function useGeoLocation() {
       );
       if (response.ok) {
         const body = await response.text();
-        console.log(body); // XML文字列をログ出力
 
         // XML文字列をDOMにパース
         const parser = new DOMParser();
