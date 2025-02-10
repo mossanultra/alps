@@ -37,7 +37,18 @@ const accessoriesPatterns = [
   `${BASE_URL}/accessories/accessory-bird-flying.png`,
   `${BASE_URL}/accessories/accessory-bird-side.png`,
 ];
-
+const glassesPatterns = [
+    `${BASE_URL}/glasses/glasses-hip-rose.png`,
+    `${BASE_URL}/glasses/glasses-square-black-eyes-red.png`,
+    `${BASE_URL}/glasses/glasses-square-black-rgb.png`,
+    `${BASE_URL}/glasses/glasses-square-black.png`,
+    `${BASE_URL}/glasses/glasses-square-blue-med-saturated.png`,
+    `${BASE_URL}/glasses/glasses-square-blue.png`,
+    `${BASE_URL}/glasses/glasses-square-frog-green.png`,
+    `${BASE_URL}/glasses/glasses-square-fullblack.png`,
+    `${BASE_URL}/glasses/glasses-square-green-blue-multi.png`,
+  ];
+  
 export const loadColorMap = async (url: string): Promise<string[][]> => {
   const image = await loadImage(url);
   const canvas = createCanvas(image.width, image.height);
@@ -91,10 +102,11 @@ const PixelArt = () => {
     const randomHeadPattern = headPatterns[getRandomIndex(headPatterns.length)];
     const randomBodyPattern = bodyPatterns[getRandomIndex(bodyPatterns.length)];
     const randomAccessoryPattern = accessoriesPatterns[getRandomIndex(accessoriesPatterns.length)];
+    const randomGrallesPattern = glassesPatterns[getRandomIndex(glassesPatterns.length)];
 
     const head = await loadColorMap(randomHeadPattern);
     const body = await loadColorMap(randomBodyPattern);
-    const glasses = await loadColorMap(`${BASE_URL}/glasses/glasses-square-black-rgb.png`);
+    const glasses = await loadColorMap(randomGrallesPattern);
     const accessory = await loadColorMap(randomAccessoryPattern);
 
     const svgString = `
