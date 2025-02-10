@@ -15,6 +15,13 @@ const headPatterns = [
   `${BASE_URL}/head/head-abstract.png`,
   `${BASE_URL}/head/head-ape.png`,
   `${BASE_URL}/head/head-beluga.png`,
+  `${BASE_URL}/head/head-bagpipe.png`,
+  `${BASE_URL}/head/head-banana.png`,
+  `${BASE_URL}/head/head-bank.png`,
+  `${BASE_URL}/head/head-baseball-gameball.png`,
+  `${BASE_URL}/head/head-basketball.png`,
+  `${BASE_URL}/head/head-bat.png`,
+  `${BASE_URL}/head/head-bear.png`,
 ];
 const bodyPatterns = [
   `${BASE_URL}/body/body-bege-bsod.png`,
