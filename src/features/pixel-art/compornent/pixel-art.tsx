@@ -135,13 +135,28 @@ const PixelArt = () => {
     const accessory = await loadColorMap(randomAccessoryPattern);
 
     const svgString = `
-      <svg width='${WIDTH}' height='${HEIGHT}' viewBox='0 0 ${WIDTH} ${HEIGHT}' xmlns='http://www.w3.org/2000/svg'>
-        ${generateLayerFromPattern(body)}
-        ${generateLayerFromPattern(head)}
+    <svg width='${WIDTH}' height='${HEIGHT}' viewBox='0 0 ${WIDTH} ${HEIGHT}' xmlns='http://www.w3.org/2000/svg'>
+      <style>
+        @keyframes blink {
+          0%, 90%, 100% { transform: scaleY(1); }
+          95% { transform: scaleY(0.1); }
+        }
+        .blink {
+          /* 各 rect 要素の中心を基準に縮小する */
+          transform-origin: center;
+          animation: blink 3s infinite;
+        }
+      </style>
+      ${generateLayerFromPattern(body)}
+      ${generateLayerFromPattern(head)}
+      <!-- ここでは目（またはグラス）部分を <g> で囲んでアニメーションを適用 -->
+      <g class="blink">
         ${generateLayerFromPattern(glasses)}
-        ${generateLayerFromPattern(accessory)}
-      </svg>`;
-
+      </g>
+      ${generateLayerFromPattern(accessory)}
+    </svg>
+  `;
+  
     setSvg(svgString);
   };
 
