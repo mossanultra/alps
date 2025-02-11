@@ -16,8 +16,16 @@ export async function POST(req: NextRequest) {
     const text = formData.get("text");
     const imageFile = formData.get("image");
 
-    if (!text || typeof text !== "string" || !imageFile || !(imageFile instanceof File)) {
-      return NextResponse.json({ error: "テキストと画像が必要です" }, { status: 400 });
+    if (
+      !text ||
+      typeof text !== "string" ||
+      !imageFile ||
+      !(imageFile instanceof File)
+    ) {
+      return NextResponse.json(
+        { error: "テキストと画像が必要です" },
+        { status: 400 }
+      );
     }
 
     const guid = uuidv4();
@@ -43,7 +51,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ guid, message: "投稿が正常に保存されました" });
   } catch (error) {
     console.error("投稿のアップロード中にエラーが発生しました:", error);
-    return NextResponse.json({ error: "投稿のアップロード中にエラーが発生しました" }, { status: 500 });
+    return NextResponse.json(
+      { error: "投稿のアップロード中にエラーが発生しました" },
+      { status: 500 }
+    );
   }
 }
 
@@ -59,15 +70,18 @@ export async function GET() {
         guid: data.id,
         text: data.text,
         imageBase64: data.imageBase64,
-        imgSrc:data.imgSrc,
-        href:data.href,
-        savedAt:data.savedAt,
+        imgSrc: data.imgSrc,
+        href: data.href,
+        savedAt: data.savedAt,
       };
     });
 
     return NextResponse.json(posts);
   } catch (error) {
     console.error("投稿の取得中にエラーが発生しました:", error);
-    return NextResponse.json({ error: "投稿の取得中にエラーが発生しました" }, { status: 500 });
+    return NextResponse.json(
+      { error: "投稿の取得中にエラーが発生しました" },
+      { status: 500 }
+    );
   }
 }

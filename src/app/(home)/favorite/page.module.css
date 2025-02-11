@@ -1,62 +1,61 @@
 .container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 16px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .backButton {
-    background-color: #007aff;
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    margin-bottom: 16px;
-  }
-  
-  .backButton:hover {
-    background-color: #005ecb;
-  }
-  
-  .title {
-    font-size: 24px;
-    margin-bottom: 16px;
-    color: #333;
-  }
-  
-  .listContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .card {
-    background: #f9f9f9;
-    padding: 12px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  }
-  
-  .link {
-    text-decoration: none;
-    color: #007aff;
-    font-weight: bold;
-    font-size: 18px;
-  }
-  
-  .link:hover {
-    text-decoration: underline;
-  }
-  
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.backButton {
+  background-color: #007aff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-bottom: 16px;
+}
+
+.backButton:hover {
+  background-color: #005ecb;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.link {
+  text-decoration: none;
+  color: #007aff;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

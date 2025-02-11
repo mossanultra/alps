@@ -25,9 +25,10 @@ export default function LoginForm() {
     // });
     try {
       const credentials = {
-        email: email, password: password
+        email: email,
+        password: password,
       };
-      await signIn("credentials", credentials)
+      await signIn("credentials", credentials);
 
       // const userCredential = await signInWithEmailAndPassword(
       //   auth,
@@ -48,7 +49,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleLogin}>
       <div className={styles.container}>
-        <DanielLogo/>
+        <DanielLogo />
         <div className={styles.form}>
           <input
             type="email"

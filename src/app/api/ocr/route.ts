@@ -6,7 +6,9 @@ import { VisionResponse, ExerciseGroup } from "./types/ocr";
 const googleCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
 
 if (!googleCredentials) {
-  throw new Error("GOOGLE_APPLICATION_CREDENTIALS_JSON is not set in environment variables");
+  throw new Error(
+    "GOOGLE_APPLICATION_CREDENTIALS_JSON is not set in environment variables"
+  );
 }
 
 // JSON をパースして認証情報として使用
@@ -24,13 +26,15 @@ export const config = {
 // --- 型定義 ---
 async function extractDate(texts: string[]): Promise<string | null> {
   const dateRegex = /\b(\d{4}[\/-]\d{1,2}[\/-]\d{1,2})\b/;
-  
+
   for (const text of texts) {
     const match = text.match(dateRegex);
     if (match) {
       // 日付のフォーマットを統一する
       const dateParts = match[1].split(/[-\/]/);
-      const formattedDate = dateParts.map((part) => part.padStart(2, "0")).join("/");
+      const formattedDate = dateParts
+        .map((part) => part.padStart(2, "0"))
+        .join("/");
       return formattedDate; // 最初に見つかった日付を返す
     }
   }
@@ -87,7 +91,7 @@ function groupTextAnnotations(response: VisionResponse): string[] {
 }
 function removeExtraSpaces(text: string): string {
   // 先頭と末尾の空白を削除し、連続する空白を単一のスペースに置き換える
-  return text.replace(/\s+/g, '');
+  return text.replace(/\s+/g, "");
 }
 
 // --- 行単位のテキストから種目名とセット情報（重量・reps）を抽出する ---
@@ -104,7 +108,10 @@ function extractExercises(lines: string[]): ExerciseGroup[] {
     const trimmed = line.trim();
     const headerMatch = trimmed.match(headerRegex);
     if (headerMatch) {
-      currentGroup = { name: removeExtraSpaces(headerMatch[1].trim()), sets: [] };
+      currentGroup = {
+        name: removeExtraSpaces(headerMatch[1].trim()),
+        sets: [],
+      };
       // currentGroupから文中の空白を削除する
       // currentGroup.name = currentGroup.name.replace(/\s+/g, " ");
       console.log(currentGroup.name);
@@ -127,51 +134,56 @@ export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const image = formData.get("image");
   if (!image) {
-    return NextResponse.json({ message: "No image file provided" },
-      { status: 400 });
+    return NextResponse.json(
+      { message: "No image file provided" },
+      { status: 400 }
+    );
   }
   // image to Buffer
   const buffer = await (image as Blob).arrayBuffer();
-    try {
-      // Vision API クライアントを作成
-      const client = new vision.ImageAnnotatorClient({ auth });
+  try {
+    // Vision API クライアントを作成
+    const client = new vision.ImageAnnotatorClient({ auth });
 
-      // 画像から OCR を実行
-      const [result] = await client.textDetection(Buffer.from(buffer));
-      const textAnnotations = result.textAnnotations;
+    // 画像から OCR を実行
+    const [result] = await client.textDetection(Buffer.from(buffer));
+    const textAnnotations = result.textAnnotations;
 
-      if (textAnnotations && textAnnotations.length > 0) {
-        // Vision API の結果を VisionResponse 型に変換
-        const visionResponse: VisionResponse = {
-          textAnnotations: textAnnotations.map((annotation) => ({
-            description: annotation.description ?? "",
-            boundingPoly: {
-              vertices: (annotation.boundingPoly?.vertices || []).map((v) => ({
-                x: v.x === null || v.x === undefined ? undefined : v.x,
-                y: v.y === null || v.y === undefined ? undefined : v.y,
-              })),
-              normalizedVertices: annotation.boundingPoly?.normalizedVertices || undefined,
-            },
-          })),
-        };
+    if (textAnnotations && textAnnotations.length > 0) {
+      // Vision API の結果を VisionResponse 型に変換
+      const visionResponse: VisionResponse = {
+        textAnnotations: textAnnotations.map((annotation) => ({
+          description: annotation.description ?? "",
+          boundingPoly: {
+            vertices: (annotation.boundingPoly?.vertices || []).map((v) => ({
+              x: v.x === null || v.x === undefined ? undefined : v.x,
+              y: v.y === null || v.y === undefined ? undefined : v.y,
+            })),
+            normalizedVertices:
+              annotation.boundingPoly?.normalizedVertices || undefined,
+          },
+        })),
+      };
 
-        // OCR 結果から行単位に整形
-        const lines = groupTextAnnotations(visionResponse);
-        // 行単位のテキストからエクササイズ情報を抽出
-        const exercises = extractExercises(lines);
-        const extractedDate = await extractDate(lines);
+      // OCR 結果から行単位に整形
+      const lines = groupTextAnnotations(visionResponse);
+      // 行単位のテキストからエクササイズ情報を抽出
+      const exercises = extractExercises(lines);
+      const extractedDate = await extractDate(lines);
 
-        // JSON で抽出結果を返却
-        return NextResponse.json({ date: extractedDate , exercises },
-          { status: 200 });
-      } else {
-        return NextResponse.json({ exercises: [] },
-          { status: 200 });
-      }
-    } catch (error) {
-      console.error("OCR processing error:", error);
-      return NextResponse.json({ message: "OCR processing error" },
-        { status: 500 });
+      // JSON で抽出結果を返却
+      return NextResponse.json(
+        { date: extractedDate, exercises },
+        { status: 200 }
+      );
+    } else {
+      return NextResponse.json({ exercises: [] }, { status: 200 });
     }
+  } catch (error) {
+    console.error("OCR processing error:", error);
+    return NextResponse.json(
+      { message: "OCR processing error" },
+      { status: 500 }
+    );
   }
-
+}

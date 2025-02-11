@@ -63,17 +63,17 @@ const accessoriesPatterns = [
   `${BASE_URL}/accessories/accessory-bird-side.png`,
 ];
 const glassesPatterns = [
-    `${BASE_URL}/glasses/glasses-hip-rose.png`,
-    `${BASE_URL}/glasses/glasses-square-black-eyes-red.png`,
-    `${BASE_URL}/glasses/glasses-square-black-rgb.png`,
-    `${BASE_URL}/glasses/glasses-square-black.png`,
-    `${BASE_URL}/glasses/glasses-square-blue-med-saturated.png`,
-    `${BASE_URL}/glasses/glasses-square-blue.png`,
-    `${BASE_URL}/glasses/glasses-square-frog-green.png`,
-    `${BASE_URL}/glasses/glasses-square-fullblack.png`,
-    `${BASE_URL}/glasses/glasses-square-green-blue-multi.png`,
-  ];
-  
+  `${BASE_URL}/glasses/glasses-hip-rose.png`,
+  `${BASE_URL}/glasses/glasses-square-black-eyes-red.png`,
+  `${BASE_URL}/glasses/glasses-square-black-rgb.png`,
+  `${BASE_URL}/glasses/glasses-square-black.png`,
+  `${BASE_URL}/glasses/glasses-square-blue-med-saturated.png`,
+  `${BASE_URL}/glasses/glasses-square-blue.png`,
+  `${BASE_URL}/glasses/glasses-square-frog-green.png`,
+  `${BASE_URL}/glasses/glasses-square-fullblack.png`,
+  `${BASE_URL}/glasses/glasses-square-green-blue-multi.png`,
+];
+
 export const loadColorMap = async (url: string): Promise<string[][]> => {
   const image = await loadImage(url);
   const canvas = createCanvas(image.width, image.height);
@@ -94,7 +94,13 @@ export const loadColorMap = async (url: string): Promise<string[][]> => {
       const b = data[i + 2];
       const a = data[i + 3];
 
-      row.push(a === 0 ? "transparent" : `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`);
+      row.push(
+        a === 0
+          ? "transparent"
+          : `#${r.toString(16).padStart(2, "0")}${g
+              .toString(16)
+              .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`
+      );
     }
     colorMap.push(row);
   }
@@ -126,8 +132,10 @@ const PixelArt = () => {
   const generatePixelArtSVG = async () => {
     const randomHeadPattern = headPatterns[getRandomIndex(headPatterns.length)];
     const randomBodyPattern = bodyPatterns[getRandomIndex(bodyPatterns.length)];
-    const randomAccessoryPattern = accessoriesPatterns[getRandomIndex(accessoriesPatterns.length)];
-    const randomGrallesPattern = glassesPatterns[getRandomIndex(glassesPatterns.length)];
+    const randomAccessoryPattern =
+      accessoriesPatterns[getRandomIndex(accessoriesPatterns.length)];
+    const randomGrallesPattern =
+      glassesPatterns[getRandomIndex(glassesPatterns.length)];
 
     const head = await loadColorMap(randomHeadPattern);
     const body = await loadColorMap(randomBodyPattern);
@@ -156,7 +164,7 @@ const PixelArt = () => {
       ${generateLayerFromPattern(accessory)}
     </svg>
   `;
-  
+
     setSvg(svgString);
   };
 
@@ -166,9 +174,13 @@ const PixelArt = () => {
 
   return (
     <div>
-      {svg ? <div dangerouslySetInnerHTML={{ __html: svg }} /> : <p>Loading...</p>}
+      {svg ? (
+        <div dangerouslySetInnerHTML={{ __html: svg }} />
+      ) : (
+        <p>Loading...</p>
+      )}
       <button
-        onClick={() => generatePixelArtSVG() }
+        onClick={() => generatePixelArtSVG()}
         style={{ marginTop: "10px", padding: "5px 10px" }}
       >
         Regenerate

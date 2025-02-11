@@ -11,8 +11,11 @@ const Profile = async () => {
   return (
     <div style={styles.container}>
       <div style={styles.profileHeader}>
-        <img src={profile!
-          .userIcon} alt="Profile" style={styles.profileImage} />
+        <img
+          src={profile!.userIcon}
+          alt="Profile"
+          style={styles.profileImage}
+        />
         <h2 style={styles.username}>{profile!.userName}</h2>
       </div>
       <p style={styles.bio}></p>

@@ -5,7 +5,7 @@ export async function POST(req: NextRequest) {
   try {
     // リクエストボディからJSONをパースして必要なパラメータを取得
     const { startDate, endDate, userId } = await req.json();
-    
+
     console.log("startDate:", startDate);
 
     if (!startDate || !endDate || !userId) {

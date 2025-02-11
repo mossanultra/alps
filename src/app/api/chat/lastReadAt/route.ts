@@ -10,7 +10,10 @@ export async function GET(req: NextRequest) {
     const lng = searchParams.get("lng");
 
     if (!userId || !lat || !lng) {
-      return NextResponse.json({ error: "パラメータが不足しています" }, { status: 400 });
+      return NextResponse.json(
+        { error: "パラメータが不足しています" },
+        { status: 400 }
+      );
     }
 
     const querySnapshot = await db
@@ -21,7 +24,10 @@ export async function GET(req: NextRequest) {
       .get();
 
     if (querySnapshot.empty) {
-      return NextResponse.json({ error: "該当するデータが見つかりません" }, { status: 404 });
+      return NextResponse.json(
+        { error: "該当するデータが見つかりません" },
+        { status: 404 }
+      );
     }
 
     const lastRecord = querySnapshot.docs[0].data();

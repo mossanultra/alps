@@ -1,21 +1,21 @@
 // components/Dashboard.tsx
-'use client';
-import React, { useEffect, useState } from 'react';
-import GridLayout from 'react-grid-layout';
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
-import ExerciseChart from './ExerciseChart';
+"use client";
+import React, { useEffect, useState } from "react";
+import GridLayout from "react-grid-layout";
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
+import ExerciseChart from "./ExerciseChart";
 // import TotalWeightChart from './TotalWeightChart';
 // import { fetchTrainingDataList } from '@/features/training/services/fetchTrainingDataList';
-import { TrainingListResponse } from '@/features/training/types/training';
-import { useSession } from 'next-auth/react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { format } from 'date-fns';
-import styles from './Dashboard.module.css';
-import { fetchQueryTrainingDataList } from '@/features/training/services/fetchQueryTrainingDataList';
+import { TrainingListResponse } from "@/features/training/types/training";
+import { useSession } from "next-auth/react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
+import styles from "./Dashboard.module.css";
+import { fetchQueryTrainingDataList } from "@/features/training/services/fetchQueryTrainingDataList";
 
-type BoardType = 'exercise' | 'total';
+type BoardType = "exercise" | "total";
 
 type Board = {
   id: string;
@@ -29,8 +29,8 @@ const Dashboard: React.FC = () => {
 
   // 初期状態として、全重量表示のボードとエクササイズボード１件を用意
   const initialBoards: Board[] = [
-    { id: 'total-weight', type: 'total' },
-    { id: 'exercise-1', type: 'exercise', exercise: 'レッグ プレス' },
+    { id: "total-weight", type: "total" },
+    { id: "exercise-1", type: "exercise", exercise: "レッグ プレス" },
   ];
   const [boards, setBoards] = useState<Board[]>(initialBoards);
   const [availableExercises, setAvailableExercises] = useState<string[]>([]);
@@ -41,7 +41,7 @@ const Dashboard: React.FC = () => {
 
   // localStorage からボード設定を復元
   useEffect(() => {
-    const savedBoards = localStorage.getItem('dashboardBoards');
+    const savedBoards = localStorage.getItem("dashboardBoards");
     if (savedBoards) {
       setBoards(JSON.parse(savedBoards));
     }
@@ -49,7 +49,7 @@ const Dashboard: React.FC = () => {
 
   // boards の状態変更時に localStorage へ保存
   useEffect(() => {
-    localStorage.setItem('dashboardBoards', JSON.stringify(boards));
+    localStorage.setItem("dashboardBoards", JSON.stringify(boards));
   }, [boards]);
 
   // セッションが確立している場合、エクササイズデータを取得
@@ -60,8 +60,8 @@ const Dashboard: React.FC = () => {
       try {
         const json = (await fetchQueryTrainingDataList(
           session.user!.id!,
-          format(startDate, 'yyyy/MM/dd'),
-          format(endDate, 'yyyy/MM/dd')
+          format(startDate, "yyyy/MM/dd"),
+          format(endDate, "yyyy/MM/dd")
         )) as TrainingListResponse;
         if (!json) return;
 
@@ -71,7 +71,7 @@ const Dashboard: React.FC = () => {
           .flat();
         setAvailableExercises([...new Set(exercises)]);
       } catch (error) {
-        console.error('Error fetching training data:', error);
+        console.error("Error fetching training data:", error);
       }
     };
 
@@ -83,7 +83,7 @@ const Dashboard: React.FC = () => {
     const newId = `exercise-${Date.now()}`;
     const newBoard: Board = {
       id: newId,
-      type: 'exercise',
+      type: "exercise",
       exercise: availableExercises[0],
     };
     setBoards([...boards, newBoard]);
@@ -152,7 +152,7 @@ const Dashboard: React.FC = () => {
         {boards.map((board) => (
           <div key={board.id} className={styles.dashboardBoard}>
             <div className={styles.boardHeader}>
-              <span>{board.type === 'total' ? '全重量' : board.exercise}</span>
+              <span>{board.type === "total" ? "全重量" : board.exercise}</span>
               <button
                 className={styles.removeBoardButton}
                 onClick={() => removeBoard(board.id)}
@@ -160,7 +160,7 @@ const Dashboard: React.FC = () => {
                 削除
               </button>
             </div>
-            {board.type === 'exercise' && (
+            {board.type === "exercise" && (
               <>
                 <select
                   className={styles.exerciseSelect}
@@ -175,8 +175,8 @@ const Dashboard: React.FC = () => {
                 </select>
                 <ExerciseChart
                   userId="PeVnUTf4wMaeMwUXtkH2F8Alswg1"
-                  startDate={format(startDate, 'yyyy/MM/dd')}
-                  endDate={format(endDate, 'yyyy/MM/dd')}
+                  startDate={format(startDate, "yyyy/MM/dd")}
+                  endDate={format(endDate, "yyyy/MM/dd")}
                   exerciseName={board.exercise || availableExercises[0]}
                 />
               </>

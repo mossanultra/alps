@@ -1,6 +1,5 @@
 export interface Post {
-    guid: string;
-    text: string;
-    imgSrc: string;
-  };
-  
+  guid: string;
+  text: string;
+  imgSrc: string;
+}

@@ -1,4 +1,3 @@
-
 import styles from "./page.module.css";
 import { fetchFavorite } from "@/features/favorite/sevices/fetchFavorite";
 import { auth } from "../../../../auth";

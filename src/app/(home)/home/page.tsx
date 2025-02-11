@@ -1,4 +1,4 @@
-'use client'; // クライアントコンポーネントとして明示
+"use client"; // クライアントコンポーネントとして明示
 import React, { useState } from "react";
 import styles from "./home.module.css";
 import Tab, { TabMenu } from "@/features/home/components/tab/tab";
@@ -11,7 +11,7 @@ function Contents({ menutype }: { menutype: TabMenu }) {
   if (menutype === TabMenu.LAND) {
     return (
       <div>
-        <MapWithCustomModalMarker zoom={zoom} ></MapWithCustomModalMarker>
+        <MapWithCustomModalMarker zoom={zoom}></MapWithCustomModalMarker>
       </div>
     );
   }
@@ -19,11 +19,7 @@ function Contents({ menutype }: { menutype: TabMenu }) {
     return <></>;
   }
   if (menutype === TabMenu.WORK) {
-    return (
-      <>
-        {/* <ContentGrid /> */}
-      </>
-    );
+    return <>{/* <ContentGrid /> */}</>;
   }
 }
 
@@ -33,7 +29,7 @@ const HomePage = () => {
     <div className={styles.tairaImageApp}>
       <Tab
         onChangeSelectedTab={function (selectedTab: TabMenu): void {
-          if(selectedTab === TabMenu.LAND) {
+          if (selectedTab === TabMenu.LAND) {
             setSelectedTab(TabMenu.LAND);
           }
         }}
