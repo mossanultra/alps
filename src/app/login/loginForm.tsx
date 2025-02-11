@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import styles from "./loginForm.module.css";
-import DanielLogo from "@/components/layout/logo/logo";
+import DanielLogo from "@/components/logo/logo";
 // import { signInWithEmailAndPassword } from "firebase/auth";
 // import { auth } from "@/firebase";
 
