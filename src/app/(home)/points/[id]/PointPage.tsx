@@ -31,6 +31,7 @@ export default function PointPage({
   // チャットデータの取得
   const loadChats = useCallback(async () => {
     const chatData = await fetchChats(null, pointData.lat, pointData.lng);
+    console.log("chatData", chatData);
     setChats(chatData);
   }, [pointData]);
 
@@ -126,6 +127,7 @@ export default function PointPage({
             pointData.lng,
             userProfile.userId
           );
+          loadChats();
         }}
         onRefresh={loadChats}
         onFavorite={() => registFavorite(id, userProfile.userId)}
