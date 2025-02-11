@@ -82,6 +82,10 @@ function groupTextAnnotations(response: VisionResponse): string[] {
 
   return outputLines;
 }
+function removeExtraSpaces(text: string): string {
+  // 先頭と末尾の空白を削除し、連続する空白を単一のスペースに置き換える
+  return text.replace(/\s+/g, '');
+}
 
 // --- 行単位のテキストから種目名とセット情報（重量・reps）を抽出する ---
 function extractExercises(lines: string[]): ExerciseGroup[] {
@@ -97,7 +101,10 @@ function extractExercises(lines: string[]): ExerciseGroup[] {
     const trimmed = line.trim();
     const headerMatch = trimmed.match(headerRegex);
     if (headerMatch) {
-      currentGroup = { name: headerMatch[1].trim(), sets: [] };
+      currentGroup = { name: removeExtraSpaces(headerMatch[1].trim()), sets: [] };
+      // currentGroupから文中の空白を削除する
+      // currentGroup.name = currentGroup.name.replace(/\s+/g, " ");
+      console.log(currentGroup.name);
       groups.push(currentGroup);
       continue;
     }
