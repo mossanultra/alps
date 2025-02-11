@@ -28,7 +28,10 @@ async function extractDate(texts: string[]): Promise<string | null> {
   for (const text of texts) {
     const match = text.match(dateRegex);
     if (match) {
-      return match[1]; // 最初に見つかった日付を返す
+      // 日付のフォーマットを統一する
+      const dateParts = match[1].split(/[-\/]/);
+      const formattedDate = dateParts.map((part) => part.padStart(2, "0")).join("/");
+      return formattedDate; // 最初に見つかった日付を返す
     }
   }
   return null;
