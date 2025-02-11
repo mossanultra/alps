@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { useState, ChangeEvent, FormEvent } from "react";
 
 interface ExerciseGroup {
@@ -13,10 +14,18 @@ interface OCRResult {
 }
 
 export default function OCRComponent() {
+    const { data: session, status } = useSession()
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [ocrResult, setOcrResult] = useState<OCRResult | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+
+    if (status === "loading") {
+        return <p>Loading...</p>;
+    }
+    if (!session) {
+        return <p>Not logged in</p>;
+    }
 
     // ファイル選択時のハンドラー
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +60,23 @@ export default function OCRComponent() {
 
             const data: OCRResult = await res.json();
             setOcrResult(data);
+
+            //save to firestore
+            const storeSaveRequestForm = new FormData();
+            storeSaveRequestForm.append("trainingDay", data.date);
+            storeSaveRequestForm.append("exercises", JSON.stringify(data.exercises));
+            storeSaveRequestForm.append("image", selectedFile);
+            storeSaveRequestForm.append("userId", session!.user!.id!);
+
+            const storeSaveResponse = await fetch("/api/training", {
+                method: "POST",
+                body: storeSaveRequestForm,
+            });
+            if (!storeSaveResponse.ok) {
+                throw new Error(`Server error: ${res.statusText}`);
+            }
+            await storeSaveResponse.json();
+
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             setError(err.message || "OCR 処理中にエラーが発生しました。");
@@ -61,7 +87,7 @@ export default function OCRComponent() {
 
     return (
         <div style={{ padding: "1rem" }}>
-            <h1>OCR 画像アップロード</h1>
+            <h1>筋トレメモ 画像アップロードするとトレーニングメニューを抽出するよ</h1>
             <form onSubmit={handleSubmit}>
                 <input type="file" accept="image/*" onChange={handleFileChange} />
                 <button type="submit" disabled={!selectedFile || loading}>

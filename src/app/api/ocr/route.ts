@@ -1,6 +1,7 @@
 import vision from "@google-cloud/vision";
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleAuth } from "google-auth-library";
+import { VisionResponse, ExerciseGroup } from "./types/ocr";
 
 const googleCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
 
@@ -21,31 +22,6 @@ export const config = {
 };
 
 // --- 型定義 ---
-interface Vertex {
-  x?: number;
-  y?: number;
-}
-
-interface BoundingPoly {
-  vertices: Vertex[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  normalizedVertices?: any[];
-}
-
-interface TextAnnotation {
-  description: string | undefined;
-  boundingPoly: BoundingPoly;
-}
-
-interface VisionResponse {
-  textAnnotations: TextAnnotation[];
-}
-
-// 種目（エクササイズ）グループの型定義
-interface ExerciseGroup {
-  name: string;
-  sets: { weight: string; reps: string }[];
-}
 async function extractDate(texts: string[]): Promise<string | null> {
   const dateRegex = /\b(\d{4}[\/-]\d{1,2}[\/-]\d{1,2})\b/;
   
@@ -171,7 +147,6 @@ export async function POST(req: NextRequest) {
 
         // OCR 結果から行単位に整形
         const lines = groupTextAnnotations(visionResponse);
-        console.log("Extracted lines:", lines);
         // 行単位のテキストからエクササイズ情報を抽出
         const exercises = extractExercises(lines);
         const extractedDate = await extractDate(lines);
