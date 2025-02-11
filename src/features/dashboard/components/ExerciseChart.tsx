@@ -1,4 +1,5 @@
 // components/ExerciseChart.tsx
+import { fetchTrainingDataList } from '@/features/training/services/fetchTrainingDataList';
 import React, { useEffect, useState } from 'react';
 import {
     LineChart,
@@ -53,10 +54,8 @@ const ExerciseChart: React.FC<ExerciseChartProps> = ({
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch(
-                    `http://localhost:3000/api/training/list?userId=${userId}&year=${year}&month=${month}`
-                );
-                const json: TrainingListResponse = await res.json();
+                const json = await fetchTrainingDataList(userId, year, month) as TrainingListResponse;
+                if (!json) return;
 
                 // 各トレーニングから指定エクササイズの最大重量を抽出
                 const data = json.trainings

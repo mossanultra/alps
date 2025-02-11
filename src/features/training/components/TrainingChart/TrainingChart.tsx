@@ -10,27 +10,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import { TrainingListResponse } from '../../types/training';
 
-type SetData = {
-  weight: string;
-  reps: string;
-};
-
-type Exercise = {
-  name: string;
-  sets: SetData[];
-};
-
-type Training = {
-  id: string;
-  userId: string;
-  trainingDay: string;
-  exercises: Exercise[];
-};
-
-type TrainingListResponse = {
-  trainings: Training[];
-};
 
 interface TrainingChartProps {
   userId: string;

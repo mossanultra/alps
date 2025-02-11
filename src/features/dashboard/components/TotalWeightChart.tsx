@@ -1,4 +1,5 @@
 // components/TotalWeightChart.tsx
+import { fetchTrainingDataList } from '@/features/training/services/fetchTrainingDataList';
 import React, { useEffect, useState } from 'react';
 import {
     LineChart,
@@ -47,10 +48,8 @@ const TotalWeightChart: React.FC<TotalWeightChartProps> = ({ userId, year, month
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch(
-                    `http://localhost:3000/api/training/list?userId=${userId}&year=${year}&month=${month}`
-                );
-                const json: TrainingListResponse = await res.json();
+                const json = await fetchTrainingDataList(userId, year, month) as TrainingListResponse;
+                if (!json) return;
 
                 // 各トレーニングの全セットについて、重量×レップ数の合計を計算
                 const data = json.trainings.map((training) => {
