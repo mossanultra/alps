@@ -85,8 +85,8 @@ const Dashboard: React.FC = () => {
 
     return (
         <div>
-            <h1>トレーニングダッシュボード</h1>
-            <button onClick={addExerciseBoard}>エクササイズボード追加</button>
+            <h1>ワンニャンランド</h1>
+            <button onClick={addExerciseBoard}>ボード追加</button>
             <GridLayout
                 className="layout"
                 layout={layout}
