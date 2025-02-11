@@ -1,5 +1,6 @@
 // components/ExerciseChart.tsx
-import { fetchTrainingDataList } from '@/features/training/services/fetchTrainingDataList';
+import { fetchQueryTrainingDataList } from '@/features/training/services/fetchQueryTrainingDataList';
+import { TrainingListResponse } from '@/features/training/types/training';
 import React, { useEffect, useState } from 'react';
 import {
     LineChart,
@@ -12,38 +13,18 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 
-type SetData = {
-    weight: string;
-    reps: string;
-};
-
-type Exercise = {
-    name: string;
-    sets: SetData[];
-};
-
-type Training = {
-    id: string;
-    userId: string;
-    trainingDay: string;
-    exercises: Exercise[];
-};
-
-type TrainingListResponse = {
-    trainings: Training[];
-};
 
 interface ExerciseChartProps {
     userId: string;
-    year: string;
-    month: string;
+    startDate: string;
+    endDate: string;
     exerciseName: string;
 }
 
 const ExerciseChart: React.FC<ExerciseChartProps> = ({
     userId,
-    year,
-    month,
+    startDate,
+    endDate,
     exerciseName,
 }) => {
     // チャート用データ：各トレーニング日の最大重量
@@ -54,7 +35,7 @@ const ExerciseChart: React.FC<ExerciseChartProps> = ({
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const json = await fetchTrainingDataList(userId, year, month) as TrainingListResponse;
+                const json = await fetchQueryTrainingDataList(userId, startDate, endDate) as TrainingListResponse;
                 if (!json) return;
 
                 // 各トレーニングから指定エクササイズの最大重量を抽出
@@ -80,7 +61,7 @@ const ExerciseChart: React.FC<ExerciseChartProps> = ({
         };
 
         fetchData();
-    }, [userId, year, month, exerciseName]);
+    }, [userId, exerciseName, startDate, endDate]);
 
     return (
         <div>

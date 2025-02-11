@@ -5,11 +5,15 @@ import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import ExerciseChart from './ExerciseChart';
-import TotalWeightChart from './TotalWeightChart';
-import { fetchTrainingDataList } from '@/features/training/services/fetchTrainingDataList';
+// import TotalWeightChart from './TotalWeightChart';
+// import { fetchTrainingDataList } from '@/features/training/services/fetchTrainingDataList';
 import { TrainingListResponse } from '@/features/training/types/training';
 import { useSession } from 'next-auth/react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
 import styles from './Dashboard.module.css';
+import { fetchQueryTrainingDataList } from '@/features/training/services/fetchQueryTrainingDataList';
 
 type BoardType = 'exercise' | 'total';
 
@@ -22,6 +26,7 @@ type Board = {
 
 const Dashboard: React.FC = () => {
   const { data: session } = useSession();
+
   // 初期状態として、全重量表示のボードとエクササイズボード１件を用意
   const initialBoards: Board[] = [
     { id: 'total-weight', type: 'total' },
@@ -30,7 +35,11 @@ const Dashboard: React.FC = () => {
   const [boards, setBoards] = useState<Board[]>(initialBoards);
   const [availableExercises, setAvailableExercises] = useState<string[]>([]);
 
-  // localStorage からの復元
+  // 日付範囲の state を Date 型で管理（例：2025年2月1日～28日）
+  const [startDate, setStartDate] = useState<Date>(new Date(2025, 1, 1)); // ※ 月は 0-indexed（1 → 2月）
+  const [endDate, setEndDate] = useState<Date>(new Date(2025, 1, 28));
+
+  // localStorage からボード設定を復元
   useEffect(() => {
     const savedBoards = localStorage.getItem('dashboardBoards');
     if (savedBoards) {
@@ -43,16 +52,19 @@ const Dashboard: React.FC = () => {
     localStorage.setItem('dashboardBoards', JSON.stringify(boards));
   }, [boards]);
 
+  // セッションが確立している場合、エクササイズデータを取得
   useEffect(() => {
     if (!session) return;
+
     const fetchData = async () => {
       try {
-        const json = await fetchTrainingDataList(
+        const json = (await fetchQueryTrainingDataList(
           session.user!.id!,
-          "2025",
-          "02"
-        ) as TrainingListResponse;
+          format(startDate, 'yyyy/MM/dd'),
+          format(endDate, 'yyyy/MM/dd')
+        )) as TrainingListResponse;
         if (!json) return;
+
         // エクササイズ名のみ抽出
         const exercises = json.trainings
           .map((training) => training.exercises.map((ex) => ex.name))
@@ -62,13 +74,18 @@ const Dashboard: React.FC = () => {
         console.error('Error fetching training data:', error);
       }
     };
+
     fetchData();
   }, [session]);
 
   // エクササイズボードの追加
   const addExerciseBoard = () => {
     const newId = `exercise-${Date.now()}`;
-    const newBoard: Board = { id: newId, type: 'exercise', exercise: availableExercises[0] };
+    const newBoard: Board = {
+      id: newId,
+      type: 'exercise',
+      exercise: availableExercises[0],
+    };
     setBoards([...boards, newBoard]);
   };
 
@@ -98,6 +115,29 @@ const Dashboard: React.FC = () => {
   return (
     <div className={styles.dashboardContainer}>
       <h1 className={styles.dashboardTitle}>ワンニャンランド</h1>
+
+      {/* 日付範囲選択エリア */}
+      <div className={styles.dateRange}>
+        <label className={styles.dateLabel}>
+          開始日:
+          <DatePicker
+            selected={startDate}
+            onChange={(date: Date | null) => date && setStartDate(date)}
+            dateFormat="yyyy/MM/dd"
+            className={styles.dateInput}
+          />
+        </label>
+        <label className={styles.dateLabel}>
+          終了日:
+          <DatePicker
+            selected={endDate}
+            onChange={(date: Date | null) => date && setEndDate(date)}
+            dateFormat="yyyy/MM/dd"
+            className={styles.dateInput}
+          />
+        </label>
+      </div>
+
       <button className={styles.addBoardButton} onClick={addExerciseBoard}>
         ボード追加
       </button>
@@ -135,19 +175,19 @@ const Dashboard: React.FC = () => {
                 </select>
                 <ExerciseChart
                   userId="PeVnUTf4wMaeMwUXtkH2F8Alswg1"
-                  year="2025"
-                  month="02"
+                  startDate={format(startDate, 'yyyy/MM/dd')}
+                  endDate={format(endDate, 'yyyy/MM/dd')}
                   exerciseName={board.exercise || availableExercises[0]}
                 />
               </>
             )}
-            {board.type === 'total' && (
+            {/* {board.type === 'total' && (
               <TotalWeightChart
                 userId="PeVnUTf4wMaeMwUXtkH2F8Alswg1"
-                year="2025"
-                month="02"
+                startDate={format(startDate, 'yyyy/MM/dd')}
+                endDate={format(endDate, 'yyyy/MM/dd')}
               />
-            )}
+            )} */}
           </div>
         ))}
       </GridLayout>
