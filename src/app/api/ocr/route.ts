@@ -113,7 +113,7 @@ function extractExercises(lines: string[]): ExerciseGroup[] {
   let currentGroup: ExerciseGroup | null = null;
 
   // 種目名の行は "RM : ～kg" の形式と仮定（例："ラット プルダウン RM : 24.7kg"）
-  const headerRegex = /^(.*?)\s+RM\s*:\s*([\d.]+kg)$/;
+  const headerRegex = /^(.*?)\s+RM\s*:\s*([\d.]+)\s*kg$/;
   // セット情報の行は "（任意の数字） kg x （数字） reps" を含む行とする
   const setRegex = /^(?:\d+\s+)?([\d.]+)\s*kg\s*x\s*(\d+)\s*reps/i;
 
@@ -171,6 +171,7 @@ export async function POST(req: NextRequest) {
 
         // OCR 結果から行単位に整形
         const lines = groupTextAnnotations(visionResponse);
+        console.log("Extracted lines:", lines);
         // 行単位のテキストからエクササイズ情報を抽出
         const exercises = extractExercises(lines);
         const extractedDate = await extractDate(lines);
