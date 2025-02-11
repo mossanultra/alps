@@ -20,25 +20,37 @@ type Board = {
 };
 
 const Dashboard: React.FC = () => {
-    const { data: session } = useSession()
+    const { data: session } = useSession();
     // 初期状態として、全重量表示のボードとエクササイズボード１件を用意
     const initialBoards: Board[] = [
         { id: 'total-weight', type: 'total' },
         { id: 'exercise-1', type: 'exercise', exercise: 'レッグ プレス' },
     ];
     const [boards, setBoards] = useState<Board[]>(initialBoards);
-    const[availableExercises , setAvailableExercises] = useState<string[]>([]);
-    
+    const [availableExercises, setAvailableExercises] = useState<string[]>([]);
+
+    // コンポーネントのマウント時に localStorage からボード設定を復元する
+    useEffect(() => {
+        const savedBoards = localStorage.getItem('dashboardBoards');
+        if (savedBoards) {
+            setBoards(JSON.parse(savedBoards));
+        }
+    }, []);
+
+    // boards の状態が変化するたびに localStorage に保存する
+    useEffect(() => {
+        localStorage.setItem('dashboardBoards', JSON.stringify(boards));
+    }, [boards]);
 
     useEffect(() => {
-        if(!session) return;
+        if (!session) return;
 
         const fetchData = async () => {
             try {
                 const json = await fetchTrainingDataList(session.user!.id!, "2025", "02") as TrainingListResponse;
                 if (!json) return;
 
-                // jsonからnameのみ取り出す
+                // json からエクササイズ名のみを抽出
                 const exercises = json.trainings.map((training) => {
                     return training.exercises.map((ex) => ex.name);
                 }).flat();
@@ -76,7 +88,6 @@ const Dashboard: React.FC = () => {
     // react-grid-layout 用の layout 情報（各ボードの位置とサイズ）
     const layout = boards.map((board, index) => ({
         i: board.id,
-        // シンプルな配置例。必要に応じて調整してください
         x: (index * 4) % 12,
         y: Math.floor(index / 3) * 4,
         w: 4,
