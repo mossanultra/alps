@@ -1,11 +1,14 @@
 // components/Dashboard.tsx
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import ExerciseChart from './ExerciseChart';
 import TotalWeightChart from './TotalWeightChart';
+import { fetchTrainingDataList } from '@/features/training/services/fetchTrainingDataList';
+import { TrainingListResponse } from '@/features/training/types/training';
+import { useSession } from 'next-auth/react';
 
 type BoardType = 'exercise' | 'total';
 
@@ -17,22 +20,36 @@ type Board = {
 };
 
 const Dashboard: React.FC = () => {
+    const { data: session } = useSession()
     // 初期状態として、全重量表示のボードとエクササイズボード１件を用意
     const initialBoards: Board[] = [
         { id: 'total-weight', type: 'total' },
         { id: 'exercise-1', type: 'exercise', exercise: 'レッグ プレス' },
     ];
     const [boards, setBoards] = useState<Board[]>(initialBoards);
+    const[availableExercises , setAvailableExercises] = useState<string[]>([]);
+    
 
-    // 選択可能なエクササイズ例
-    const availableExercises = [
-        'レッグ プレス',
-        'レッグ エクステンション',
-        'ヒップ ア ダクション',
-        'ヒップ アブダクション',
-        'バーベル スクワット',
-        'ケーブル アブダクション',
-    ];
+    useEffect(() => {
+        if(!session) return;
+
+        const fetchData = async () => {
+            try {
+                const json = await fetchTrainingDataList(session.user!.id!, "2025", "02") as TrainingListResponse;
+                if (!json) return;
+
+                // jsonからnameのみ取り出す
+                const exercises = json.trainings.map((training) => {
+                    return training.exercises.map((ex) => ex.name);
+                }).flat();
+                setAvailableExercises([...new Set(exercises)]);
+            } catch (error) {
+                console.error('Error fetching training data:', error);
+            }
+        };
+
+        fetchData();
+    }, [session]);
 
     // エクササイズボードの追加
     const addExerciseBoard = () => {
