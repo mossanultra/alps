@@ -27,12 +27,14 @@ export default function PointPage({
     lastDocId: string | null;
     hasMoreChats: boolean;
   } | null>(null);
+  const [loadCount , setLoadCount] = useState(0);
 
-  // チャットデータの取得
+  // チャットデータの取`得
   const loadChats = useCallback(async () => {
     const chatData = await fetchChats(null, pointData.lat, pointData.lng);
     console.log("chatData", chatData);
     setChats(chatData);
+    setLoadCount(loadCount + 1);
   }, [pointData]);
 
   useEffect(() => {
@@ -57,8 +59,9 @@ export default function PointPage({
 
   // 自動スクロール（初回のみ）
   useEffect(() => {
-    if (virtuosoRef.current) {
+    if (virtuosoRef.current && loadCount > 2) {
       setTimeout(() => {
+        console.log("scrollToIndex");
         virtuosoRef.current?.scrollToIndex({ index: "LAST", behavior: "auto" });
       }, 0);
     }
@@ -86,7 +89,8 @@ export default function PointPage({
       </button>
       <div
         style={{
-          height: "100vh",
+          height: " 83vh", // 画面全体の高さを確保
+          overflow: "hidden", // 外側のスクロールを防ぐ
           display: "flex",
           flexDirection: "column",
           backgroundImage: `url('/_3bceba53-bbe7-4266-88bf-99e370a54153.jpg')`,
