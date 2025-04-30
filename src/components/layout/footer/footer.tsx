@@ -11,26 +11,28 @@ export enum MenuType {
 
 const menuItems = [
   {
-    src: "/images/footer/home.jpg",
+    src: "/images/footer/cat/1.jpg",
     text: "ホーム",
     menuValue: 0,
     link: "/home",
   },
   {
-    src: "/images/footer/search.jpg",
+    src: "/images/footer/cat/2.jpg",
     text: "検索",
     menuValue: 1,
     link: "/search",
   },
-  { src: "/images/footer/post.jpg", text: "投稿", menuValue: 2, link: "/post" },
+  { 
+    src: "/images/footer/cat/3.jpg",
+    text: "投稿", menuValue: 2, link: "/post" },
   {
-    src: "/images/footer/fava.jpg",
+    src: "/images/footer/cat/4.jpg",
     text: "お気に入り",
     menuValue: 3,
     link: "/favorite",
   },
   {
-    src: "/images/footer/profile.jpg",
+    src: "/images/footer/cat/5.jpg",
     text: "マイページ",
     menuValue: 4,
     link: "/profile",
