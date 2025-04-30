@@ -93,7 +93,7 @@ export default function PointPage({
           overflow: "hidden", // 外側のスクロールを防ぐ
           display: "flex",
           flexDirection: "column",
-          backgroundImage: `url('/_3bceba53-bbe7-4266-88bf-99e370a54153.jpg')`,
+          backgroundImage: `url('/images/footer/cat/back.png')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
