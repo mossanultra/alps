@@ -43,8 +43,12 @@ export async function GET(req: NextRequest) {
         const geoLocationResponse = await fetch(url);
         const responseTxt = await geoLocationResponse.text();
         const decodedString = decodeNumericCharacterReference(responseTxt);
+        // console.log(decodedString);
         const parser = new XMLParser();
         const jsonObj = parser.parse(decodedString);
+        if (!jsonObj.response || !jsonObj.response.location) {
+          return {};
+        }
         const response = jsonObj.response.location[0];
 
         // https://geoapi.heartrails.com/api/xml?method=searchByGeoLocation&x=135.0&y=35.0
