@@ -40,7 +40,10 @@ export async function GET(req: NextRequest) {
       if (pagingDoc.exists) {
         query = query.startAfter(pagingDoc);
       } else {
-        return NextResponse.json({ error: "ページングデータが存在しません" }, { status: 404 });
+        return NextResponse.json(
+          { error: "ページングデータが存在しません" },
+          { status: 404 }
+        );
       }
     }
 
@@ -75,7 +78,7 @@ export async function GET(req: NextRequest) {
           id: doc.id,
           lat: data.lat,
           lng: data.lng,
-          userId: userId
+          userId: userId,
         };
       })
     );
@@ -106,11 +109,17 @@ export async function POST(req: NextRequest) {
     const userId = formData.get("userId");
 
     if (!text || typeof text !== "string") {
-      return NextResponse.json({ error: "テキストが必要です" }, { status: 400 });
+      return NextResponse.json(
+        { error: "テキストが必要です" },
+        { status: 400 }
+      );
     }
 
     if (!userName || typeof userName !== "string") {
-      return NextResponse.json({ error: "userNameが必要です" }, { status: 400 });
+      return NextResponse.json(
+        { error: "userNameが必要です" },
+        { status: 400 }
+      );
     }
 
     if (isNaN(lat) || isNaN(lng)) {
@@ -154,4 +163,3 @@ function getUserIcon(userName: string) {
     return "https://pbs.twimg.com/media/GHyhV0pasAA4dDZ?format=png&name=900x900";
   }
 }
-

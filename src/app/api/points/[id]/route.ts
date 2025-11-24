@@ -5,11 +5,12 @@ import { Point } from "../route";
 // Define the GET handler to accept params
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const querySnapshot = await db.collection("points").get();
-  
+    const { id } = await params;
+
     // Firestoreから取得したドキュメントをPostData型に変換
     const points: Point[] = querySnapshot.docs.map((doc) => {
       const data = doc.data();
@@ -19,7 +20,6 @@ export async function GET(
         id: doc.id,
       };
     });
-    const id = params.id; // Get the ID from the URL
     const point = points.find((item) => item.id === id); // Find article by ID
 
     if (!point) {

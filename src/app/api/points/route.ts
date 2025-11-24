@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
         }
 
         const lastReadAt = await getLastReadAt(userId, point.lat, point.lng);
-        if(!lastReadAt){
+        if (!lastReadAt) {
           return { ...point, read: false };
         }
         return { ...point, read: lastCreatedAt < lastReadAt };
@@ -85,7 +85,10 @@ export async function POST(req: NextRequest) {
 }
 
 // 最後に作成されたメッセージの作成日時を取得
-async function getLastCreatedAt(lat: number, lng: number): Promise<string | null> {
+async function getLastCreatedAt(
+  lat: number,
+  lng: number
+): Promise<string | null> {
   const querySnapshot = await db
     .collection("chats")
     .where("lat", "==", lat)
@@ -101,7 +104,11 @@ async function getLastCreatedAt(lat: number, lng: number): Promise<string | null
 }
 
 // 最後に既読した日時を取得
-async function getLastReadAt(userId: string, lat: number, lng: number): Promise<string | null> {
+async function getLastReadAt(
+  userId: string,
+  lat: number,
+  lng: number
+): Promise<string | null> {
   const querySnapshot = await db
     .collection("lastReadAt")
     .where("userId", "==", userId)

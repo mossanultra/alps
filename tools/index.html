@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>3D Room with Animated Character</title>
+  <style>
+    body { margin: 0; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <!-- Three.js ライブラリ -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/MTLLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <script>
+    let scene, camera, renderer, controls;
+    let characterObject = null;   // キャラクターを保持する変数
+    let baseY = 0;               // キャラクターの床上位置を保持（バウンドの基準）
+    
+    // アニメーション用変数
+    let bounceAngle = 0;   // 上下バウンド用
+    let moveAngle = 0;     // 部屋内を移動するための角度
+
+    // キャラクターの初期配置（XZ 平面上の基準点）を覚えておく
+    let basePosition = new THREE.Vector3();
+
+    init();
+    animate();
+
+    function init() {
+      // シーンの作成
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x333333); // ダークグレーの背景
+
+      // カメラの作成
+      camera = new THREE.PerspectiveCamera(
+        45, window.innerWidth / window.innerHeight, 0.1, 1000
+      );
+      camera.position.set(5, 3, 10);
+
+      // レンダラーの作成
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // OrbitControls の作成（マウス操作）
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.target.set(0, 1, 0);
+      controls.update();
+
+      // ライトの追加
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      directionalLight.position.set(10, 10, 10);
+      scene.add(directionalLight);
+
+      const spotLight = new THREE.SpotLight(0xffffff, 1);
+      spotLight.position.set(2, 5, 5);
+      spotLight.castShadow = true;
+      scene.add(spotLight);
+
+      // テクスチャローダー
+      const textureLoader = new THREE.TextureLoader();
+
+      // 壁のテクスチャ
+      const wallTexture = textureLoader.load('cat_space.jpg');
+      const wallMaterial = new THREE.MeshStandardMaterial({
+        map: wallTexture,
+        side: THREE.FrontSide
+      });
+
+      // 奥の壁
+      const backWall = new THREE.Mesh(new THREE.PlaneGeometry(10, 5), wallMaterial);
+      backWall.position.set(0, 2.5, -5);
+      scene.add(backWall);
+
+      // 左の壁
+      const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(10, 5), wallMaterial);
+      leftWall.position.set(-5, 2.5, 0);
+      leftWall.rotation.y = Math.PI / 2;
+      scene.add(leftWall);
+
+      // 床の作成
+      const floorTexture = textureLoader.load('products-floor-lineup-series-hokkaido-02.jpg');
+      const floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture, side: THREE.FrontSide });
+      const floor = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), floorMaterial);
+      floor.rotation.x = -Math.PI / 2;
+      floor.receiveShadow = true;
+      scene.add(floor);
+
+      // キャラクターの読み込み
+      loadCharacter();
+      
+      // ウィンドウリサイズ対応
+      window.addEventListener('resize', onWindowResize, false);
+    }
+
+    function loadCharacter() {
+      const mtlLoader = new THREE.MTLLoader();
+      mtlLoader.load('output.mtl', function(materials) {
+        materials.preload();
+        const objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials(materials);
+
+        objLoader.load('output.obj', function(object) {
+          // スケーリングと位置調整
+          const bbox = new THREE.Box3().setFromObject(object);
+          const size = bbox.getSize(new THREE.Vector3());
+          
+          // キャラクターの高さを 3 単位に合わせる（必要に応じて変更）
+          const scaleFactor = 3 / size.y;
+          object.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+          // 再計算（スケーリング後）
+          bbox.setFromObject(object);
+          const min = bbox.min;
+          const center = bbox.getCenter(new THREE.Vector3());
+          
+          // 床(y=0)に合わせる
+          object.position.set(-center.x, -min.y, -center.z);
+
+          // 基準となるY座標を保存（上下バウンドの中心）
+          baseY = object.position.y;
+
+          // いったん配置した位置を basePosition に保存（XZ移動用の基準）
+          basePosition.copy(object.position);
+
+          // シーンに追加し、グローバル変数へ
+          scene.add(object);
+          characterObject = object;
+        });
+      });
+    }
+
+    // アニメーションループ
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // キャラクターが読み込まれていればアニメーション実行
+      if (characterObject) {
+        // 1) 上下バウンド
+        bounceAngle += 0.03; // 角度を徐々に増加
+        const amplitude = 0.2; // バウンドの振幅
+        characterObject.position.y = baseY + Math.sin(bounceAngle) * amplitude;
+
+        // 2) 部屋の中を動き回る (円運動)
+        moveAngle += 0.01; // 移動スピード
+        const radius = 3;  // 円運動の半径（部屋の大きさに合わせて調整）
+        characterObject.position.x = basePosition.x + radius * Math.cos(moveAngle);
+        characterObject.position.z = basePosition.z + radius * Math.sin(moveAngle);
+
+        // 3) 左右ゆらゆら (Y軸回転)
+        //   角度に応じてキャラクターを小さく左右に振る
+        characterObject.rotation.y = 0.5 * Math.sin(moveAngle * 2);
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+  </script>
+</body>
+</html>

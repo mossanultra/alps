@@ -70,6 +70,6 @@ export const onMessageListener = (): Promise<MessagePayload> => {
     });
   });
 };
-const auth = getAuth(app);
+const firebaseAuth = getAuth(app);
 
-export { analytics, auth };
+export { analytics, firebaseAuth };
